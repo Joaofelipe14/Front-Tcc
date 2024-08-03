@@ -12,6 +12,8 @@ import { Utils } from 'src/app/utils/utils';
 export class RegistrarComponent {
   loginForm: FormGroup;
   formattedCpf: string = '';
+  selectedImage: string | ArrayBuffer | null = null;
+  selectedFile: File | null = null;
 
   constructor(private fb: FormBuilder, private router: Router, private toastController: ToastController) {
     this.loginForm = this.fb.group({
@@ -30,6 +32,18 @@ export class RegistrarComponent {
       // Remover caracteres não numéricos do CPF
       formData.cpf = formData.cpf.replace(/\D/g, '');
       console.log(formData);
+
+        const novoformData = new FormData();
+        novoformData.append('nome', this.loginForm.get('nome')?.value);
+        novoformData.append('cpf', this.loginForm.get('cpf')?.value);
+        novoformData.append('cap', this.loginForm.get('cap')?.value);
+        novoformData.append('contato', this.loginForm.get('contato')?.value);
+        novoformData.append('tipoUsuario', this.loginForm.get('tipoUsuario')?.value);
+  
+        if (this.selectedFile) {
+          novoformData.append('fotoPerfil', this.selectedFile, this.selectedFile.name);
+        }
+
       // Navegar ou processar o formulário aqui
     } else {
       this.loginForm.markAllAsTouched();
@@ -86,6 +100,32 @@ export class RegistrarComponent {
       if (errorMessage) {
         await Utils.showToast(errorMessage, this.toastController,'toast-erro','alert-circle-outline');
       }
+    }
+  }
+
+  onFileSelected(event: Event) {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files[0]) {
+      const file = input.files[0];
+      this.selectedFile = file;
+      const reader = new FileReader();
+
+      reader.onload = () => {
+        this.selectedImage = reader.result;
+      };
+
+      reader.readAsDataURL(file);
+    }
+  }
+
+  removeImage(event: Event) {
+    event.stopPropagation(); // Evita que o clique na imagem também abra o input de arquivos
+    this.selectedImage = null;
+    this.selectedFile = null;
+    // Limpa o campo de entrada de arquivo
+    const fileInput = document.querySelector('input[type="file"]') as HTMLInputElement;
+    if (fileInput) {
+      fileInput.value = '';
     }
   }
 }

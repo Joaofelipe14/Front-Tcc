@@ -2,12 +2,40 @@
   <div class="login-container">
     <ion-card>
       <ion-card-header class="header-card">
-        <img class="logo" src="./../../../assets/logo.svg" alt="">
-        <ion-card-title>Bem-vindo ao App</ion-card-title>
+        <ion-card-title>Faça seu cadastro</ion-card-title>
       </ion-card-header>
 
       <ion-card-content>
         <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+          <!-- Campo para enviar a foto de perfil -->
+          <ion-item class="profile-item">
+            <div class="profile-container" (click)="fileInput.click()">
+              <!-- Oculta o campo de input file -->
+              <input 
+                type="file" 
+                accept="image/*" 
+                (change)="onFileSelected($event)" 
+                hidden 
+                #fileInput
+              />
+              <!-- Imagem de perfil -->
+              <div class="profile-image-container">
+                <img *ngIf="selectedImage; else placeholderImage" [src]="selectedImage" alt="Foto de Perfil" class="profile-image"/>
+                <ng-template #placeholderImage>
+                  <img src="./../../../assets/logo.svg" alt="Logo" class="profile-image logo"/>
+                </ng-template>
+                <div *ngIf="!selectedImage" class="edit-text">Toque para editar</div>
+                <ion-icon 
+                  *ngIf="selectedImage" 
+                  name="close-circle" 
+                  class="remove-image" 
+                  (click)="removeImage($event)">
+                </ion-icon>
+              </div>
+            </div>
+          </ion-item>
+
+          <!-- Resto dos campos do formulário -->
           <ion-item>
             <ion-input placeholder="Digite seu nome" formControlName="nome" type="text" required></ion-input>
           </ion-item>

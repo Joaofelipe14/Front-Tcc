@@ -26,6 +26,7 @@ export class LoginComponent {
       const formData = this.loginForm.value;
 
       formData.cpf = Utils.unformatCpf(formData.cpf);
+      this.router.navigate(['/colaborador/inicio']);
 
       console.log(this.loginForm.value);
     }
