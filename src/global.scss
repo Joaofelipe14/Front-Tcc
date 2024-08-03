@@ -1,15 +1,3 @@
-/*
- * App Global CSS
- * ----------------------------------------------------------------------------
- * Put style rules here that you want to apply globally. These styles are for
- * the entire app and not just one component. Additionally, this file can be
- * used as an entry point to import other CSS/Sass files to be included in the
- * output CSS.
- * For more information on global stylesheets, visit the documentation:
- * https://ionicframework.com/docs/layout/global-stylesheets
- */
-
-/* Core CSS required for Ionic components to work properly */
 @import "@ionic/angular/css/core.css";
 
 /* Basic CSS for apps built with Ionic */
@@ -34,4 +22,67 @@
 
 /* @import "@ionic/angular/css/palettes/dark.always.css"; */
 /* @import "@ionic/angular/css/palettes/dark.class.css"; */
-@import "@ionic/angular/css/palettes/dark.system.css";
+
+:root {
+    --background-principal: #F8F8F8;
+    --btn-principal: #597492;
+    --btn-secundario: #6A7077;
+    --fonte-titulo:     #597492
+  }
+
+  ion-button{
+    --border-radius: 100px;
+    width: 100%;
+    font-weight: bold;
+    height: 50px;
+  }
+  
+/* src/global.scss */
+
+
+.btn-secundario {
+  --background: var(--btn-secundario);
+  --background-activated: var(--btn-secundario);
+  --background-focused: var(--btn-secundario);
+  --background-hover: var(--btn-secundario);
+  --box-shadow: none;
+  border-radius: 100px;
+  transition: transform 0.1s ease, box-shadow 0.1s ease, border-radius 0.1s ease;
+}
+
+.btn-secundario:active {
+  transform: scale(0.98);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  border-radius: 100px;
+}
+
+.btn-secundario:hover {
+  --background: var(--btn-secundario);
+  --background-activated: var(--btn-secundario);
+  --background-focused: var(--btn-secundario);
+  --background-hover: var(--btn-secundario);
+}
+
+
+.btn-primario {
+  --background: var(--btn-principal);
+  --background-activated: var(--btn-principal);
+  --background-focused: var(--btn-principal);
+  --background-hover: var(--btn-principal);
+  --box-shadow: none;
+  border-radius: 100px; 
+  transition: transform 0.1s ease, box-shadow 0.1s ease, border-radius 0.1s ease;
+}
+
+.btn-primario:active {
+  transform: scale(0.98);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  border-radius: 100px; 
+}
+
+.btn-primario:hover {
+  --background: var(--btn-principal);
+  --background-activated: var(--btn-principal);
+  --background-focused: var(--btn-principal);
+  --background-hover: var(--btn-principal);
+}

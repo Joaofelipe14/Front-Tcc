@@ -1,3 +1,28 @@
-<p>
-  login works!
-</p>
+<!-- login.component.html -->
+<ion-content>
+  <div class="login-container">
+    <ion-card>
+      <ion-card-header class="header-card">
+        <img class="logo" src="./../../../assets/logo.svg" alt="">
+        <ion-card-title>Bem-vindo ao App</ion-card-title>
+      </ion-card-header>
+
+      <ion-card-content>
+        <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+          <ion-item>
+            <ion-input placeholder="Digite seu id" formControlName="id" type="text" required></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-input placeholder="Digite sua senha" formControlName="password" type="password" required></ion-input>
+          </ion-item>
+          <ion-button type="submit" class="btn-primario" [disabled]="loginForm.invalid">Login</ion-button>
+          <ion-button  type="button" class="btn-secundario" (click)="onRegister()">Registrar</ion-button>
+        </form>
+      </ion-card-content>
+    </ion-card>
+    <!-- Link "Esqueceu sua senha?" fora do card -->
+    <div class="forgot-password">
+      <a href="/registrar">Esqueceu sua senha?</a>
+    </div>
+  </div>
+</ion-content>

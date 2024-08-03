@@ -5,15 +5,12 @@ import { RegistrarComponent } from './pages/registrar/registrar.component';
 import { InicioAdminComponent } from './pages/admin/inicio-admin/inicio-admin.component';
 
 const routes: Routes = [
-  {
-    path: 'home',
-    loadChildren: () => import('./home/home.module').then( m => m.HomePageModule)
-  },
-  {
-    path: '',
-    redirectTo: 'home',
-    pathMatch: 'full'
-  },
+
+  { 
+    path: '', 
+    component: LoginComponent
+   },
+
   { 
     path: 'login', 
     component: LoginComponent
