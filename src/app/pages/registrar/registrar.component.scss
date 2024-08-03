@@ -1,54 +1,61 @@
 .login-container {
-    display: flex;
-    flex-direction: column;
-    justify-content: center; 
-    align-items: center;
-    height: 100vh; 
-    padding: 20px;
-    background: var(--background-principal); 
-  }
-  
-  ion-card {
-    width: 100%;
-    max-width: 400px;
-    margin-bottom: 20px;
-    --background: #fff;
-    --box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  }
-  
-  .btn-primario {
-    margin-top: 25px;
-  }
-  
-  ion-card-title {
-    color: var(--fonte-titulo); 
-  }
-  
-  .forgot-password {
-    text-align: center;
-    position: absolute; 
-    bottom: 20px; 
-    width: 100%; 
-  }
-  
-  .forgot-password a {
-    color: var(--fonte-titulo);
-    text-decoration: none;
-  }
-  
-  .forgot-password a:hover {
-    text-decoration: underline; 
-  }
-  
-  .logo{
-    width: 150px;
-    height: 150px;
-  }
-  
+  display: flex;
+  flex-direction: column;
+  justify-content: center; 
+  align-items: center;
+  height: 100vh; 
+  padding: 20px;
+  background: var(--background-principal); 
+}
+
+ion-card {
+  width: 100%;
+  max-width: 400px;
+  margin-bottom: 20px;
+  --background: #fff;
+  --box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.btn-primario {
+  margin-top: 25px;
+}
+
+ion-card-title {
+  color: var(--fonte-titulo); 
+}
+
+.forgot-password {
+  text-align: center;
+  position: absolute; 
+  bottom: 20px; 
+  width: 100%; 
+}
+
+.forgot-password a {
+  color: var(--fonte-titulo);
+  text-decoration: none;
+}
+
+.forgot-password a:hover {
+  text-decoration: underline; 
+}
+
+.logo{
+  width: 150px;
+  height: 150px;
+}
+
+.header-card{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 100px;
+}
+
+@media (max-height: 700px) {
   .header-card{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 100px;
+    gap: 0px;
   }
+
+}

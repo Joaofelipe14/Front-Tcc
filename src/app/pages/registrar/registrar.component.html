@@ -1,5 +1,4 @@
-<!-- login.component.html -->
-<ion-content>
+<ion-content scroll-y="false">
   <div class="login-container">
     <ion-card>
       <ion-card-header class="header-card">
@@ -10,16 +9,33 @@
       <ion-card-content>
         <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
           <ion-item>
-            <ion-input placeholder="Digite seu id" formControlName="id" type="text" required></ion-input>
+            <ion-input placeholder="Digite seu nome" formControlName="nome" type="text" required></ion-input>
           </ion-item>
           <ion-item>
-            <ion-input placeholder="Digite sua senha" formControlName="password" type="password" required></ion-input>
+            <ion-input
+              placeholder="Digite seu CPF"
+              formControlName="cpf"
+              maxlength="14"
+              [value]="formattedCpf"
+              (ionInput)="onCpfInput($event)"
+              type="text"
+              required
+              (ionBlur)="onCpfBlur()"
+            ></ion-input>
           </ion-item>
           <ion-item>
-            <ion-input placeholder="Digite seu id" formControlName="id" type="text" required></ion-input>
+            <ion-input placeholder="CAP" formControlName="cap" type="text" required></ion-input>
           </ion-item>
           <ion-item>
-            <ion-input placeholder="Digite sua senha" formControlName="password" type="password" required></ion-input>
+            <ion-input placeholder="Contato" formControlName="contato" type="text" required></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-select
+            formControlName="tipoUsuario"
+            placeholder="Tipo de Usuário">
+            <ion-select-option value="admin">Admin</ion-select-option>
+            <ion-select-option value="colaborador">Colaborador</ion-select-option>
+          </ion-select>
           </ion-item>
           <ion-button type="submit" class="btn-primario" [disabled]="loginForm.invalid">Cadastrar</ion-button>
         </form>
@@ -27,7 +43,7 @@
     </ion-card>
     <!-- Link "Esqueceu sua senha?" fora do card -->
     <div class="forgot-password">
-      <a href="/registrar">Acessar sua conta</a>
+      <a href="/login">Acessar sua conta</a>
     </div>
   </div>
 </ion-content>

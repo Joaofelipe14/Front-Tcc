@@ -52,3 +52,11 @@ ion-card-title {
   justify-content: center;
   gap: 100px;
 }
+
+@media (max-height: 700px) {
+  .header-card{
+    gap: 0px;
+  }
+
+}
+

@@ -10,7 +10,17 @@
       <ion-card-content>
         <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
           <ion-item>
-            <ion-input placeholder="Digite seu id" formControlName="id" type="text" required></ion-input>
+            <ion-input   
+            placeholder="Digite seu CPF"
+            formControlName="cpf"
+            maxlength="14"
+            [value]="formattedCpf"
+            (ionInput)="onCpfInput($event)"
+            type="text"
+            required
+            (ionBlur)="onCpfBlur()"
+
+            ></ion-input>
           </ion-item>
           <ion-item>
             <ion-input placeholder="Digite sua senha" formControlName="password" type="password" required></ion-input>

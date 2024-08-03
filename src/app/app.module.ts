@@ -12,10 +12,13 @@ import { InicioAdminComponent } from './pages/admin/inicio-admin/inicio-admin.co
 import { LoginComponent } from './pages/login/login.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { RegistrarComponent } from './pages/registrar/registrar.component';
+import { NgxMaskDirective } from 'ngx-mask';
+
 
 @NgModule({
   declarations: [AppComponent, MenuComponent, InicioAdminComponent, LoginComponent,RegistrarComponent],
-  imports: [BrowserModule,ReactiveFormsModule,IonicModule.forRoot(), AppRoutingModule, ServiceWorkerModule.register('ngsw-worker.js', {
+  imports: [BrowserModule,ReactiveFormsModule,IonicModule.forRoot(),   NgxMaskDirective,
+    AppRoutingModule, ServiceWorkerModule.register('ngsw-worker.js', {
   enabled: !isDevMode(),
   // Register the ServiceWorker as soon as the application is stable
   // or after 30 seconds (whichever comes first).
