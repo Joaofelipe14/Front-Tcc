@@ -1,10 +1,24 @@
-<nav>
+<nav class="custom-nav">
   <ul>
-    <li><a routerLink="/home">Home</a></li>
-    <li><a routerLink="/login">Login</a></li>
-    <li><a routerLink="/register">Register</a></li>
+    <li>
+      <a routerLink="/colaborador/inicio" class="nav-item" [ngClass]="{'active': isActive('/colaborador/inicio')}">
+        <ion-icon name="home" class="nav-icon"></ion-icon> Inicio
+      </a>
+    </li>
+  
+    <li>
+      <a routerLink="/colaborador/cadastrar-pesca" class="nav-item" [ngClass]="{'active': isActive('/colaborador/cadastrar-pesca')}">
+        <ion-icon name="fish" class="nav-icon"></ion-icon> Pesca
+      </a>
+    </li>
+
+    <li>
+      <a routerLink="/colaborador/meu-perfil" class="nav-item" [ngClass]="{'active': isActive('/colaborador/meu-perfil')}">
+        <ion-icon name="person-circle-outline" class="nav-icon"></ion-icon> Perfil
+      </a>
+    </li>
+
   </ul>
 </nav>
 
-
-<p>vai da certo</p>
+<router-outlet></router-outlet>

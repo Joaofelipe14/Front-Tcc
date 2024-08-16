@@ -4,6 +4,8 @@ import { LoginComponent } from './pages/login/login.component';
 import { RegistrarComponent } from './pages/registrar/registrar.component';
 import { InicioAdminComponent } from './pages/admin/inicio-admin/inicio-admin.component';
 import { InicioColaboradorComponent } from './pages/colaborador/inicio-colaborador/inicio-colaborador.component';
+import { MeuPerfilColaboradorComponent } from './pages/colaborador/meu-perfil-colaborador/meu-perfil-colaborador.component';
+import { CadastrarPescaComponent } from './pages/colaborador/cadastrar-pesca/cadastrar-pesca.component';
 
 const routes: Routes = [
 
@@ -26,6 +28,14 @@ const routes: Routes = [
   {
     path:'colaborador/inicio',
     component: InicioColaboradorComponent
+  },
+  {
+    path:'colaborador/meu-perfil',
+    component: MeuPerfilColaboradorComponent
+  },
+  {
+    path:'colaborador/cadastrar-pesca',
+    component: CadastrarPescaComponent
   }
 ];
 
