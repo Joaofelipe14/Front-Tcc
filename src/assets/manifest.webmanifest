@@ -5,7 +5,7 @@
     "background_color": "#fafafa",
     "display": "standalone",
     "scope": "./",
-    "start_url": "./login",
+    "start_url": "/login",
     "icons": [
       {
         "src": "icons/icon-72x72.png",

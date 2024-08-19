@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter, ViewChild } from '@angular/core';
 import { Router } from '@angular/router'; // Importa Router
 
 @Component({
@@ -8,7 +8,15 @@ import { Router } from '@angular/router'; // Importa Router
 })
 export class HeaderComponent {
   @Input() title: string = '';
+  @ViewChild('popover')
+  popover!: { event: Event; };
 
+  isOpen = false;
+
+  presentPopover(e: Event) {
+    this.popover.event = e;
+    this.isOpen = true;
+  }
   constructor(private router: Router) {} 
 
   onBack() {
@@ -18,4 +26,12 @@ export class HeaderComponent {
       this.router.navigate(['/']); 
     }
   }
+
+
+  logout() {
+
+    console.log('saindo')
+    this.router.navigate(['/login']);
+  }
+
 }

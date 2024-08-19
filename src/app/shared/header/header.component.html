@@ -2,8 +2,18 @@
   <div class="header__back" (click)="onBack()">
     <ion-icon name="arrow-back-outline" class="header__icon"></ion-icon>
   </div>
-  <div class="header__title ">{{ title }}</div>
-  <div class="header__profile">
+  <div class="header__title">{{ title }}</div>
+  <div class="header__profile" id="popover-button">
     <ion-icon name="person-outline" class="header__icon"></ion-icon>
   </div>
 </div>
+
+<ion-popover trigger="popover-button" [dismissOnSelect]="true">
+  <ng-template>
+    <ion-content>
+      <ion-list>
+        <ion-item (click)="logout()" [button]="true" [detail]="false">Sair</ion-item>
+      </ion-list>
+    </ion-content>
+  </ng-template>
+</ion-popover>
