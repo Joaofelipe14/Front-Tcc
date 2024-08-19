@@ -75,7 +75,6 @@ ion-card {
   margin-top: auto;
 }
 
-
 .card-header-cadastro {
   display: flex;
   align-items: center;
@@ -88,17 +87,10 @@ ion-card {
 }
 
 .card-input {
-    border: 0;
-    border-bottom: 1px solid #ccc;
-  }
-  
-
-
-inner-scroll{
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  border: 0;
+  border-bottom: 1px solid #ccc;
 }
+
 // botoes uteis 
 
 .btn-secundario {
@@ -153,6 +145,7 @@ inner-scroll{
 }
 
 @media (min-width: 736px) {
+
   /* card  registro */
   .card-cadastro {
     width: 500px;

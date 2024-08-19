@@ -86,7 +86,7 @@ ion-card-title {
   width: 150px;
   height: 150px;
   border-radius: 50%; 
-  object-fit: cover; /* Garante que a imagem cubra a área definida */
+  object-fit: cover; 
 }
 
 .logo {
@@ -106,10 +106,10 @@ ion-card-title {
 .remove-image {
   position: absolute;
   top: 0;
-  right: 0;
+  right: 10px;
   background: white;
   border-radius: 50%;
   cursor: pointer;
-  font-size: 24px;
+  font-size: 30px;
   color: red;
 }

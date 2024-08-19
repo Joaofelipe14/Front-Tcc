@@ -11,7 +11,6 @@ export class MeuPerfilColaboradorComponent implements OnInit {
   selectedImage: string | ArrayBuffer | null = null;
   selectedFile: File | null = null;
 
-
   constructor(private formBuilder: FormBuilder) {
     this.meuPerfilForm = this.formBuilder.group({
       nome: ['', Validators.required],
@@ -19,6 +18,7 @@ export class MeuPerfilColaboradorComponent implements OnInit {
       cap: ['', Validators.required],
       contato: ['', Validators.required],
       tipoUsuario: ['', Validators.required],
+      imagemPerfil: [null] 
     });
   }
 
@@ -29,19 +29,33 @@ export class MeuPerfilColaboradorComponent implements OnInit {
   loadUserData() {
     // Dados mockados do colaborador
     const userData = {
-      nome: 'Maria Oliveira',
+      nome: 'João',
       cpf: '123.456.789-00',
       cap: '54321-678',
       contato: '(21) 98765-4321',
       tipoUsuario: 'colaborador',
+      imagemPerfil: 'https://img.freepik.com/fotos-premium/icone-de-ilustracao-de-desenho-animado-de-naruto_1070876-6904.jpg'
     };
 
     this.meuPerfilForm.patchValue(userData);
+    this.selectedImage = userData.imagemPerfil;
   }
 
   onSubmit() {
     if (this.meuPerfilForm.valid) {
-      console.log(this.meuPerfilForm.value);
+      const formData = new FormData();
+      Object.keys(this.meuPerfilForm.value).forEach(key => {
+        formData.append(key, this.meuPerfilForm.value[key]);
+      });
+
+      if (this.selectedFile) {
+        formData.append('imagemPerfil', this.selectedFile, this.selectedFile.name);
+      }
+
+      // Log do conteúdo do FormData
+      formData.forEach((value, key) => {
+        console.log(`${key}:`, value);
+      });
     }
   }
 
@@ -61,10 +75,9 @@ export class MeuPerfilColaboradorComponent implements OnInit {
   }
 
   removeImage(event: Event) {
-    event.stopPropagation(); // Evita que o clique na imagem também abra o input de arquivos
+    event.stopPropagation();
     this.selectedImage = null;
     this.selectedFile = null;
-    // Limpa o campo de entrada de arquivo
     const fileInput = document.querySelector('input[type="file"]') as HTMLInputElement;
     if (fileInput) {
       fileInput.value = '';
