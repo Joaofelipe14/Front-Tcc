@@ -1,4 +1,4 @@
-<ion-content scroll-y="false">
+<ion-content scroll-y="true">
     <app-header title="Cadastrar Pesca"></app-header>
 
     <div class="container-principal">
@@ -19,10 +19,8 @@
                             datetime="datetime"></ion-datetime-button>
                     </div>
 
-                    <div>
                         <ion-input class="card-input" placeholder="Codigo" formControlName="codigo" type="text" required></ion-input>
-                    </div>
-
+                   
                     <ion-button class="btn-primario posicao-btn-card " [disabled]="cadastrarPescaForm.invalid" type="submit">Enviar</ion-button>
                 </form>
             </ion-card-content>

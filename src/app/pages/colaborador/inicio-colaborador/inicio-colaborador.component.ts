@@ -7,8 +7,22 @@ import { Component, OnInit } from '@angular/core';
 })
 export class InicioColaboradorComponent  implements OnInit {
 
+  vendas: any[] = [];
+
   constructor() { }
 
-  ngOnInit() {}
+
+
+  ngOnInit() {
+    // Mock data for sales records
+    this.vendas = [
+      { area: 'Zona Norte', dateTime: '20/08/2024 14:30', code: 'ABC123' },
+      { area: 'Zona Sul', dateTime: '21/08/2024 09:00', code: 'XYZ456' },
+      { area: 'Zona Leste', dateTime: '22/08/2024 16:45', code: 'DEF789' },
+      { area: 'Zona Leste', dateTime: '22/08/2024 16:45', code: 'DEF789' },
+
+      // Add more mock records if needed
+    ];
+  }
 
 }

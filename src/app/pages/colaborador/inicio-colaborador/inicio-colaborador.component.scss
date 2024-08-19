@@ -3,3 +3,11 @@ ion-content{
   padding: 20px;
   background: var(--background-principal); 
 }
+ion-content {
+
+  overflow: hidden;
+  --padding-bottom: 80px;
+  --padding-top: 80px;
+  --background: background-color: var(--fundo-interno);
+}
+

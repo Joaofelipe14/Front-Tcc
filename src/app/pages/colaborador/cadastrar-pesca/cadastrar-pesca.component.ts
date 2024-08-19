@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Keyboard } from '@capacitor/keyboard';
+
+// Keyboard.setResizeMode('none'); // Desativa o ajuste automático do teclado
 
 @Component({
   selector: 'app-cadastrar-pesca',
