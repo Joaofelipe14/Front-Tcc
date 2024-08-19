@@ -1,10 +1,67 @@
-<ion-content scroll-y="false">
+<app-header title="Meu perfil"></app-header>
 
-    <app-header title="Meu perfil"></app-header>
+<div class="container-principal">
+    <ion-content>
+        <ion-card class="card-cadastro">
+            <ion-card-header class="card-header-cadastro">
+                <ion-card-title class="title-card">Meu perfil</ion-card-title>
+            </ion-card-header>
 
-    <div class="container-principal">
-        <h1>meu perfil</h1>
-    </div>
+            <ion-card-content>
+                <form [formGroup]="meuPerfilForm" class="content-card" (ngSubmit)="onSubmit()">
+                    <div class="profile-item">
+                        <div class="profile-container" (click)="fileInput.click()">
+                            <!-- Oculta o campo de input file -->
+                            <input type="file" accept="image/*" (change)="onFileSelected($event)" hidden
+                                #fileInput />
+                            <!-- Imagem de perfil -->
+                            <div class="profile-image-container">
+                                <img *ngIf="selectedImage; else placeholderImage" [src]="selectedImage"
+                                    alt="Foto de Perfil" class="profile-image" />
+                                <ng-template #placeholderImage>
+                                    <img src="./../../../assets/logo.svg" alt="Logo" class="profile-image logo" />
+                                </ng-template>
+                                <div *ngIf="!selectedImage" class="edit-text">Toque para editar</div>
+                                <ion-icon *ngIf="selectedImage" name="close-circle" class="remove-image"
+                                    (click)="removeImage($event)">
+                                </ion-icon>
+                            </div>
+                        </div>
+                    </div>
 
-</ion-content>
+                    <div class="form-field">
+                        <div class="label-card-cadastro">Nome:</div>
+                        <ion-input placeholder="Digite seu nome" class="card-input" formControlName="nome"
+                            type="text" required></ion-input>
+                    </div>
+                    <div class="form-field">
+                        <div class="label-card-cadastro">CPF:</div>
+                        <ion-input class="card-input" placeholder="Digite seu CPF" formControlName="cpf" type="text"
+                            [disabled]="true">
+                        </ion-input>
+                    </div>
+                    <div class="form-field">
+                        <div class="label-card-cadastro">CAP:</div>
+                        <ion-input placeholder="CAP" class="card-input" formControlName="cap" type="text"
+                            required></ion-input>
+                    </div>
+                    <div class="form-field">
+                        <div class="label-card-cadastro">Contato:</div>
+                        <ion-input placeholder="Contato" class="card-input" formControlName="contato" type="text"
+                            required></ion-input>
+                    </div>
+                    <div class="form-field">
+                        <div class="label-card-cadastro">Tipo de Usuário:</div>
+                        <ion-select formControlName="tipoUsuario" placeholder="Tipo de Usuário">
+                            <ion-select-option value="admin">Admin</ion-select-option>
+                            <ion-select-option value="colaborador">Colaborador</ion-select-option>
+                        </ion-select>
+                    </div>
+
+                    <ion-button class="btn-primario" [disabled]="meuPerfilForm.invalid" type="submit">Salvar</ion-button>
+                </form>
+            </ion-card-content>
+        </ion-card>
+    </ion-content>
+</div>
 <app-menu></app-menu>

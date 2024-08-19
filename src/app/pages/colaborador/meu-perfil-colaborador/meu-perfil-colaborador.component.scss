@@ -1,9 +1,106 @@
-ion-content{
-    background-color: var(--background-principal);
-    height: 15px;
+
+/* Garantir que o ion-content ocupe a altura total disponível */
+ion-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%; /* Ocupa toda a altura da tela */
+    overflow: auto; /* Permite rolar o conteúdo */
+    --padding-bottom: 100px; /* Remove padding inferior se necessário */
+    --padding-top: 100px; /* Remove padding superior se necessário */
 }
 
-.container-principal{
-    height: 100vh;
-    background-color: var(--background-principal);
+/* Ajustar a altura e layout do container principal */
+.container-principal {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    padding: 16px; /* Adiciona padding ao redor do conteúdo */
+    box-sizing: border-box;
 }
+
+/* Ajustar o card para que ocupe o espaço necessário */
+.card-cadastro {
+    flex: 1; /* Permite que o card use o espaço disponível */
+}
+
+/* Ajustar o formulário para se ajustar ao tamanho do card */
+.content-card {
+    display: flex;
+    flex-direction: column;
+    height: 100%; /* Ocupa a altura total do card */
+    box-sizing: border-box;
+}
+
+/* Ajustar os campos de input para ocupar o espaço disponível */
+.card-input {
+    width: 100%; /* Garante que o input use a largura disponível */
+    margin-bottom: 10px; /* Adiciona espaço entre os campos */
+}
+
+/* Ajustar o botão para o layout */
+.btn-primario {
+    margin-top: 20px; /* Adiciona espaço acima do botão se necessário */
+}
+
+
+.container-principal{
+    height: 100%;
+    background-color: var(--fundo-interno);
+    overflow-y: auto;
+}
+
+.label-card-cadastro {
+    font-weight: bold;
+    margin-top: 5px;
+}
+
+.profile-item {
+    display: flex;
+    justify-content: center;
+  }
+  
+  .profile-image-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .profile-image {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%; 
+    object-fit: cover; /* Garante que a imagem cubra a área definida */
+  }
+  
+  .logo {
+    width: 150px; 
+    height: 150px;
+  }
+  
+  .edit-text {
+    position: absolute;
+    // bottom: 10px;
+    color: rgba(0, 0, 0, 0.7); 
+    font-size: 13px;
+    text-align: center;
+    opacity: 50%;
+  }
+  
+  .remove-image {
+    position: absolute;
+    top: 0;
+    right: 0;
+    background: white;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 24px;
+    color: red;
+  }
+  
+
+
+
+

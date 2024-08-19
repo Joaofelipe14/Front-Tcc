@@ -24,21 +24,82 @@
 /* @import "@ionic/angular/css/palettes/dark.class.css"; */
 
 :root {
-    --background-principal: #F8F8F8;
-    --btn-principal: #597492;
-    --btn-secundario: #6A7077;
-    --fonte-titulo:     #597492
-  }
+  --background-principal: #F8F8F8;
+  --btn-principal: #597492;
+  --btn-secundario: #6A7077;
+  --fonte-titulo: #597492;
+  --card-header: #DDEAF3;
+  --fundo-interno: #F6FAFF
+}
 
-  ion-button{
-    --border-radius: 100px;
-    width: 100%;
-    font-weight: bold;
-    height: 50px;
+ion-button {
+  --border-radius: 100px;
+  width: 100%;
+  font-weight: bold;
+  height: 50px;
+}
+
+ion-card {
+  margin-top: 0;
+}
+
+.container-principal {
+  height: 100%;
+  background-color: var(--fundo-interno);
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+/* card  registro */
+.card-cadastro {
+  filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+  border-radius: 10px;
+  background-color: #F8F8F8;
+  min-width: 90%;
+  max-width: 500px;
+}
+
+.content-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 300px;
+
+}
+
+.posicao-btn-card {
+  position: relative;
+  margin-top: auto;
+}
+
+
+.card-header-cadastro {
+  display: flex;
+  align-items: center;
+  background-color: var(--card-header);
+}
+
+.title-card {
+  font-weight: bold;
+  color: var(--fonte-titulo);
+}
+
+.card-input {
+    border: 0;
+    border-bottom: 1px solid #ccc;
   }
   
-/* src/global.scss */
 
+
+inner-scroll{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+// botoes uteis 
 
 .btn-secundario {
   --background: var(--btn-secundario);
@@ -70,14 +131,14 @@
   --background-focused: var(--btn-principal);
   --background-hover: var(--btn-principal);
   --box-shadow: none;
-  border-radius: 100px; 
+  border-radius: 100px;
   transition: transform 0.1s ease, box-shadow 0.1s ease, border-radius 0.1s ease;
 }
 
 .btn-primario:active {
   transform: scale(0.98);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  border-radius: 100px; 
+  border-radius: 100px;
 }
 
 .btn-primario:hover {
@@ -87,7 +148,16 @@
   --background-hover: var(--btn-principal);
 }
 
-.toast-erro{
-  color: red !important; 
+.toast-erro {
+  color: red !important;
 }
 
+@media (min-width: 736px) {
+  /* card  registro */
+  .card-cadastro {
+    width: 500px;
+    min-width: unset;
+
+  }
+
+}

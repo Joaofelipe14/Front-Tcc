@@ -2,12 +2,13 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 10px 20px;
-    // background-color: var();
+    position: absolute;
+    background-color: var(--fundo-interno);
     color: #fff;
     top: 0;
     width: 100%;
     z-index: 1000;
+    padding: 20px;
   }
   
   .header__back,
