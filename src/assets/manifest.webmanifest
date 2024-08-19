@@ -2,7 +2,7 @@
     "name": "app",
     "short_name": "app",
     "theme_color": "#1976d2",
-    "background_color": "#fafafa",
+    "background_color": "#F6FAFF",
     "display": "standalone",
     "scope": "./",
     "start_url": "/login",
