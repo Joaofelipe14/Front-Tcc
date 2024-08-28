@@ -14,10 +14,10 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { RegistrarComponent } from './pages/registrar/registrar.component';
 import { NgxMaskDirective } from 'ngx-mask';
 import { InicioColaboradorComponent } from './pages/colaborador/inicio-colaborador/inicio-colaborador.component';
-import { MeuPerfilColaboradorComponent } from './pages/colaborador/meu-perfil-colaborador/meu-perfil-colaborador.component';
 import { CadastrarPescaComponent } from './pages/colaborador/cadastrar-pesca/cadastrar-pesca.component';
 import { HeaderComponent } from './shared/header/header.component';
 import { FinanceiroComponent } from './pages/admin/financeiro/financeiro.component';
+import { MeuPerfilComponent } from './shared/meu-perfil/meu-perfil.component';
 
 
 @NgModule({
@@ -29,9 +29,9 @@ import { FinanceiroComponent } from './pages/admin/financeiro/financeiro.compone
     HeaderComponent,
     RegistrarComponent,
     InicioColaboradorComponent,
-    MeuPerfilColaboradorComponent,
     CadastrarPescaComponent,
-    FinanceiroComponent
+    FinanceiroComponent,
+    MeuPerfilComponent
    ],
   imports: [BrowserModule, ReactiveFormsModule, IonicModule.forRoot(), NgxMaskDirective,
     AppRoutingModule, ServiceWorkerModule.register('ngsw-worker.js', {

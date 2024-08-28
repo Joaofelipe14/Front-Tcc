@@ -2,11 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
-  selector: 'app-meu-perfil-colaborador',
-  templateUrl: './meu-perfil-colaborador.component.html',
-  styleUrls: ['./meu-perfil-colaborador.component.scss'],
+  selector: 'app-meu-perfil',
+  templateUrl: './meu-perfil.component.html',
+  styleUrls: ['./meu-perfil.component.scss'],
 })
-export class MeuPerfilColaboradorComponent implements OnInit {
+export class MeuPerfilComponent implements OnInit {
   meuPerfilForm: FormGroup;
   selectedImage: string | ArrayBuffer | null = null;
   selectedFile: File | null = null;

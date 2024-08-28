@@ -4,9 +4,9 @@ import { LoginComponent } from './pages/login/login.component';
 import { RegistrarComponent } from './pages/registrar/registrar.component';
 import { InicioAdminComponent } from './pages/admin/inicio-admin/inicio-admin.component';
 import { InicioColaboradorComponent } from './pages/colaborador/inicio-colaborador/inicio-colaborador.component';
-import { MeuPerfilColaboradorComponent } from './pages/colaborador/meu-perfil-colaborador/meu-perfil-colaborador.component';
 import { CadastrarPescaComponent } from './pages/colaborador/cadastrar-pesca/cadastrar-pesca.component';
 import { FinanceiroComponent } from './pages/admin/financeiro/financeiro.component';
+import { MeuPerfilComponent } from './shared/meu-perfil/meu-perfil.component';
 
 const routes: Routes = [
 
@@ -23,7 +23,10 @@ const routes: Routes = [
     path: 'registrar',
     component: RegistrarComponent
   },
-
+  {
+    path: ':tipoUsuario/meu-perfil',
+    component: MeuPerfilComponent
+  },
   /*   Rotas para o admin */
 
   {
@@ -39,10 +42,7 @@ const routes: Routes = [
     path: 'colaborador/inicio',
     component: InicioColaboradorComponent
   },
-  {
-    path: 'colaborador/meu-perfil',
-    component: MeuPerfilColaboradorComponent
-  },
+
   {
     path: 'colaborador/cadastrar-pesca',
     component: CadastrarPescaComponent
