@@ -1,24 +1,46 @@
 <nav class="custom-nav">
   <ul>
-    <li>
-      <a routerLink="/colaborador/inicio" class="nav-item" [ngClass]="{'active': isActive('/colaborador/inicio')}">
-        <ion-icon name="home" class="nav-icon"></ion-icon> Inicio
-      </a>
-    </li>
-  
-    <li>
-      <a routerLink="/colaborador/cadastrar-pesca" class="nav-item" [ngClass]="{'active': isActive('/colaborador/cadastrar-pesca')}">
-        <ion-icon name="fish" class="nav-icon"></ion-icon> Pesca
-      </a>
-    </li>
+    <!-- Lista de menu para colaborador -->
+    <ng-container *ngIf="tipoMenu === 'colaborador'">
+      <li>
+        <a routerLink="/colaborador/inicio" class="nav-item" [ngClass]="{'active': isActive('/colaborador/inicio')}">
+          <ion-icon name="home" class="nav-icon"></ion-icon> Inicio
+        </a>
+      </li>
+      <li>
+        <a routerLink="/colaborador/cadastrar-pesca" class="nav-item" [ngClass]="{'active': isActive('/colaborador/cadastrar-pesca')}">
+          <ion-icon name="fish" class="nav-icon"></ion-icon> Pesca
+        </a>
+      </li>
+      <li>
+        <a routerLink="/colaborador/meu-perfil" class="nav-item" [ngClass]="{'active': isActive('/colaborador/meu-perfil')}">
+          <ion-icon name="person-circle-outline" class="nav-icon"></ion-icon> Perfil
+        </a>
+      </li>
+    </ng-container>
 
-    <li>
-      <a routerLink="/colaborador/meu-perfil" class="nav-item" [ngClass]="{'active': isActive('/colaborador/meu-perfil')}">
-        <ion-icon name="person-circle-outline" class="nav-icon"></ion-icon> Perfil
-      </a>
-    </li>
-
+    <!-- Lista de menu para administrador -->
+    <ng-container *ngIf="tipoMenu === 'admin'">
+      <li>
+        <a routerLink="/admin/inicio" class="nav-item" [ngClass]="{'active': isActive('/admin/inicio')}">
+          <ion-icon name="home" class="nav-icon"></ion-icon> Inicio
+        </a>
+      </li>
+      <li>
+        <a routerLink="/admin/financeiro" class="nav-item" [ngClass]="{'active': isActive('/admin/financeiro')}">
+          <ion-icon name="cash-outline" class="nav-icon"></ion-icon> Financeiro
+        </a>
+      </li>
+      <li>
+        <a routerLink="/admin/producao" class="nav-item" [ngClass]="{'active': isActive('/admin/producao')}">
+          <ion-icon name="fish" class="nav-icon"></ion-icon> Produção
+        </a>
+      </li>
+      <li>
+        <a routerLink="/shared/meu-perfil" class="nav-item" [ngClass]="{'active': isActive('/admin/meu-perfil')}">
+          <ion-icon name="person-circle-outline" class="nav-icon"></ion-icon> Perfil
+        </a>
+      </li>
+    </ng-container>
   </ul>
 </nav>
-
-<!-- <router-outlet></router-outlet> -->

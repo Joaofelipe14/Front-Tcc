@@ -6,35 +6,45 @@ import { InicioAdminComponent } from './pages/admin/inicio-admin/inicio-admin.co
 import { InicioColaboradorComponent } from './pages/colaborador/inicio-colaborador/inicio-colaborador.component';
 import { MeuPerfilColaboradorComponent } from './pages/colaborador/meu-perfil-colaborador/meu-perfil-colaborador.component';
 import { CadastrarPescaComponent } from './pages/colaborador/cadastrar-pesca/cadastrar-pesca.component';
+import { FinanceiroComponent } from './pages/admin/financeiro/financeiro.component';
 
 const routes: Routes = [
 
-  { 
-    path: '', 
+  {
+    path: '',
     component: LoginComponent
-   },
+  },
 
-  { 
-    path: 'login', 
+  {
+    path: 'login',
     component: LoginComponent
-   },
-  { path: 'registrar',
-     component: RegistrarComponent 
   },
   {
-    path:'admin/inicio',
+    path: 'registrar',
+    component: RegistrarComponent
+  },
+
+  /*   Rotas para o admin */
+
+  {
+    path: 'admin/inicio',
     component: InicioAdminComponent
   },
   {
-    path:'colaborador/inicio',
+    path: 'admin/financeiro',
+    component: FinanceiroComponent
+  },
+  /* rotas para o colaborador */
+  {
+    path: 'colaborador/inicio',
     component: InicioColaboradorComponent
   },
   {
-    path:'colaborador/meu-perfil',
+    path: 'colaborador/meu-perfil',
     component: MeuPerfilColaboradorComponent
   },
   {
-    path:'colaborador/cadastrar-pesca',
+    path: 'colaborador/cadastrar-pesca',
     component: CadastrarPescaComponent
   }
 ];

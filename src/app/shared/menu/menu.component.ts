@@ -9,19 +9,24 @@ import { filter } from 'rxjs';
 })
 export class MenuComponent  {
 
+  tipoMenu: string='';
+  currentRoute: string = '';
 
-  currentRoute: string='';
+  constructor(private router: Router) {}
 
-  constructor(private router: Router) {
+  ngOnInit() {
     this.router.events.pipe(
       filter(event => event instanceof NavigationEnd)
     ).subscribe(() => {
       this.currentRoute = this.router.url;
     });
-  }
 
+
+    this.tipoMenu='admin'
+
+  }
+  
   isActive(route: string): boolean {
     return this.currentRoute === route;
   }
-
 }

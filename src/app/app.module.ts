@@ -17,10 +17,12 @@ import { InicioColaboradorComponent } from './pages/colaborador/inicio-colaborad
 import { MeuPerfilColaboradorComponent } from './pages/colaborador/meu-perfil-colaborador/meu-perfil-colaborador.component';
 import { CadastrarPescaComponent } from './pages/colaborador/cadastrar-pesca/cadastrar-pesca.component';
 import { HeaderComponent } from './shared/header/header.component';
+import { FinanceiroComponent } from './pages/admin/financeiro/financeiro.component';
 
 
 @NgModule({
-  declarations: [AppComponent,
+  declarations: [
+    AppComponent,
     MenuComponent,
     InicioAdminComponent,
     LoginComponent,
@@ -28,7 +30,9 @@ import { HeaderComponent } from './shared/header/header.component';
     RegistrarComponent,
     InicioColaboradorComponent,
     MeuPerfilColaboradorComponent,
-    CadastrarPescaComponent],
+    CadastrarPescaComponent,
+    FinanceiroComponent
+   ],
   imports: [BrowserModule, ReactiveFormsModule, IonicModule.forRoot(), NgxMaskDirective,
     AppRoutingModule, ServiceWorkerModule.register('ngsw-worker.js', {
       enabled: !isDevMode(),
