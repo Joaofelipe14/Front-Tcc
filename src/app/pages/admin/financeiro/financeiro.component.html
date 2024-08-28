@@ -1,1 +1,58 @@
+<ion-content scroll-y="true">
+    <app-header title="Cadastro Financeiro"></app-header>
+
+    <div class="container-principal">
+        <ion-card class="card-cadastro">
+            <ion-card-header class="card-header-cadastro">
+                <ion-card-title class="title-card">Registro Financeiro</ion-card-title>
+            </ion-card-header>
+
+            <ion-card-content>
+                <form [formGroup]="cadastrarFinancerioForm" class="content-card" (ngSubmit)="onSubmit()">
+
+                    <div class="container-periodicidade">
+                        <div class="button-group">
+                            <div *ngFor="let option of options" class="button-option"
+                                [ngClass]="{'selected': valorPeriodicidade === option.value}"
+                                (click)="selectOption(option.value)">
+                                {{ option.label }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <ion-input class="card-input" placeholder="Transporte" formControlName="transporte" type="text"
+                            required></ion-input>
+                    </div>
+
+                    <div>
+                        <ion-input class="card-input" placeholder="Combustivel" formControlName="combustivel"
+                            type="text" required></ion-input>
+                    </div>
+
+                    <div>
+                        <ion-input class="card-input" placeholder="Embarcacao" formControlName="embarcacao" type="text"
+                            required></ion-input>
+                    </div>
+
+                    <div>
+                        <ion-input class="card-input" placeholder="Energia" formControlName="energia" type="text"
+                            required></ion-input>
+                    </div>
+
+                    <div>
+                        <ion-input class="card-input" placeholder="Material" formControlName="material" type="text"
+                            required></ion-input>
+                    </div>
+
+                    <br>
+                    <ion-button class="btn-primario posicao-btn-card " [disabled]="cadastrarFinancerioForm.invalid"
+                        type="submit">Enviar</ion-button>
+                </form>
+            </ion-card-content>
+        </ion-card>
+    </div>
+
+</ion-content>
+
 <app-menu></app-menu>
