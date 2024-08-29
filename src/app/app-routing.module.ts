@@ -7,6 +7,7 @@ import { InicioColaboradorComponent } from './pages/colaborador/inicio-colaborad
 import { CadastrarPescaComponent } from './pages/colaborador/cadastrar-pesca/cadastrar-pesca.component';
 import { FinanceiroComponent } from './pages/admin/financeiro/financeiro.component';
 import { MeuPerfilComponent } from './shared/meu-perfil/meu-perfil.component';
+import { NovaSenhaComponent } from './pages/nova-senha/nova-senha.component';
 
 const routes: Routes = [
 
@@ -22,6 +23,10 @@ const routes: Routes = [
   {
     path: 'registrar',
     component: RegistrarComponent
+  },
+  {
+    path: 'nova-senha',
+    component: NovaSenhaComponent
   },
   {
     path: ':tipoUsuario/meu-perfil',

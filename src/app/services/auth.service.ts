@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { environment } from '../../environments/environment';  // Adjust the path if needed
+import { environment } from '../../environments/environment'; 
+import { TokenService } from './token.service';
 
 @Injectable({
   providedIn: 'root'
@@ -9,15 +10,27 @@ import { environment } from '../../environments/environment';  // Adjust the pat
 
 export class AuthService {
   private urlCadastro = `${environment.apiUrl}usuario/registrar`;
-  private urlLogin = `${environment.apiUrl}login`;
+  private urlLogin = `${environment.apiUrl}usuario/login`;
+  private urlAtualizar = `${environment.apiUrl}usuario/editar/`;
 
-  constructor(private http: HttpClient) {}
+
+  private getHeaders(): HttpHeaders {
+    const token = this.tokenService.getToken();
+    return new HttpHeaders().set('Authorization', `Bearer ${token}`);
+  }
+
+  // {headers: getHeaders}
+  constructor(private http: HttpClient, private tokenService: TokenService) {}
 
   cadastrar(formData: FormData): Observable<any> {
     return this.http.post<any>(this.urlCadastro, formData);
   }
 
-  logar(usuario: { cpf: string; senha: string }): Observable<any> {
-    return this.http.post<any>(this.urlLogin, usuario);
+  logar(payload: any): Observable<any> {
+    return this.http.post<any>(this.urlLogin, payload);
+  }
+
+  atualizar(payload: FormData, user_id: number): Observable<any> {
+    return this.http.post<any>(this.urlAtualizar+user_id, payload);
   }
 }

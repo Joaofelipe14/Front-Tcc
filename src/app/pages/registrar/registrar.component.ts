@@ -19,19 +19,18 @@ export class RegistrarComponent {
 
 
   constructor(
-    private fb: FormBuilder, 
-    private router: Router, 
+    private fb: FormBuilder,
+    private router: Router,
     private toastController: ToastController,
-     private authService: AuthService,   
-     private alertController: AlertController
-      ) {
+    private authService: AuthService,
+    private alertController: AlertController
+  ) {
     this.loginForm = this.fb.group({
       nome: ['', Validators.required],
       contato: ['', Validators.required],
       cpf: ['', [Validators.required, Validators.pattern(/^\d{3}\.\d{3}\.\d{3}-\d{2}$/)]],
       cap: ['', Validators.required],
       tipo_usuario: ['', Validators.required]
-
     });
   }
 
@@ -40,7 +39,8 @@ export class RegistrarComponent {
     if (this.loginForm.valid) {
       const formData = this.loginForm.value;
       // Remover caracteres não numéricos do CPF
-      formData.cpf = formData.cpf.replace(/\D/g, '');
+      this.loginForm.get('cpf')?.setValue(this.loginForm.get('cpf')?.value.replace(/\D/g, ''));
+      this.loginForm.get('contato')?.setValue(this.loginForm.get('contato')?.value.replace(/\D/g, ''));
 
       const novoformData = new FormData();
       novoformData.append('nome', this.loginForm.get('nome')?.value);
@@ -52,17 +52,19 @@ export class RegistrarComponent {
       if (this.selectedFile) {
         novoformData.append('profile_image', this.selectedFile);
       }
-     
+
       try {
 
         const response = await this.authService.cadastrar(novoformData).toPromise();
+        if (response.dados.senha) {
+          this.showAlertWithCopy((response.dados.senha))
+        }
         console.log('Usuário cadastrado com sucesso', response.dados.senha);
-   
+
       } catch (error) {
         console.error('Erro ao cadastrar usuário', error);
+        await Utils.showToast('Erro ao cadastrar contra, tente novamente mais tarde.', this.toastController, 'toast-erro', 'alert-circle-outline');
       }
-
-
 
     } else {
       this.loginForm.markAllAsTouched();
@@ -100,35 +102,35 @@ export class RegistrarComponent {
   }
 
 
-  async showAlertWithCopy() {
+  async showAlertWithCopy(senha: string) {
     this.copyAlert = await this.alertController.create({
-      header: 'Cadastro realizado!',
-      message: 'Pressione o botão abaixo para copiar o valor.',
+      header: 'Cadastro realizado ☑',
+      message: 'Senha ' + senha + ' gerada.',
       buttons: [
         {
           text: 'Copiar Valor',
           handler: async () => {
-            const valorParaCopiar = 'Este é o valor a ser copiado';
+            const valorParaCopiar = senha;
             try {
               await navigator.clipboard.writeText(valorParaCopiar);
               await this.presentConfirmationAlert();
             } catch (err) {
               console.error('Falha ao copiar: ', err);
             }
-            return false;  
+            return false;
           }
         }
       ],
-      backdropDismiss: false  
+      backdropDismiss: false
     });
-  
-    await this.copyAlert .present();
+
+    await this.copyAlert.present();
   }
-  
+
   async presentConfirmationAlert() {
     const confirmationAlert = await this.alertController.create({
-      header: 'Copiado!',
-      message: 'O valor foi copiado para a área de transferência.',
+      header: 'Cadastro realizado!!',
+      message: 'Acesse sua conta',
       buttons: [
         {
           text: 'OK',
@@ -139,10 +141,10 @@ export class RegistrarComponent {
         }
       ]
     });
-  
+
     await confirmationAlert.present();
   }
-  
+
 
   onCpfInput(event: any) {
     const rawValue = event.target.value;
@@ -191,5 +193,21 @@ export class RegistrarComponent {
     if (fileInput) {
       fileInput.value = '';
     }
+  }
+
+
+  applyPhoneMask(event: any): void {
+    const input = event.target as HTMLInputElement;
+    let value = input.value.replace(/\D/g, '');
+
+    if (value.length > 0) {
+      value = value.replace(/^(\d{2})(\d)/g, '($1) $2');
+    }
+    if (value.length > 10) {
+      value = value.replace(/(\d{5})(\d{4})$/, '$1-$2');
+    }
+
+    input.value = value;
+    this.loginForm.get('contato')?.setValue(value);
   }
 }

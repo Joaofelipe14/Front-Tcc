@@ -1,5 +1,4 @@
 <ion-content scroll-y="false">
-  <ion-button (click)="showAlertWithCopy()">Mostrar Alerta</ion-button>
 
   <div class="login-container">
     <ion-card>
@@ -57,7 +56,7 @@
             <ion-input placeholder="CAP" formControlName="cap" type="text" required></ion-input>
           </ion-item>
           <ion-item>
-            <ion-input placeholder="Contato" formControlName="contato" type="text" required></ion-input>
+            <ion-input placeholder="Contato" formControlName="contato" type="text" (input)="applyPhoneMask($event)" required></ion-input>
           </ion-item>
           <ion-item>
             <ion-select

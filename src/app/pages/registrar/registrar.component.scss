@@ -114,22 +114,21 @@ ion-card-title {
   color: red;
 }
 
-/* Exemplo de estilo para o alerta personalizado */
 .custom-alert .alert-title {
-  color: #2d7d9a;  /* Muda a cor do cabeçalho */
-  font-size: 18px; /* Ajusta o tamanho da fonte do cabeçalho */
+  color: #2d7d9a;
+  font-size: 18px; 
 }
 
 .custom-alert .alert-message {
-  color: #4a4a4a;  /* Muda a cor da mensagem */
-  font-size: 16px; /* Ajusta o tamanho da fonte da mensagem */
+  color: #4a4a4a;  
+  font-size: 16px;
 }
 
 .custom-alert .alert-button {
-  background-color: #2d7d9a; /* Muda a cor de fundo do botão */
-  color: #fff;  /* Muda a cor do texto do botão */
+  background-color: #2d7d9a;
+  color: #fff; 
 }
 
 .custom-alert .alert-button:hover {
-  background-color: #1f5b7c; /* Muda a cor do botão ao passar o mouse sobre ele */
+  background-color: #1f5b7c; 
 }
