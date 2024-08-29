@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { ToastController } from '@ionic/angular';
+import { AlertController, ModalController, ToastController } from '@ionic/angular';
+import { AuthService } from 'src/app/services/auth.service';
 import { Utils } from 'src/app/utils/utils';
 
 @Component({
@@ -14,46 +15,64 @@ export class RegistrarComponent {
   formattedCpf: string = '';
   selectedImage: string | ArrayBuffer | null = null;
   selectedFile: File | null = null;
+  private copyAlert: HTMLIonAlertElement | null = null;  // Referência para o alerta de cópia
 
-  constructor(private fb: FormBuilder, private router: Router, private toastController: ToastController) {
+
+  constructor(
+    private fb: FormBuilder, 
+    private router: Router, 
+    private toastController: ToastController,
+     private authService: AuthService,   
+     private alertController: AlertController
+      ) {
     this.loginForm = this.fb.group({
       nome: ['', Validators.required],
       contato: ['', Validators.required],
       cpf: ['', [Validators.required, Validators.pattern(/^\d{3}\.\d{3}\.\d{3}-\d{2}$/)]],
       cap: ['', Validators.required],
-      tipoUsuario: ['', Validators.required] // Novo campo
+      tipo_usuario: ['', Validators.required]
 
     });
   }
+
 
   async onSubmit() {
     if (this.loginForm.valid) {
       const formData = this.loginForm.value;
       // Remover caracteres não numéricos do CPF
       formData.cpf = formData.cpf.replace(/\D/g, '');
-      console.log(formData);
 
-        const novoformData = new FormData();
-        novoformData.append('nome', this.loginForm.get('nome')?.value);
-        novoformData.append('cpf', this.loginForm.get('cpf')?.value);
-        novoformData.append('cap', this.loginForm.get('cap')?.value);
-        novoformData.append('contato', this.loginForm.get('contato')?.value);
-        novoformData.append('tipoUsuario', this.loginForm.get('tipoUsuario')?.value);
-  
-        if (this.selectedFile) {
-          novoformData.append('fotoPerfil', this.selectedFile, this.selectedFile.name);
-        }
+      const novoformData = new FormData();
+      novoformData.append('nome', this.loginForm.get('nome')?.value);
+      novoformData.append('cpf', this.loginForm.get('cpf')?.value);
+      novoformData.append('cap', this.loginForm.get('cap')?.value);
+      novoformData.append('contato', this.loginForm.get('contato')?.value);
+      novoformData.append('tipo_usuario', this.loginForm.get('tipo_usuario')?.value);
 
-      // Navegar ou processar o formulário aqui
+      if (this.selectedFile) {
+        novoformData.append('profile_image', this.selectedFile);
+      }
+     
+      try {
+
+        const response = await this.authService.cadastrar(novoformData).toPromise();
+        console.log('Usuário cadastrado com sucesso', response.dados.senha);
+   
+      } catch (error) {
+        console.error('Erro ao cadastrar usuário', error);
+      }
+
+
+
     } else {
       this.loginForm.markAllAsTouched();
       let errorMessage = 'Por favor, preencha todos os campos obrigatórios e corrija os erros.';
-      
+
       const nomeControl = this.loginForm.get('nome');
       const contatoControl = this.loginForm.get('contato');
       const cpfControl = this.loginForm.get('cpf');
       const capControl = this.loginForm.get('cap');
-      
+
       if (nomeControl && nomeControl.invalid) {
         errorMessage += '\n- Nome é obrigatório.';
       }
@@ -71,14 +90,59 @@ export class RegistrarComponent {
       if (capControl && capControl.invalid) {
         errorMessage += '\n- CAP é obrigatório.';
       }
-      
-      await Utils.showToast(errorMessage, this.toastController,'toast-erro','alert-circle-outline');
+
+      await Utils.showToast(errorMessage, this.toastController, 'toast-erro', 'alert-circle-outline');
     }
   }
 
   onLogin() {
     this.router.navigate(['/login']);
   }
+
+
+  async showAlertWithCopy() {
+    this.copyAlert = await this.alertController.create({
+      header: 'Cadastro realizado!',
+      message: 'Pressione o botão abaixo para copiar o valor.',
+      buttons: [
+        {
+          text: 'Copiar Valor',
+          handler: async () => {
+            const valorParaCopiar = 'Este é o valor a ser copiado';
+            try {
+              await navigator.clipboard.writeText(valorParaCopiar);
+              await this.presentConfirmationAlert();
+            } catch (err) {
+              console.error('Falha ao copiar: ', err);
+            }
+            return false;  
+          }
+        }
+      ],
+      backdropDismiss: false  
+    });
+  
+    await this.copyAlert .present();
+  }
+  
+  async presentConfirmationAlert() {
+    const confirmationAlert = await this.alertController.create({
+      header: 'Copiado!',
+      message: 'O valor foi copiado para a área de transferência.',
+      buttons: [
+        {
+          text: 'OK',
+          handler: () => {
+            this.copyAlert?.dismiss();
+            this.onLogin();
+          }
+        }
+      ]
+    });
+  
+    await confirmationAlert.present();
+  }
+  
 
   onCpfInput(event: any) {
     const rawValue = event.target.value;
@@ -88,7 +152,6 @@ export class RegistrarComponent {
 
   async onCpfBlur() {
     const cpfControl = this.loginForm.get('cpf');
-    console.log('aqui');
     if (cpfControl && cpfControl.invalid) {
       let errorMessage = '';
       if (cpfControl.hasError('required')) {
@@ -98,7 +161,7 @@ export class RegistrarComponent {
         errorMessage = 'CPF incorreto.';
       }
       if (errorMessage) {
-        await Utils.showToast(errorMessage, this.toastController,'toast-erro','alert-circle-outline');
+        await Utils.showToast(errorMessage, this.toastController, 'toast-erro', 'alert-circle-outline');
       }
     }
   }
@@ -110,6 +173,7 @@ export class RegistrarComponent {
       this.selectedFile = file;
       const reader = new FileReader();
 
+      console.log(file)
       reader.onload = () => {
         this.selectedImage = reader.result;
       };
@@ -119,7 +183,7 @@ export class RegistrarComponent {
   }
 
   removeImage(event: Event) {
-    event.stopPropagation(); // Evita que o clique na imagem também abra o input de arquivos
+    event.stopPropagation();
     this.selectedImage = null;
     this.selectedFile = null;
     // Limpa o campo de entrada de arquivo

@@ -1,4 +1,6 @@
 <ion-content scroll-y="false">
+  <ion-button (click)="showAlertWithCopy()">Mostrar Alerta</ion-button>
+
   <div class="login-container">
     <ion-card>
       <ion-card-header class="header-card">
@@ -59,7 +61,7 @@
           </ion-item>
           <ion-item>
             <ion-select
-            formControlName="tipoUsuario"
+            formControlName="tipo_usuario"
             placeholder="Tipo de Usuário">
             <ion-select-option value="admin">Admin</ion-select-option>
             <ion-select-option value="colaborador">Colaborador</ion-select-option>
@@ -75,3 +77,4 @@
     </div>
   </div>
 </ion-content>
+

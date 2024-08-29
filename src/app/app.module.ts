@@ -18,6 +18,7 @@ import { CadastrarPescaComponent } from './pages/colaborador/cadastrar-pesca/cad
 import { HeaderComponent } from './shared/header/header.component';
 import { FinanceiroComponent } from './pages/admin/financeiro/financeiro.component';
 import { MeuPerfilComponent } from './shared/meu-perfil/meu-perfil.component';
+import { HttpClientModule } from '@angular/common/http';
 
 
 @NgModule({
@@ -31,9 +32,10 @@ import { MeuPerfilComponent } from './shared/meu-perfil/meu-perfil.component';
     InicioColaboradorComponent,
     CadastrarPescaComponent,
     FinanceiroComponent,
-    MeuPerfilComponent
+    MeuPerfilComponent,
+    
    ],
-  imports: [BrowserModule, ReactiveFormsModule, IonicModule.forRoot(), NgxMaskDirective,
+  imports: [BrowserModule, ReactiveFormsModule, IonicModule.forRoot(), NgxMaskDirective,HttpClientModule,
     AppRoutingModule, ServiceWorkerModule.register('ngsw-worker.js', {
       enabled: !isDevMode(),
       // Register the ServiceWorker as soon as the application is stable

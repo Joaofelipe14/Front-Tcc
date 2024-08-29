@@ -26,9 +26,13 @@ export class LoginComponent {
       const formData = this.loginForm.value;
 
       formData.cpf = Utils.unformatCpf(formData.cpf);
-      this.router.navigate(['/colaborador/inicio']);
 
-      console.log(this.loginForm.value);
+      
+      if (confirm('Deseja ir para a página colaborador?')) {
+        this.router.navigate(['/colaborador/inicio']);
+      } else {
+        this.router.navigate(['/admin/inicio']);
+      }
     }
   }
 
@@ -43,7 +47,6 @@ export class LoginComponent {
   }
 
   async onCpfBlur() {
-    console.log('auqi');
     const cpfControl = this.loginForm.get('cpf');
     if (cpfControl && cpfControl.invalid) {
       let errorMessage = '';
