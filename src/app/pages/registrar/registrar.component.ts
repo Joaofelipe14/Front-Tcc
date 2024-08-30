@@ -29,7 +29,7 @@ export class RegistrarComponent {
       nome: ['', Validators.required],
       contato: ['', Validators.required],
       cpf: ['', [Validators.required, Validators.pattern(/^\d{3}\.\d{3}\.\d{3}-\d{2}$/)]],
-      cap: ['', Validators.required],
+      cap: ['', [Validators.required, Validators.minLength(10)]],
       tipo_usuario: ['', Validators.required]
     });
   }
@@ -172,6 +172,11 @@ export class RegistrarComponent {
     const input = event.target as HTMLInputElement;
     if (input.files && input.files[0]) {
       const file = input.files[0];
+
+      if (file.size > 2 * 1024 * 1024) {
+        alert('A imagem deve ter no máximo 2 MB.');
+        return;
+      }
       this.selectedFile = file;
       const reader = new FileReader();
 

@@ -18,7 +18,9 @@ export class AuthService {
 
   private getHeaders(): HttpHeaders {
     const token = this.tokenService.getToken();
-    return new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return new HttpHeaders()
+    .set('Authorization', `Bearer ${token}`)
+    .set('ngrok-skip-browser-warning', 'teste');
   }
 
   // {headers: getHeaders}

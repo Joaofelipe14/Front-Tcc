@@ -1,5 +1,5 @@
 // login.component.ts
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ToastController } from '@ionic/angular';
@@ -12,7 +12,7 @@ import { Utils } from 'src/app/utils/utils';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit{
   loginForm: FormGroup;
   formattedCpf: string = '';
 
@@ -21,7 +21,8 @@ export class LoginComponent {
     private router: Router,
     private toastController: ToastController,
     private authService: AuthService,
-    private tokenService: TokenService
+    private tokenService: TokenService,
+    private auth: AuthService
   ) {
     this.loginForm = this.fb.group({
       cpf: ['', [Validators.required, Validators.pattern(/^\d{3}\.\d{3}\.\d{3}-\d{2}$/)]],
@@ -29,6 +30,31 @@ export class LoginComponent {
     });
   }
 
+  ngOnInit(): void {
+    this.loadUserData();
+
+  }
+
+  loadUserData() {
+    this.auth.me().subscribe(
+      response => {
+
+        if (response.status) {
+          if (response.dados.tipo_usuario === "colaborador") {
+            this.router.navigate(['/colaborador/inicio']);
+          } else {
+            this.router.navigate(['/admin/inicio']);
+          }
+        }
+
+      },
+      error => {
+        // Manipule erros aqui
+        console.error('Erro ao obter informações do usuário:', error);
+
+      }
+    );
+  }
   onSubmit() {
     if (this.loginForm.valid) {
 
