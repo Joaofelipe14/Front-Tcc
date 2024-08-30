@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Keyboard } from '@capacitor/keyboard';
+import { ToastController } from '@ionic/angular';
+import { CadastroPescaService } from 'src/app/services/cadastro-pesca.service';
+import { Utils } from 'src/app/utils/utils';
 
 // Keyboard.setResizeMode('none'); // Desativa o ajuste automático do teclado
 
@@ -13,7 +16,7 @@ export class CadastrarPescaComponent  implements OnInit {
 
   cadastrarPescaForm!: FormGroup;
 
-  constructor(private formBuilder: FormBuilder) {}
+  constructor(private formBuilder: FormBuilder, private cadastroPescaService: CadastroPescaService, private toastController: ToastController) {}
 
   ngOnInit() {
     this.initializeForm();
@@ -22,15 +25,26 @@ export class CadastrarPescaComponent  implements OnInit {
   initializeForm() {
     this.cadastrarPescaForm = this.formBuilder.group({
       local: ['', Validators.required],
-      dataEHorario: ['', Validators.required],
+      data_com_hora: ['', Validators.required],
       codigo: ['', Validators.required],
     });
   }
 
-  onSubmit() {
+ async onSubmit() {
     if (this.cadastrarPescaForm.valid) {
       const formData = this.cadastrarPescaForm.value;
       console.log('Form Data:', formData);
+
+      try {
+      const response = await this.cadastroPescaService.createRegistro(formData).toPromise();
+      console.log('Registro criado com sucesso:', response);
+      Utils.showSucesso('Registro criado com sucesso.', this.toastController)
+
+    } catch (error) {
+      console.error('Erro ao criar registro:', error);
+      Utils.showErro('rro ao criar registro:', this.toastController)
+
+    }
     } else {
       console.log('Form is invalid');
     }
@@ -39,7 +53,7 @@ export class CadastrarPescaComponent  implements OnInit {
   onDateChange(event: any) {
     const selectedDate = event.detail.value;
     // Verifica se o FormControl existe antes de usar
-    const dataEHorarioControl = this.cadastrarPescaForm.get('dataEHorario');
+    const dataEHorarioControl = this.cadastrarPescaForm.get('data_com_hora');
     if (dataEHorarioControl) {
       dataEHorarioControl.setValue(selectedDate);
     }
