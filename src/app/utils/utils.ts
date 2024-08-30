@@ -75,4 +75,37 @@ export class Utils {
     toast.present();
   }
 
+  static async showSucesso(msg: string, toastController: ToastController,) {
+    const toast = await toastController.create({
+      message: msg,
+      icon: 'checkmark-circle-outline',
+      duration: 2000,
+      color: 'success', 
+      buttons: [
+        {
+          side: 'end',
+          text: 'X',
+          role: 'cancel',
+          handler: () => {
+          }
+        }
+      ]
+    });
+    toast.present();
+  }
+
+
+  static applyPhoneMask(contato: string): string {
+    let value = contato.replace(/\D/g, '');
+
+    if (value.length > 0) {
+      value = value.replace(/^(\d{2})(\d)/g, '($1) $2');
+    }
+    if (value.length > 10) {
+      value = value.replace(/(\d{5})(\d{4})$/, '$1-$2');
+    }
+
+    return value
+   
+  }
 }

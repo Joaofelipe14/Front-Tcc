@@ -12,6 +12,8 @@ export class AuthService {
   private urlCadastro = `${environment.apiUrl}usuario/registrar`;
   private urlLogin = `${environment.apiUrl}usuario/login`;
   private urlAtualizar = `${environment.apiUrl}usuario/editar/`;
+  private urlMe = `${environment.apiUrl}usuario/me/`;
+
 
 
   private getHeaders(): HttpHeaders {
@@ -32,5 +34,9 @@ export class AuthService {
 
   atualizar(payload: FormData, user_id: number): Observable<any> {
     return this.http.post<any>(this.urlAtualizar+user_id, payload, {headers: this.getHeaders()});
+  }
+
+  me(): Observable<any> {
+    return this.http.get<any>(this.urlMe, {headers: this.getHeaders()});
   }
 }

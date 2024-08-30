@@ -47,16 +47,17 @@
                     </div>
                     <div class="form-field">
                         <div class="label-card-cadastro">Contato:</div>
-                        <ion-input  placeholder="Contato" class="card-input" formControlName="contato" type="text"
+                        <ion-input   (input)="maskContato($event)" placeholder="Contato" class="card-input" formControlName="contato" type="text"
                             required></ion-input>
                     </div>
                     <div class="form-field">
                         <div class="label-card-cadastro">Tipo de Usuário:</div>
-                        <ion-select formControlName="tipoUsuario" placeholder="Tipo de Usuário">
+                        <ion-select formControlName="tipoUsuario" placeholder="Tipo de Usuário" [disabled]="true">
                             <ion-select-option value="admin">Admin</ion-select-option>
                             <ion-select-option value="colaborador">Colaborador</ion-select-option>
                         </ion-select>
                     </div>
+                    
 
                     <ion-button class="btn-primario" [disabled]="meuPerfilForm.invalid" type="submit">Salvar</ion-button>
                 </form>
