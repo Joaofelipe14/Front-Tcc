@@ -31,6 +31,6 @@ export class AuthService {
   }
 
   atualizar(payload: FormData, user_id: number): Observable<any> {
-    return this.http.post<any>(this.urlAtualizar+user_id, payload);
+    return this.http.post<any>(this.urlAtualizar+user_id, payload, {headers: this.getHeaders()});
   }
 }

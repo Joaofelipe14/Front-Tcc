@@ -4,31 +4,50 @@
     <ion-card>
       <ion-card-header class="header-card">
         <img class="logo" src="./../../../assets/logo.svg" alt="">
-        <ion-card-title>Atualize sua senha
-        </ion-card-title>
+        <ion-card-title>Atualize sua senha</ion-card-title>
       </ion-card-header>
       <ion-card-content>
         <ion-item>
-          {{nome }}
+          {{ nome }}
         </ion-item>
         <form [formGroup]="novaSenha" (ngSubmit)="onSubmit()">
           <ion-item>
-            <ion-input placeholder="Digite sua senha" formControlName="password" maxlength="14" type="text"
-              required></ion-input>
+            <ion-input 
+              placeholder="Digite sua senha" 
+              formControlName="password" 
+              maxlength="14" 
+              type="password" 
+              required>
+            </ion-input>
           </ion-item>
           <ion-item>
-            <ion-input placeholder="Confirme sua nova senha" formControlName="confirmPassword" type="password"
-              required></ion-input>
+            <ion-input 
+              placeholder="Confirme sua nova senha" 
+              (ionBlur)="erroMsg()" 
+              formControlName="confirmPassword" 
+              type="password" 
+              required>
+            </ion-input>
           </ion-item>
-          <ion-button type="submit" class="btn-primario" [disabled]="novaSenha.invalid">salvar</ion-button>
-          <ion-button type="submit" class="btn-secundario">voltar</ion-button>
-
+          <!-- Exibir mensagem de erro se as senhas não coincidirem -->
+          <!-- <div *ngIf="!passwordsMatch" class="error-message">
+            As senhas não coincidem.
+          </div> -->
+          <ion-button 
+            type="submit" 
+            class="btn-primario" 
+            [disabled]="!passwordsMatch">
+            Salvar
+          </ion-button>
+          <ion-button type="button" class="btn-secundario">
+            Voltar
+          </ion-button>
         </form>
       </ion-card-content>
     </ion-card>
     <!-- Link "Esqueceu sua senha?" fora do card -->
     <div class="forgot-password">
-      <a href="/registrar">voltar?</a>
+      <a href="/registrar">Voltar?</a>
     </div>
   </div>
 </ion-content>

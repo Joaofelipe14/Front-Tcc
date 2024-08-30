@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
-import { ToastController } from '@ionic/angular';
+import { FormBuilder, FormGroup, MinLengthValidator, Validators } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
+import { AlertController, ToastController } from '@ionic/angular';
 import { AuthService } from 'src/app/services/auth.service';
+import { Utils } from 'src/app/utils/utils';
 
 @Component({
   selector: 'app-nova-senha',
@@ -14,78 +15,84 @@ export class NovaSenhaComponent implements OnInit {
   novaSenha: FormGroup;
   formattedCpf: string = '';
   nome: string = 'joao fleipe melo dal luiz';
-  passwordsMatch: boolean = true; // Flag para verificar se as senhas coincidem
+  passwordsMatch: boolean = false;
+  userId!: number;
+
 
   constructor(
     private fb: FormBuilder,
     private router: Router,
     private toastController: ToastController,
     private authService: AuthService,
+    private route: ActivatedRoute,
+    private alertController: AlertController
   ) {
     this.novaSenha = this.fb.group({
-      password: ['', [Validators.required]],
+      password: ['', [Validators.required, Validators.minLength(8)]],
       confirmPassword: ['', Validators.required]
     });
 
-    // Adiciona a verificação em tempo real para os campos de senha
-    this.novaSenha.get('password')?.valueChanges.subscribe(() => this.checkPasswords());
-    this.novaSenha.get('confirmPassword')?.valueChanges.subscribe(() => this.checkPasswords());
+    this.novaSenha.valueChanges.subscribe(() => {
+      this.checkPasswords();
+    });
+
   }
 
-  ngOnInit() { }
+  ngOnInit() {
+
+    this.userId = this.route.snapshot.params["id"]
+    console.log(this.userId)
+
+  }
 
   // Verifica se as senhas coincidem
-  private checkPasswords() {
+  public checkPasswords() {
     const password = this.novaSenha.get('password')?.value;
     const confirmPassword = this.novaSenha.get('confirmPassword')?.value;
-
     this.passwordsMatch = password === confirmPassword;
+    console.log(this.passwordsMatch)
   }
 
+  async erroMsg() {
+    if (!this.passwordsMatch) {
+      Utils.showErro('As senhas não coincidem.', this.toastController)
+    }
+  }
+
+
   async onSubmit() {
-    if (this.novaSenha.valid && this.passwordsMatch) {
+    if (this.novaSenha.valid) {
       const formData = new FormData();
       formData.append('password', this.novaSenha.get('password')?.value);
-      formData.append('confirmPassword', this.novaSenha.get('confirmPassword')?.value);
+      formData.append('password_confirmation', this.novaSenha.get('confirmPassword')?.value);
+      formData.append('primeiro_acesso', 'N');
+
 
       try {
-        const response = await this.authService.atualizar(formData,1).toPromise();
-        console.log(response);
+        const response = await this.authService.atualizar(formData, this.userId).toPromise();
 
-        if (response.dados.usuario.primeiro_acesso === "S") {
-          this.router.navigate(['/nova-senha']);
-        } else {
-          // Lógica para redirecionamento baseado na resposta
-          // const navigateTo = confirm('Deseja ir para a página colaborador?') ? '/colaborador/inicio' : '/admin/inicio';
-          // this.router.navigate([navigateTo]);
+        if (response.sucesso) {
+          const alert = await this.alertController.create({
+            header: 'Sucesso!',
+            message: 'Senha atualizada com sucesso. Você será redirecionado para o login.',
+            buttons: [
+              {
+                text: 'OK',
+                handler: () => {
+                  this.router.navigate(['/login']);
+                }
+              }
+            ]
+          });
+
+          await alert.present();
         }
-
-        // Mostrar uma mensagem de sucesso
-        const toast = await this.toastController.create({
-          message: 'Senha atualizada com sucesso.',
-          duration: 2000,
-          color: 'success'
-        });
-        toast.present();
 
       } catch (error) {
         console.error('Erro ao atualizar a senha:', error);
+        Utils.showErro('Erro ao atualizar a senha. Tente novamente.', this.toastController)
 
-        // Mostrar uma mensagem de erro
-        const toast = await this.toastController.create({
-          message: 'Erro ao atualizar a senha. Tente novamente.',
-          duration: 2000,
-          color: 'danger'
-        });
-        toast.present();
       }
-    } else if (!this.passwordsMatch) {
-      const toast = await this.toastController.create({
-        message: 'As senhas não coincidem.',
-        duration: 2000,
-        color: 'danger'
-      });
-      toast.present();
     }
   }
 }

@@ -25,7 +25,7 @@ const routes: Routes = [
     component: RegistrarComponent
   },
   {
-    path: 'nova-senha',
+    path: 'nova-senha/:id',
     component: NovaSenhaComponent
   },
   {

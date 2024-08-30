@@ -7,25 +7,24 @@ import { filter } from 'rxjs';
   templateUrl: './menu.component.html',
   styleUrls: ['./menu.component.scss'],
 })
-export class MenuComponent  {
+export class MenuComponent {
 
-  tipoMenu: string='';
+  tipoMenu: string = '';
   currentRoute: string = '';
 
-  constructor(private router: Router) {}
+  constructor(private router: Router) { }
 
   ngOnInit() {
-    this.router.events.pipe(
-      filter(event => event instanceof NavigationEnd)
-    ).subscribe(() => {
-      this.currentRoute = this.router.url;
-    });
 
-
-    this.tipoMenu='admin'
-
+    this.currentRoute = this.router.url;
+    if (this.currentRoute.includes('/admin/')) {
+      this.tipoMenu = 'admin';
+    } else {
+      this.tipoMenu = 'colaborador';
+    }
+    console.log('Tipo de menu: ', this.tipoMenu);
   }
-  
+
   isActive(route: string): boolean {
     return this.currentRoute === route;
   }

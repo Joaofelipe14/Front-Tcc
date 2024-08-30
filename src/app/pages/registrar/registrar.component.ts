@@ -93,7 +93,7 @@ export class RegistrarComponent {
         errorMessage += '\n- CAP é obrigatório.';
       }
 
-      await Utils.showToast(errorMessage, this.toastController, 'toast-erro', 'alert-circle-outline');
+      await Utils.showErro(errorMessage, this.toastController);
     }
   }
 
@@ -163,7 +163,7 @@ export class RegistrarComponent {
         errorMessage = 'CPF incorreto.';
       }
       if (errorMessage) {
-        await Utils.showToast(errorMessage, this.toastController, 'toast-erro', 'alert-circle-outline');
+        await Utils.showErro(errorMessage, this.toastController);
       }
     }
   }

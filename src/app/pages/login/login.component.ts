@@ -17,12 +17,12 @@ export class LoginComponent {
   formattedCpf: string = '';
 
   constructor(
-    private fb: FormBuilder, 
+    private fb: FormBuilder,
     private router: Router,
     private toastController: ToastController,
     private authService: AuthService,
-    private tokenService: TokenService  
-  ) { 
+    private tokenService: TokenService
+  ) {
     this.loginForm = this.fb.group({
       cpf: ['', [Validators.required, Validators.pattern(/^\d{3}\.\d{3}\.\d{3}-\d{2}$/)]],
       password: ['', Validators.required]
@@ -31,38 +31,38 @@ export class LoginComponent {
 
   onSubmit() {
     if (this.loginForm.valid) {
-    
+
       const formData = this.loginForm.value;
       formData.cpf = Utils.unformatCpf(formData.cpf);
 
-      const payload  = {
+      const payload = {
         cpf: formData.cpf,
-        password: this.loginForm.value.password 
+        password: this.loginForm.value.password
       }
       this.authService.logar(payload).subscribe(
         (response: any) => {
           console.log(response)
           this.tokenService.setToken(response.dados.token)
 
-          if(response.dados.usuario.primeiro_acesso==="S"){
-            this.router.navigate(['/nova-senha']);
-          }else{
+          if (response.dados.usuario.primeiro_acesso === "S") {
+            console.log()
+            this.router.navigate(['/nova-senha', response.dados.usuario.id]);
+          } else {
 
-               // if (confirm('Deseja ir para a página colaborador?')) {
-      //   this.router.navigate(['/colaborador/inicio']);
-      // } else {
-      //   this.router.navigate(['/admin/inicio']);
-      // }
+            if (response.dados.usuario.tipo_usuario === "colaborador") {
+              this.router.navigate(['/colaborador/inicio']);
+            } else {
+              this.router.navigate(['/admin/inicio']);
+            }
           }
-        },
-        (error: any) => {
-          console.error('Erro ao carregar respostas:', error);
-           Utils.showToast('Erro fazer login, tente novamente mais tarde.', this.toastController, 'toast-erro', 'alert-circle-outline');
+          },
+          (error: any) => {
+            console.error('Erro ao carregar respostas:', error);
+            Utils.showErro('Erro fazer login, tente novamente mais tarde.', this.toastController);
 
-        }
+          }
       );
-      
-   
+
     }
   }
 
@@ -87,7 +87,7 @@ export class LoginComponent {
         errorMessage = 'CPF incorreto.';
       }
       if (errorMessage) {
-        await Utils.showToast(errorMessage, this.toastController,'toast-erro','alert-circle-outline');
+        await Utils.showErro(errorMessage, this.toastController);
       }
     }
   }
