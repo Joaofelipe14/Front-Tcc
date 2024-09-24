@@ -18,9 +18,10 @@ import { CadastrarPescaComponent } from './pages/colaborador/cadastrar-pesca/cad
 import { HeaderComponent } from './shared/header/header.component';
 import { FinanceiroComponent } from './pages/admin/financeiro/financeiro.component';
 import { MeuPerfilComponent } from './shared/meu-perfil/meu-perfil.component';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule,HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NovaSenhaComponent } from './pages/nova-senha/nova-senha.component';
 import { CadastrarVendaComponent } from './pages/colaborador/cadastrar-venda/cadastrar-venda.component';
+import { AuthInterceptor } from './services/interceptor.service';
 
 
 @NgModule({
@@ -46,7 +47,13 @@ import { CadastrarVendaComponent } from './pages/colaborador/cadastrar-venda/cad
       // or after 30 seconds (whichever comes first).
       registrationStrategy: 'registerWhenStable:30000'
     })],
-  providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
+  providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true,
+    },
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule { }

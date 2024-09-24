@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Keyboard } from '@capacitor/keyboard';
 import { ToastController } from '@ionic/angular';
 import { CadastroPescaService } from 'src/app/services/cadastro-pesca.service';
+import { CadastroVendaService } from 'src/app/services/cadastro-venda.service';
 import { Utils } from 'src/app/utils/utils';
 @Component({
   selector: 'app-cadastrar-venda',
@@ -13,7 +14,7 @@ export class CadastrarVendaComponent  implements OnInit {
 
   cadastrarVendaForm!: FormGroup;
 
-  constructor(private formBuilder: FormBuilder, private cadastroPescaService: CadastroPescaService, private toastController: ToastController) {}
+  constructor(private formBuilder: FormBuilder, private cadastroVendaService: CadastroVendaService, private toastController: ToastController) {}
 
   ngOnInit() {
     this.initializeForm();
@@ -33,13 +34,14 @@ export class CadastrarVendaComponent  implements OnInit {
       console.log('Form Data:', formData);
 
       try {
-      const response = await this.cadastroPescaService.createRegistro(formData).toPromise();
+      const response = await this.cadastroVendaService.createRegistro(formData).toPromise();
       console.log('Registro criado com sucesso:', response);
       Utils.showSucesso('Registro criado com sucesso.', this.toastController)
+      this.cadastroVendaService.setvendas([response.dados.registro]); // Notifica os novos registros
 
     } catch (error) {
       console.error('Erro ao criar registro:', error);
-      Utils.showErro('rro ao criar registro:', this.toastController)
+      Utils.showErro('Erro ao criar registro:', this.toastController)
 
     }
     } else {

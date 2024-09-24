@@ -1,5 +1,6 @@
 import { Component, Input, Output, EventEmitter, ViewChild } from '@angular/core';
 import { Router } from '@angular/router'; // Importa Router
+import { TokenService } from 'src/app/services/token.service';
 
 @Component({
   selector: 'app-header',
@@ -17,7 +18,7 @@ export class HeaderComponent {
     this.popover.event = e;
     this.isOpen = true;
   }
-  constructor(private router: Router) {} 
+  constructor(private router: Router, private token: TokenService) {} 
 
   onBack() {
     if (window.history.length > 1) {
@@ -32,6 +33,7 @@ export class HeaderComponent {
 
     console.log('saindo')
     this.router.navigate(['/login']);
+    this.token.remove()
   }
 
 }

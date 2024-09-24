@@ -12,7 +12,7 @@ import { Utils } from 'src/app/utils/utils';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
 })
-export class LoginComponent implements OnInit{
+export class LoginComponent implements OnInit {
   loginForm: FormGroup;
   formattedCpf: string = '';
 
@@ -36,24 +36,28 @@ export class LoginComponent implements OnInit{
   }
 
   loadUserData() {
-    this.auth.me().subscribe(
-      response => {
 
-        if (response.status) {
-          if (response.dados.tipo_usuario === "colaborador") {
-            this.router.navigate(['/colaborador/inicio']);
-          } else {
-            this.router.navigate(['/admin/inicio']);
+    if (this.tokenService.getToken()) {
+      this.auth.me().subscribe(
+        response => {
+
+          if (response.status) {
+            if (response.dados.tipo_usuario === "colaborador") {
+              this.router.navigate(['/colaborador/inicio']);
+            } else {
+              this.router.navigate(['/admin/inicio']);
+            }
           }
+
+        },
+        error => {
+          // Manipule erros aqui
+          console.error('Erro ao obter informações do usuário:', error);
+
         }
+      );
+    }
 
-      },
-      error => {
-        // Manipule erros aqui
-        console.error('Erro ao obter informações do usuário:', error);
-
-      }
-    );
   }
   onSubmit() {
     if (this.loginForm.valid) {
@@ -67,7 +71,6 @@ export class LoginComponent implements OnInit{
       }
       this.authService.logar(payload).subscribe(
         (response: any) => {
-          console.log(response)
           this.tokenService.setToken(response.dados.token)
 
           if (response.dados.usuario.primeiro_acesso === "S") {
@@ -81,12 +84,12 @@ export class LoginComponent implements OnInit{
               this.router.navigate(['/admin/inicio']);
             }
           }
-          },
-          (error: any) => {
-            console.error('Erro ao carregar respostas:', error);
-            Utils.showErro('Erro fazer login, tente novamente mais tarde.', this.toastController);
+        },
+        (error: any) => {
+          console.error('Erro ao carregar respostas:', error);
+          Utils.showErro('Erro fazer login, tente novamente mais tarde.', this.toastController);
 
-          }
+        }
       );
 
     }

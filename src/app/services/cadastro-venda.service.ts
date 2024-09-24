@@ -1,19 +1,16 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { TokenService } from './token.service'; 
 import { environment } from 'src/environments/environment';
-import { BehaviorSubject } from 'rxjs';
-
 
 @Injectable({
   providedIn: 'root'
 })
-export class CadastroPescaService {
-  private baseUrl =  environment.apiUrl+'pesca';
-  private pescasSubject = new BehaviorSubject<any[]>([]);
-  pescas$ = this.pescasSubject.asObservable(); 
-
+export class CadastroVendaService {
+  private baseUrl =  environment.apiUrl+'venda';
+  private vendasSubject = new BehaviorSubject<any[]>([]);
+  vendas$ = this.vendasSubject.asObservable(); 
 
   constructor(
     private http: HttpClient,
@@ -39,9 +36,8 @@ export class CadastroPescaService {
     return this.http.get<any>(`${this.baseUrl}/meus`, { headers: this.getHeaders() });
   }
 
-
-  /*LOgica para avisar a compontente inicial que houve uma atualizacao*/
-  setPescas(pescas: any[]) {
-    this.pescasSubject.next(pescas); 
-  }
+    /*LOgica para avisar a compontente inicial que houve uma atualizacao*/
+    setvendas(vendas: any[]) {
+      this.vendasSubject.next(vendas); 
+    }
 }

@@ -12,11 +12,11 @@ import { Utils } from 'src/app/utils/utils';
   templateUrl: './cadastrar-pesca.component.html',
   styleUrls: ['./cadastrar-pesca.component.scss'],
 })
-export class CadastrarPescaComponent  implements OnInit {
+export class CadastrarPescaComponent implements OnInit {
 
   cadastrarPescaForm!: FormGroup;
 
-  constructor(private formBuilder: FormBuilder, private cadastroPescaService: CadastroPescaService, private toastController: ToastController) {}
+  constructor(private formBuilder: FormBuilder, private cadastroPescaService: CadastroPescaService, private toastController: ToastController) { }
 
   ngOnInit() {
     this.initializeForm();
@@ -30,25 +30,27 @@ export class CadastrarPescaComponent  implements OnInit {
     });
   }
 
- async onSubmit() {
-    if (this.cadastrarPescaForm.valid) {
-      const formData = this.cadastrarPescaForm.value;
-      console.log('Form Data:', formData);
+    async onSubmit() {
 
-      try {
-      const response = await this.cadastroPescaService.createRegistro(formData).toPromise();
-      console.log('Registro criado com sucesso:', response);
-      Utils.showSucesso('Registro criado com sucesso.', this.toastController)
+      if (this.cadastrarPescaForm.valid) {
+        const formData = this.cadastrarPescaForm.value;
 
-    } catch (error) {
-      console.error('Erro ao criar registro:', error);
-      Utils.showErro('rro ao criar registro:', this.toastController)
+        try {
+          const response = await this.cadastroPescaService.createRegistro(formData).toPromise();
+          console.log('Registro criado com sucesso:', response);
+          Utils.showSucesso('Registro criado com sucesso.', this.toastController)
 
+          this.cadastroPescaService.setPescas([response.dados.registro]); // Notifica os novos registros
+
+        } catch (error) {
+          console.error('Erro ao criar registro:', error);
+          Utils.showErro('Erro ao criar registro:', this.toastController)
+
+        }
+      } else {
+        console.log('Form is invalid');
+      }
     }
-    } else {
-      console.log('Form is invalid');
-    }
-  }
 
   onDateChange(event: any) {
     const selectedDate = event.detail.value;
@@ -58,5 +60,5 @@ export class CadastrarPescaComponent  implements OnInit {
       dataEHorarioControl.setValue(selectedDate);
     }
   }
-  
+
 }
