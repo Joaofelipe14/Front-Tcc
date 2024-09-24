@@ -20,6 +20,7 @@ import { FinanceiroComponent } from './pages/admin/financeiro/financeiro.compone
 import { MeuPerfilComponent } from './shared/meu-perfil/meu-perfil.component';
 import { HttpClientModule } from '@angular/common/http';
 import { NovaSenhaComponent } from './pages/nova-senha/nova-senha.component';
+import { CadastrarVendaComponent } from './pages/colaborador/cadastrar-venda/cadastrar-venda.component';
 
 
 @NgModule({
@@ -34,7 +35,8 @@ import { NovaSenhaComponent } from './pages/nova-senha/nova-senha.component';
     CadastrarPescaComponent,
     FinanceiroComponent,
     MeuPerfilComponent,
-    NovaSenhaComponent
+    NovaSenhaComponent,
+    CadastrarVendaComponent
     
    ],
   imports: [BrowserModule, ReactiveFormsModule, IonicModule.forRoot(), NgxMaskDirective,HttpClientModule,

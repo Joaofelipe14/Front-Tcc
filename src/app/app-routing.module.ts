@@ -8,6 +8,7 @@ import { CadastrarPescaComponent } from './pages/colaborador/cadastrar-pesca/cad
 import { FinanceiroComponent } from './pages/admin/financeiro/financeiro.component';
 import { MeuPerfilComponent } from './shared/meu-perfil/meu-perfil.component';
 import { NovaSenhaComponent } from './pages/nova-senha/nova-senha.component';
+import { CadastrarVendaComponent } from './pages/colaborador/cadastrar-venda/cadastrar-venda.component';
 
 const routes: Routes = [
 
@@ -47,10 +48,13 @@ const routes: Routes = [
     path: 'colaborador/inicio',
     component: InicioColaboradorComponent
   },
-
   {
     path: 'colaborador/cadastrar-pesca',
     component: CadastrarPescaComponent
+  },
+  {
+    path: 'colaborador/cadastrar-venda',
+    component: CadastrarVendaComponent
   }
 ];
 

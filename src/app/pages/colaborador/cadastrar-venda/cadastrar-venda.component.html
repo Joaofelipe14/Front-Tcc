@@ -1,0 +1,36 @@
+<ion-content scroll-y="true">
+  <app-header title="Cadastrar Pesca"></app-header>
+
+  <div class="container-principal">
+      <ion-card class="card-cadastro">
+          <ion-card-header class="card-header-cadastro">
+              <ion-card-title class="title-card">Registro de venda</ion-card-title>
+          </ion-card-header>
+
+          <ion-card-content>
+              <form [formGroup]="cadastrarVendaForm" class="content-card" (ngSubmit)="onSubmit()">
+                  <div>
+                      <ion-input class="card-input" placeholder="Ponto de venda" formControlName="ponto_venda" type="text" required></ion-input>
+                  </div>
+                  <div>
+                    <ion-input class="card-input" placeholder="Quantidade" formControlName="quantidade" type="text" required></ion-input>
+                </div>
+
+
+
+                      <ion-input class="card-input" placeholder="Valor" formControlName="valor" type="text" required></ion-input>
+                 
+                  <ion-button class="btn-primario posicao-btn-card " [disabled]="cadastrarVendaForm.invalid" type="submit">Enviar</ion-button>
+              </form>
+          </ion-card-content>
+      </ion-card>
+  </div>
+
+  <ion-modal [keepContentsMounted]="true">
+      <ng-template>
+          <ion-datetime id="datetime" (ionChange)="onDateChange($event)"></ion-datetime>
+      </ng-template>
+  </ion-modal>
+</ion-content>
+
+<app-menu></app-menu>
