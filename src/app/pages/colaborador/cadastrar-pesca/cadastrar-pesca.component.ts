@@ -37,10 +37,9 @@ export class CadastrarPescaComponent implements OnInit {
 
         try {
           const response = await this.cadastroPescaService.createRegistro(formData).toPromise();
-          console.log('Registro criado com sucesso:', response);
           Utils.showSucesso('Registro criado com sucesso.', this.toastController)
 
-          this.cadastroPescaService.setPescas([response.dados.registro]); // Notifica os novos registros
+          this.cadastroPescaService.setPescas([response.dados.registro]); 
 
         } catch (error) {
           console.error('Erro ao criar registro:', error);
@@ -48,7 +47,6 @@ export class CadastrarPescaComponent implements OnInit {
 
         }
       } else {
-        console.log('Form is invalid');
       }
     }
 

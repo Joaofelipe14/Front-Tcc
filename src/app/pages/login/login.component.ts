@@ -74,7 +74,6 @@ export class LoginComponent implements OnInit {
           this.tokenService.setToken(response.dados.token)
 
           if (response.dados.usuario.primeiro_acesso === "S") {
-            console.log()
             this.router.navigate(['/nova-senha', response.dados.usuario.id]);
           } else {
 

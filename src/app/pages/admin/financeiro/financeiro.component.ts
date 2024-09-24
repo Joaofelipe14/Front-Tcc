@@ -38,9 +38,7 @@ export class FinanceiroComponent  implements OnInit {
   onSubmit() {
     if (this.cadastrarFinancerioForm.valid) {
       const formData = this.cadastrarFinancerioForm.value;
-      console.log('Form Data:', formData);
     } else {
-      console.log('Form is invalid');
     }
   }
 

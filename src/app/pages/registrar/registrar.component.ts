@@ -59,7 +59,6 @@ export class RegistrarComponent {
         if (response.dados.senha) {
           this.showAlertWithCopy((response.dados.senha))
         }
-        console.log('Usuário cadastrado com sucesso', response.dados.senha);
 
       } catch (error) {
         console.error('Erro ao cadastrar usuário', error);
@@ -180,7 +179,6 @@ export class RegistrarComponent {
       this.selectedFile = file;
       const reader = new FileReader();
 
-      console.log(file)
       reader.onload = () => {
         this.selectedImage = reader.result;
       };

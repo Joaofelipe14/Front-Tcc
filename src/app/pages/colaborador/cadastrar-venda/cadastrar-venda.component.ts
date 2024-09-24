@@ -31,22 +31,18 @@ export class CadastrarVendaComponent  implements OnInit {
  async onSubmit() {
     if (this.cadastrarVendaForm.valid) {
       const formData = this.cadastrarVendaForm.value;
-      console.log('Form Data:', formData);
 
       try {
       const response = await this.cadastroVendaService.createRegistro(formData).toPromise();
-      console.log('Registro criado com sucesso:', response);
       Utils.showSucesso('Registro criado com sucesso.', this.toastController)
-      this.cadastroVendaService.setvendas([response.dados.registro]); // Notifica os novos registros
+      this.cadastroVendaService.setvendas([response.dados.registro]); 
 
     } catch (error) {
       console.error('Erro ao criar registro:', error);
       Utils.showErro('Erro ao criar registro:', this.toastController)
 
     }
-    } else {
-      console.log('Form is invalid');
-    }
+    } 
   }
 
   onDateChange(event: any) {

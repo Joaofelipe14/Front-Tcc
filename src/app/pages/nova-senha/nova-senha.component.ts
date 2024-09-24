@@ -14,7 +14,7 @@ export class NovaSenhaComponent implements OnInit {
 
   novaSenha: FormGroup;
   formattedCpf: string = '';
-  nome: string = 'joao fleipe melo dal luiz';
+  nome: string = '';
   passwordsMatch: boolean = false;
   userId!: number;
 
@@ -39,10 +39,7 @@ export class NovaSenhaComponent implements OnInit {
   }
 
   ngOnInit() {
-
     this.userId = this.route.snapshot.params["id"]
-    console.log(this.userId)
-
   }
 
   // Verifica se as senhas coincidem
@@ -50,7 +47,6 @@ export class NovaSenhaComponent implements OnInit {
     const password = this.novaSenha.get('password')?.value;
     const confirmPassword = this.novaSenha.get('confirmPassword')?.value;
     this.passwordsMatch = password === confirmPassword;
-    console.log(this.passwordsMatch)
   }
 
   async erroMsg() {
@@ -66,7 +62,6 @@ export class NovaSenhaComponent implements OnInit {
       formData.append('password', this.novaSenha.get('password')?.value);
       formData.append('password_confirmation', this.novaSenha.get('confirmPassword')?.value);
       formData.append('primeiro_acesso', 'N');
-
 
       try {
         const response = await this.authService.atualizar(formData, this.userId).toPromise();

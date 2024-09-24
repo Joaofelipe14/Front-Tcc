@@ -48,7 +48,6 @@ export class Utils {
           text: 'X',
           role: 'cancel',
           handler: () => {
-            console.log('Toast fechado');
           }
         }
       ]

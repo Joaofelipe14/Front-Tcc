@@ -22,7 +22,6 @@ export class MenuComponent {
     } else {
       this.tipoMenu = 'colaborador';
     }
-    console.log('Tipo de menu: ', this.tipoMenu);
   }
 
   isActive(route: string): boolean {

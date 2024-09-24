@@ -30,8 +30,6 @@ export class HeaderComponent {
 
 
   logout() {
-
-    console.log('saindo')
     this.router.navigate(['/login']);
     this.token.remove()
   }
