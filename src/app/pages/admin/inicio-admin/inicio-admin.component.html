@@ -1,7 +1,45 @@
+<ion-content>
+  <app-header title="Meus Registros"></app-header>
+
+  <div class="content-card">
+      <ion-card class="card-cadastro" *ngFor="let registro of registros">
+          <ion-card-header class="card-header-cadastro">
+              <ion-card-title class="title-card">{{ registro.type === 'pesca' ? 'Registro de Pesca' : 'Registro de Venda' }}</ion-card-title>
+          </ion-card-header>
+
+          <ion-card-content>
+            <div style="margin-top: 10px;">
+              <ion-label>Participante</ion-label>
+              <p>{{ (registro.usuario) }}</p>
+          </div>
+              <div style="margin-top: 10px;">
+                  <ion-label>Data e Horário:</ion-label>
+                  <p>{{ formatDateTime(registro.dateTime) }}</p>
+              </div>
+              <div *ngIf="registro.type === 'pesca'">
+                  <ion-label>Área:</ion-label>
+                  <p>{{ registro.local }}</p>
+              </div>
+              <div *ngIf="registro.type === 'pesca'">
+                  <ion-label>Código:</ion-label>
+                  <p>{{ registro.codigo }}</p>
+              </div>
+              <div *ngIf="registro.type === 'venda'">
+                  <ion-label>Ponta da venda:</ion-label>
+                  <p>{{ registro.ponto_venda }}</p>
+              </div>
+              <div *ngIf="registro.type === 'venda'">
+                  <ion-label>Quantidade:</ion-label>
+                  <p>{{ registro.quantidade }}</p>
+              </div>
+              <div *ngIf="registro.type === 'venda'">
+                  <ion-label>Valor:</ion-label>
+                  <p>{{ registro.valor }}</p>
+              </div>
+              <ion-button class="btn-primario posicao-btn-card" type="submit">Ver mais</ion-button>
+              <br><br>
+          </ion-card-content>
+      </ion-card>
+  </div>
+</ion-content>
 <app-menu></app-menu>
-
-<p>
-  inicio-admin works!
-</p>
-
-

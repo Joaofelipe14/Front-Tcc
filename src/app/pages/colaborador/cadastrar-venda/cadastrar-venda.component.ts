@@ -1,8 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Keyboard } from '@capacitor/keyboard';
 import { ToastController } from '@ionic/angular';
-import { CadastroPescaService } from 'src/app/services/cadastro-pesca.service';
 import { CadastroVendaService } from 'src/app/services/cadastro-venda.service';
 import { Utils } from 'src/app/utils/utils';
 @Component({
