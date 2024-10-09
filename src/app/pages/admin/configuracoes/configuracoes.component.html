@@ -1,0 +1,99 @@
+<app-header title="Configurações"></app-header>
+
+
+<ion-content>
+  <ion-segment class="custom-segment" [(ngModel)]="selectedSegment" (ionChange)="segmentChanged($event)">
+    <ion-segment-button value="usuarios">
+      <ion-label>Usuários</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="auditoria">
+      <ion-label>Auditoria</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="pontos-geograficos">
+      <ion-label>Locais</ion-label>
+    </ion-segment-button>
+  </ion-segment>
+
+  <div *ngIf="selectedSegment === 'usuarios'">
+    <ion-searchbar [(ngModel)]="searchName" (ionInput)="filterUsuarios()" placeholder="Buscar usuário"></ion-searchbar>
+
+    <ion-list>
+      <ion-item class="hoverable-item" *ngFor="let usuario of filteredUsuarios" (click)="openUsuarioDetails(usuario)">
+        <ion-avatar slot="start">
+          <img
+            [src]="usuario.url_perfil ? usuario.url_perfil : 'https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png'"
+            alt="{{ usuario.name }}">
+        </ion-avatar>
+        <ion-label>
+          <h2 class="hoverable-item">{{ usuario.name }}</h2>
+        </ion-label>
+        <ion-icon name="chevron-forward" slot="end"></ion-icon>
+      </ion-item>
+    </ion-list>
+
+
+    <ion-modal [isOpen]="isModalOpen" (ionModalDidDismiss)="closeModal()" class="custom-modal">
+      <ng-template>
+        <ion-header>
+          <ion-toolbar>
+            <ion-title>{{ selectedUsuario?.name }}</ion-title>
+            <ion-buttons slot="end">
+              <ion-button (click)="closeModal()">
+                <ion-icon name="close"></ion-icon>
+              </ion-button>
+            </ion-buttons>
+          </ion-toolbar>
+        </ion-header>
+
+        <div class="modal-content">
+          <ion-avatar class="perfil-modal">
+            <img
+              [src]="selectedUsuario?.url_perfil ? selectedUsuario.url_perfil : 'https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png'"
+              alt="{{ selectedUsuario?.name }}">
+          </ion-avatar>
+          <div class="user-info">
+            <h2>{{ selectedUsuario?.name }}</h2>
+
+            <div class="info-row">
+              <span>CPF:</span>
+              <span>{{ Utils.formatCpf(selectedUsuario?.cpf) }}</span>
+            </div>
+            <div class="info-row">
+              <span>CAP:</span>
+              <span>{{ selectedUsuario?.cap }}</span>
+            </div>
+            <div class="info-row">
+              <span>Contato:</span>
+              <span>{{ Utils.applyPhoneMask(selectedUsuario?.contato) }}</span>
+            </div>
+
+            <div class="info-row">
+              <span>Tipo de Usuário:</span>
+              <div class="select-container">
+                <ion-select [(ngModel)]="selectedTipoUsuario" (ionChange)="updateTipoUsuario()" interface="action">
+                  <ion-select-option value="admin">Admin</ion-select-option>
+                  <ion-select-option value="colaborador">Colaborador</ion-select-option>
+                </ion-select>
+              </div>
+            </div>
+            <ion-button class="btn-primario" (click)="confirmResetPassword()">Resetar Senha</ion-button>
+          </div>
+        </div>
+      </ng-template>
+    </ion-modal>
+
+
+  </div>
+
+  <div *ngIf="selectedSegment === 'auditoria'">
+    <p>Conteúdo da Auditoria</p>
+    <!-- Adicione seu conteúdo da seção de auditoria aqui -->
+  </div>
+
+  <div *ngIf="selectedSegment === 'pontos-geograficos'">
+    <p>Conteúdo dos Pontos Geográficos</p>
+    <!-- Adicione seu conteúdo da seção de pontos geográficos aqui -->
+  </div>
+
+  <app-menu></app-menu>
+</ion-content>

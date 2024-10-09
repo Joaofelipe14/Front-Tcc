@@ -29,9 +29,8 @@ export class RegistrarComponent {
       nome: ['', Validators.required],
       contato: ['', Validators.required],
       cpf: ['', [Validators.required, Validators.pattern(/^\d{3}\.\d{3}\.\d{3}-\d{2}$/)]],
-      cap: ['', [Validators.required, Validators.minLength(10)]],
-      tipo_usuario: ['', Validators.required]
-    });
+      cap: ['', [Validators.required, Validators.minLength(6)]]
+        });
   }
 
 
@@ -47,7 +46,6 @@ export class RegistrarComponent {
       novoformData.append('cpf', this.loginForm.get('cpf')?.value);
       novoformData.append('cap', this.loginForm.get('cap')?.value);
       novoformData.append('contato', this.loginForm.get('contato')?.value);
-      novoformData.append('tipo_usuario', this.loginForm.get('tipo_usuario')?.value);
 
       if (this.selectedFile) {
         novoformData.append('profile_image', this.selectedFile);

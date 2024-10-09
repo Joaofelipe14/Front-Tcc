@@ -53,23 +53,16 @@
             ></ion-input>
           </ion-item>
           <ion-item>
-            <ion-input placeholder="CAP" formControlName="cap" type="text"  required></ion-input>
+            <ion-input placeholder="CAF" formControlName="cap" type="text"  required></ion-input>
            
           </ion-item>
           <ion-text class="error" color="danger" *ngIf="loginForm.get('cap')?.hasError('minlength') && loginForm.get('cap')?.touched">
-            <p>O comprimento mínimo é 10 caracteres.</p>
+            <p>O comprimento mínimo é 6 caracteres.</p>
           </ion-text>
           <ion-item>
             <ion-input placeholder="Contato" formControlName="contato" type="text" (input)="applyPhoneMask($event)" required></ion-input>
           </ion-item>
-          <ion-item>
-            <ion-select
-            formControlName="tipo_usuario"
-            placeholder="Tipo de Usuário">
-            <ion-select-option value="admin">Admin</ion-select-option>
-            <ion-select-option value="colaborador">Colaborador</ion-select-option>
-          </ion-select>
-          </ion-item>
+     
           <ion-button type="submit" class="btn-primario" [disabled]="loginForm.invalid">Cadastrar</ion-button>
         </form>
       </ion-card-content>

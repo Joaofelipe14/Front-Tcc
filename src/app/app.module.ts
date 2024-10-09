@@ -10,7 +10,7 @@ import { ServiceWorkerModule } from '@angular/service-worker';
 import { MenuComponent } from './shared/menu/menu.component';
 import { InicioAdminComponent } from './pages/admin/inicio-admin/inicio-admin.component';
 import { LoginComponent } from './pages/login/login.component';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RegistrarComponent } from './pages/registrar/registrar.component';
 import { NgxMaskDirective } from 'ngx-mask';
 import { InicioColaboradorComponent } from './pages/colaborador/inicio-colaborador/inicio-colaborador.component';
@@ -18,10 +18,11 @@ import { CadastrarPescaComponent } from './pages/colaborador/cadastrar-pesca/cad
 import { HeaderComponent } from './shared/header/header.component';
 import { FinanceiroComponent } from './pages/admin/financeiro/financeiro.component';
 import { MeuPerfilComponent } from './shared/meu-perfil/meu-perfil.component';
-import { HttpClientModule,HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NovaSenhaComponent } from './pages/nova-senha/nova-senha.component';
 import { CadastrarVendaComponent } from './pages/colaborador/cadastrar-venda/cadastrar-venda.component';
 import { AuthInterceptor } from './services/interceptor.service';
+import { ConfiguracoesComponent } from './pages/admin/configuracoes/configuracoes.component';
 
 
 @NgModule({
@@ -37,10 +38,17 @@ import { AuthInterceptor } from './services/interceptor.service';
     FinanceiroComponent,
     MeuPerfilComponent,
     NovaSenhaComponent,
-    CadastrarVendaComponent
-    
-   ],
-  imports: [BrowserModule, ReactiveFormsModule, IonicModule.forRoot(), NgxMaskDirective,HttpClientModule,
+    CadastrarVendaComponent,
+    ConfiguracoesComponent
+
+  ],
+  imports: [
+    BrowserModule,
+    ReactiveFormsModule,
+    IonicModule.forRoot(),
+    NgxMaskDirective,
+    HttpClientModule,
+    FormsModule,
     AppRoutingModule, ServiceWorkerModule.register('ngsw-worker.js', {
       enabled: !isDevMode(),
       // Register the ServiceWorker as soon as the application is stable
@@ -48,11 +56,11 @@ import { AuthInterceptor } from './services/interceptor.service';
       registrationStrategy: 'registerWhenStable:30000'
     })],
   providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: AuthInterceptor,
-      multi: true,
-    },
+  {
+    provide: HTTP_INTERCEPTORS,
+    useClass: AuthInterceptor,
+    multi: true,
+  },
   ],
   bootstrap: [AppComponent],
 })

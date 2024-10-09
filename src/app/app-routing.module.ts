@@ -9,6 +9,7 @@ import { FinanceiroComponent } from './pages/admin/financeiro/financeiro.compone
 import { MeuPerfilComponent } from './shared/meu-perfil/meu-perfil.component';
 import { NovaSenhaComponent } from './pages/nova-senha/nova-senha.component';
 import { CadastrarVendaComponent } from './pages/colaborador/cadastrar-venda/cadastrar-venda.component';
+import { ConfiguracoesComponent } from './pages/admin/configuracoes/configuracoes.component';
 
 const routes: Routes = [
 
@@ -42,6 +43,10 @@ const routes: Routes = [
   {
     path: 'admin/financeiro',
     component: FinanceiroComponent
+  },
+  {
+    path: 'admin/configuracoes',
+    component: ConfiguracoesComponent
   },
   /* rotas para o colaborador */
   {

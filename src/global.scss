@@ -163,3 +163,13 @@ ion-card {
   }
 
 }
+
+ion-item {
+  cursor: pointer;
+  --background-hover-opacity: 0.1;
+  transition: background-color 0.3s ease;
+}
+
+ion-item:hover {
+  --background: rgba(0, 0, 0, var(--background-hover-opacity));
+}

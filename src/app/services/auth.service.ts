@@ -14,6 +14,8 @@ export class AuthService {
   private urlAtualizar = `${environment.apiUrl}usuario/editar/`;
   private urlMe = `${environment.apiUrl}usuario/me/`;
 
+  private urlgetUsers = `${environment.apiUrl}busca-usuarios/`;
+
 
 
   private getHeaders(): HttpHeaders {
@@ -34,11 +36,16 @@ export class AuthService {
     return this.http.post<any>(this.urlLogin, payload);
   }
 
-  atualizar(payload: FormData, user_id: number): Observable<any> {
+  atualizar(payload: any, user_id: number): Observable<any> {
     return this.http.post<any>(this.urlAtualizar+user_id, payload, {headers: this.getHeaders()});
   }
 
   me(): Observable<any> {
     return this.http.get<any>(this.urlMe, {headers: this.getHeaders()});
+  }
+
+
+  getUsuarios(): Observable<any[]> {
+    return this.http.get<any[]>(this.urlgetUsers, {headers: this.getHeaders()});
   }
 }

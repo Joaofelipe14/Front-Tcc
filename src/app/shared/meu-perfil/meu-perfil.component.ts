@@ -47,7 +47,7 @@ export class MeuPerfilComponent implements OnInit {
             cap: response.dados.cap,
             contato: Utils.applyPhoneMask(response.dados.contato),
             tipoUsuario: response.dados.tipo_usuario,
-            imagemPerfil: 'http://localhost:8000/storage/'+response.dados.url_perfil
+            imagemPerfil: response.dados.url_perfil
           };
           this.meuPerfilForm.patchValue(userData);
           this.selectedImage = userData.imagemPerfil;
