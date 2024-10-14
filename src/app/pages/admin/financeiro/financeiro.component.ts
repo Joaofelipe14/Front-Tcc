@@ -92,6 +92,16 @@ export class FinanceiroComponent implements OnInit {
   dataFinal!: string;
   registrosFinanceirosFiltrados: any[] = [];
 
+  filtroCondicao: string = 'todos'; // Inicializa como "Todos"
+  filtroData!: string;
+  filtroDataInicial!: string;
+  filtroDataFinal!: string;
+  filtroExpansao: boolean = false; // Controla a expansão
+
+  toggleFiltro() {
+    this.filtroExpansao = !this.filtroExpansao; // Alterna o estado da expansão
+}
+
   async loadFinancerio() {
     // const loading = await this.loadingController.create({
     //   message: 'Carregando usuários...',
@@ -99,7 +109,8 @@ export class FinanceiroComponent implements OnInit {
     // await loading.present();
 
     this.financeiroService.getRegistrosFinancerios().subscribe((data: any) => {
-      this.registrosFinanceiros = data.registros; // Armazena os registros
+      this.registrosFinanceiros = data.registros;
+      this.registrosFinanceirosFiltrados = this.registrosFinanceiros; 
 
       console.log(data)
       // loading.dismiss();
@@ -128,5 +139,34 @@ baixarPdf(id: any) {
   });
 }
 
+
+filtrarRegistros() {
+
+  console.log('filtrando')
+  if (this.filtroCondicao === 'todos') {
+    // Se "Todos" for selecionado, mostra todos os registros
+    this.registrosFinanceirosFiltrados = this.registrosFinanceiros;
+    return;
+}
+
+  this.registrosFinanceirosFiltrados = this.registrosFinanceiros.filter(registro => {
+      const dataRegistro = new Date(registro.data_inicial);
+
+      switch (this.filtroCondicao) {
+          case 'maior':
+              return dataRegistro > new Date(this.filtroData);
+          case 'menor':
+              return dataRegistro < new Date(this.filtroData);
+          case 'igual':
+              return dataRegistro.toDateString() === new Date(this.filtroData).toDateString();
+          case 'entre':
+              const dataInicial = new Date(this.filtroDataInicial);
+              const dataFinal = new Date(this.filtroDataFinal);
+              return dataRegistro >= dataInicial && dataRegistro <= dataFinal;
+          default:
+              return true; // No filtro, retorna todos
+      }
+  });
+}
 
 }

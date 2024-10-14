@@ -94,17 +94,41 @@
    
    
         <div *ngIf="selectedSegment === 'relatorios'">
-
             <ion-card class="card-relatorios">
                 <ion-card-header>
-                    <ion-card-title  class="title-card" >Relatórios Financeiros</ion-card-title>
+                    <ion-card-title class="title-card">Relatórios Financeiros</ion-card-title>
                 </ion-card-header>
                 <ion-card-content>
+                    <ion-item (click)="toggleFiltro()" lines="none">
+                        <ion-label>Filtros</ion-label>
+                        <ion-icon slot="end" [name]="filtroExpansao ? 'chevron-up' : 'chevron-down'"></ion-icon>
+                    </ion-item>
+                    <div *ngIf="filtroExpansao" class="ion-padding">
+                        <ion-label>Filtro</ion-label>
+                        <ion-select [(ngModel)]="filtroCondicao">
+                            <ion-select-option value="todos">Todos</ion-select-option>
+                            <ion-select-option select="maior">Maior que</ion-select-option>
+                            <ion-select-option value="menor">Menor que</ion-select-option>
+                            <ion-select-option value="igual">Igual a</ion-select-option>
+                            <ion-select-option value="entre">Entre</ion-select-option>
+                        </ion-select>
+                        <div *ngIf="filtroCondicao !== 'entre'">
+                            <ion-label>Data</ion-label>
+                            <ion-datetime displayFormat="MMM DD, YYYY" [(ngModel)]="filtroData"></ion-datetime>
+                        </div>
+                        <div *ngIf="filtroCondicao === 'entre'">
+                            <ion-label>Data Inicial</ion-label>
+                            <ion-datetime displayFormat="MMM DD, YYYY" [(ngModel)]="filtroDataInicial"></ion-datetime>
+                            <ion-label>Data Final</ion-label>
+                            <ion-datetime displayFormat="MMM DD, YYYY" [(ngModel)]="filtroDataFinal"></ion-datetime>
+                        </div>
+                        <ion-button expand="full" class="'btn-primario" (click)="filtrarRegistros(); toggleFiltro();">Filtrar</ion-button>
+                    </div>
                     <p>Aqui você pode visualizar os relatórios financeiros.</p>
                 </ion-card-content>
             </ion-card>
-
-            <ion-card class="card-relatorios" *ngFor="let registro of registrosFinanceiros">
+        
+            <ion-card class="card-relatorios" *ngFor="let registro of registrosFinanceirosFiltrados">
                 <ion-card-content>
                     <div class="card-row">
                         <p>Dt Inicial: {{ registro.data_inicial }}</p>
@@ -112,9 +136,8 @@
                     </div>
                 </ion-card-content>
             </ion-card>
-
-
         </div>
+        
 
     </div>
 </ion-content>
