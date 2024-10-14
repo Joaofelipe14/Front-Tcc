@@ -1,58 +1,122 @@
 <ion-content scroll-y="true">
-    <app-header title="Cadastro Financeiro"></app-header>
+    <app-header title="Financeiro"></app-header>
+
+    <ion-segment [(ngModel)]="selectedSegment" (ionChange)="segmentChanged()">
+        <ion-segment-button value="cadastro">Cadastro</ion-segment-button>
+        <ion-segment-button value="relatorios">Relatórios</ion-segment-button>
+    </ion-segment>
 
     <div class="container-principal">
-        <ion-card class="card-cadastro">
-            <ion-card-header class="card-header-cadastro">
-                <ion-card-title class="title-card">Registro Financeiro</ion-card-title>
-            </ion-card-header>
+        <ng-container *ngIf="selectedSegment === 'cadastro'">
+            <ion-card class="card-cadastro">
+                <ion-card-header class="card-header-cadastro">
+                    <ion-card-title class="title-card">Registro Financeiro</ion-card-title>
+                </ion-card-header>
 
-            <ion-card-content>
-                <form [formGroup]="cadastrarFinancerioForm" class="content-card" (ngSubmit)="onSubmit()">
+                <ion-card-content>
+                    <form [formGroup]="cadastrarFinancerioForm" (ngSubmit)="onSubmit()">
 
-                    <div class="container-periodicidade">
-                        <div class="button-group">
-                            <div *ngFor="let option of options" class="button-option"
-                                [ngClass]="{'selected': valorPeriodicidade === option.value}"
-                                (click)="selectOption(option.value)">
-                                {{ option.label }}
-                            </div>
+                        <div style="align-items: center; flex-direction: row;">
+                            <ion-label>Data Inicial</ion-label>
+                            <ion-datetime-button datetime="datetime" preferWheel="false"
+                                (click)="currentField='data_inicial'"></ion-datetime-button>
                         </div>
-                    </div>
 
-                    <div>
-                        <ion-input class="card-input" placeholder="Transporte" formControlName="transporte" type="text"
-                            required></ion-input>
-                    </div>
+                        <div style="align-items: center; flex-direction: row;">
+                            <ion-label>Data Final</ion-label>
+                            <ion-datetime-button datetime="date" preferWheel="false"
+                                (click)="currentField='data_final'"></ion-datetime-button>
+                        </div>
 
-                    <div>
-                        <ion-input class="card-input" placeholder="Combustivel" formControlName="combustivel"
-                            type="text" required></ion-input>
-                    </div>
+                        <ion-modal [keepContentsMounted]="true">
+                            <ng-template>
+                                <ion-datetime id="datetime" (ionChange)="onDateChange($event)"
+                                    displayFormat="MMM DD, YYYY" pickerFormat="MMM DD, YYYY"
+                                    showDefaultTimeLabel="false">
+                                </ion-datetime>
+                            </ng-template>
+                        </ion-modal>
 
-                    <div>
-                        <ion-input class="card-input" placeholder="Embarcacao" formControlName="embarcacao" type="text"
-                            required></ion-input>
-                    </div>
+                        <ion-modal [keepContentsMounted]="true">
+                            <ng-template>
+                                <ion-datetime id="date" (ionChange)="onDateChange($event)" displayFormat="MMM DD, YYYY"
+                                    pickerFormat="MMM DD, YYYY" showDefaultTimeLabel="false">
+                                </ion-datetime>
+                            </ng-template>
+                        </ion-modal>
 
-                    <div>
-                        <ion-input class="card-input" placeholder="Energia" formControlName="energia" type="text"
-                            required></ion-input>
-                    </div>
 
-                    <div>
-                        <ion-input class="card-input" placeholder="Material" formControlName="material" type="text"
-                            required></ion-input>
-                    </div>
+                        <ion-modal [keepContentsMounted]="true">
+                            <ng-template>
+                                <ion-datetime (ionChange)="onDateChange($event)" displayFormat="MMM DD, YYYY"
+                                    pickerFormat="MMM DD, YYYY" showDefaultTimeLabel="false">
+                                </ion-datetime>
+                            </ng-template>
+                        </ion-modal>
 
-                    <br>
-                    <ion-button class="btn-primario posicao-btn-card " [disabled]="cadastrarFinancerioForm.invalid"
-                        type="submit">Enviar</ion-button>
-                </form>
-            </ion-card-content>
-        </ion-card>
+                        <div>
+                            <ion-label>Transporte</ion-label>
+                            <ion-select formControlName="transporte" required>
+                                <ion-select-option value="carro">Carro</ion-select-option>
+                                <ion-select-option value="moto">Moto</ion-select-option>
+                                <ion-select-option value="bicicleta">Bicicleta</ion-select-option>
+                                <ion-select-option value="onibus">Ônibus</ion-select-option>
+                            </ion-select>
+                        </div>
+
+                        <div>
+                            <ion-input placeholder="Combustível" formControlName="combustivel" type="text"
+                                required></ion-input>
+                        </div>
+
+                        <div>
+                            <ion-input placeholder="Embarcação" formControlName="embarcacao" type="text"
+                                required></ion-input>
+                        </div>
+
+                        <div>
+                            <ion-input placeholder="Material" formControlName="material" type="text"
+                                required></ion-input>
+                        </div>
+
+                        <div>
+                            <ion-input placeholder="Energia (kw)" formControlName="energia" type="text" required
+                                (ionBlur)="formatEnergy()"></ion-input>
+                        </div>
+
+                        <br>
+                        <ion-button [disabled]="cadastrarFinancerioForm.invalid" class="btn-primario" type="submit">Enviar</ion-button>
+                    </form>
+                </ion-card-content>
+            </ion-card>
+        </ng-container>
+   
+   
+   
+        <div *ngIf="selectedSegment === 'relatorios'">
+
+            <ion-card class="card-relatorios">
+                <ion-card-header>
+                    <ion-card-title  class="title-card" >Relatórios Financeiros</ion-card-title>
+                </ion-card-header>
+                <ion-card-content>
+                    <p>Aqui você pode visualizar os relatórios financeiros.</p>
+                </ion-card-content>
+            </ion-card>
+
+            <ion-card class="card-relatorios" *ngFor="let registro of registrosFinanceiros">
+                <ion-card-content>
+                    <div class="card-row">
+                        <p>Dt Inicial: {{ registro.data_inicial }}</p>
+                        <img (click)="baixarPdf(registro.id)" src="../../../../assets/icons/download.svg" alt="">
+                    </div>
+                </ion-card-content>
+            </ion-card>
+
+
+        </div>
+
     </div>
-
 </ion-content>
 
 <app-menu></app-menu>

@@ -1,38 +1,45 @@
-.container-periodicidade {
+  
+  ion-content {
+    height: 100vh;
+    padding: 20px;
+    background: var(--background-principal);
+  }
+  
+  ion-content {
+    overflow: hidden;
+    --padding-bottom: 80px;
+    --padding-top: 80px;
+    --background: var(--fundo-interno);
+  }
+
+
+  .container-principal{
+    margin-top: 10px;
+    height: 100%;
+    background-color: var(--fundo-interno);
+    width: 100%;
     display: flex;
     flex-direction: column;
-    align-items: center;
-}
+    justify-content: flex-start;
+  }
 
-.button-group {
-    margin-top: 15px;
+  .card-row {
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
-    background-color: var(--card-header);
-    border-radius: 100px;
-    padding: 5px;
-    width: fit-content;
-}
-
-.button-option {
-    padding: 10px 20px;
-    border-radius: 12px;
-    background-color: var(--card-header);
-    color: var(--btn-principal);
-    text-align: center;
+  }
+  
+  .card-row:active {
+    background-color: #f0f0f0; 
+  }
+  .card-relatorios:active {
+    background-color: #f0f0f0; 
+  }
+  
+  
+  .download-link {
     cursor: pointer;
-    transition: all 0.3s;
-    font-weight: bold;
-    border-radius: 100px;
-
-}
-
-.button-option.selected {
-    border-color: var(--btn-principal);
-    background-color: var(--btn-principal);
-    color: white;
-    font-weight: bold;
-    border-radius: 100px;
-
-}
+    color: #007bff;
+    text-decoration: underline;
+  }
+  
