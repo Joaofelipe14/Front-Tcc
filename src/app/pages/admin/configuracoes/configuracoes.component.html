@@ -90,8 +90,66 @@
   </div>
 
   <div *ngIf="selectedSegment === 'pontos-geograficos'">
-    <p>Conteúdo dos Pontos Geográficos</p>
-    <!-- Adicione seu conteúdo da seção de pontos geográficos aqui -->
+    <ion-header>
+      <ion-toolbar>
+        <ion-title>Pontos Geográficos</ion-title>
+        <ion-buttons slot="end">
+          <ion-button (click)="openCadastroModalLocalizacao()">Novo</ion-button>
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-header>
+
+    <ion-searchbar [(ngModel)]="searchTerm" (ionInput)="filterLocalizacoes()"
+      placeholder="Buscar por região"></ion-searchbar>
+
+    <ion-list>
+      <ion-item *ngFor="let localizacao of filteredLocalizacoes">
+        <ion-label>
+          <h2>{{ localizacao.descricao }}</h2>
+          <p>Lat: {{ localizacao.latitude }}, Lng: {{ localizacao.longitude }}</p>
+        </ion-label>
+      </ion-item>
+    </ion-list>
+
+    <ion-modal [isOpen]="isModalOpenLocalizacao" (ionModalDidDismiss)="closeModalLocalizacao()">
+      <ng-template>
+        <ion-header>
+          <ion-toolbar>
+            <ion-title>Cadastrar Ponto Geográfico</ion-title>
+            <ion-buttons slot="end">
+              <ion-button (click)="closeModalLocalizacao()">
+                <ion-icon name="close"></ion-icon>
+              </ion-button>
+            </ion-buttons>
+          </ion-toolbar>
+        </ion-header>
+
+        <ion-content>
+          <ion-item>
+            <ion-label position="floating">Descrição</ion-label>
+            <ion-input [(ngModel)]="newLocalizacao.descricao"></ion-input>
+          </ion-item>
+
+          <ion-item>
+            <ion-label position="floating">Descrição Amigável</ion-label>
+            <ion-input [(ngModel)]="newLocalizacao.descricao_amigavel"></ion-input>
+          </ion-item>
+
+          <ion-item>
+            <ion-label position="floating">Latitude</ion-label>
+            <ion-input type="number" [(ngModel)]="newLocalizacao.latitude"></ion-input>
+          </ion-item>
+
+          <ion-item>
+            <ion-label position="floating">Longitude</ion-label>
+            <ion-input type="number" [(ngModel)]="newLocalizacao.longitude"></ion-input>
+          </ion-item>
+
+          <ion-button expand="full" (click)="cadastrarLocalizacao()">Cadastrar</ion-button>
+        </ion-content>
+      </ng-template>
+    </ion-modal>
+
   </div>
 
   <app-menu></app-menu>
