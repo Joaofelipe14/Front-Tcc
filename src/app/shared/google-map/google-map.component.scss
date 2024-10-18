@@ -30,7 +30,7 @@ html, body {
   padding: 15px;
   font-size: 16px;
   color: #333;
-  width: 300px;
+  width: auto;
   z-index: 100;
   box-sizing: border-box;
 }
@@ -76,6 +76,7 @@ html, body {
   font-size: 16px;
   margin-top: 10px;
   box-sizing: border-box;
+  background-color: white;
 }
 
 #place-picker:focus {
@@ -98,24 +99,3 @@ html, body {
   color: #555;
 }
 
-@media (max-width: 768px) {
-  .pac-card {
-    width: 250px;
-    top: 10px;
-    left: 10px;
-  }
-
-  #map {
-    height: 300px;
-  }
-}
-
-@media (max-width: 480px) {
-  .pac-card {
-    width: 200px;
-  }
-
-  #map {
-    height: 200px;
-  }
-}

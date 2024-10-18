@@ -69,7 +69,8 @@
             <div class="info-row">
               <span>Tipo de Usuário:</span>
               <div class="select-container">
-                <ion-select [(ngModel)]="selectedTipoUsuario" (ionChange)="confirmUpdateGrupoUser(selectedTipoUsuario)" interface="action">
+                <ion-select [(ngModel)]="selectedTipoUsuario" (ionChange)="confirmUpdateGrupoUser(selectedTipoUsuario)"
+                  interface="action">
                   <ion-select-option value="admin">Admin</ion-select-option>
                   <ion-select-option value="colaborador">Colaborador</ion-select-option>
                 </ion-select>
@@ -109,12 +110,9 @@
           <p>Lat: {{ localizacao.latitude }}, Lng: {{ localizacao.longitude }}</p>
         </ion-label>
 
-        <ion-icon 
-        name="pencil-outline" 
-        slot="end" 
-        (click)="openEditModal(localizacao)">
-      </ion-icon>
-      
+        <ion-icon name="pencil-outline" slot="end" (click)="openEditModal(localizacao)">
+        </ion-icon>
+
       </ion-item>
     </ion-list>
 
@@ -133,20 +131,6 @@
         </ion-header>
 
         <ion-content class="custom-ion-localizacao">
-
-          <ion-item>
-            <ion-label>Selecione no mapa o local desejavel.</ion-label>
-          </ion-item>
-
-          <app-google-map *ngIf="!editingLocalizacao" [isAdmin]="true"
-            (placeSelected)="handlePlaceSelected($event)"></app-google-map>
-
-          <app-google-map *ngIf="editingLocalizacao" [isAdmin]="true"
-            [defaultLocation]="{ lat: newLocalizacao.latitude, lng: newLocalizacao.longitude }"
-            (placeSelected)="handlePlaceSelected($event)">
-          </app-google-map>
-
-
           <ion-item>
             <ion-label position="floating">Descrição</ion-label>
             <ion-input [(ngModel)]="newLocalizacao.descricao"></ion-input>
@@ -158,14 +142,16 @@
           </ion-item>
 
           <ion-item>
-            <ion-label position="floating">Latitude</ion-label>
-            <ion-input type="number" [(ngModel)]="newLocalizacao.latitude"></ion-input>
+            <ion-label>Selecione no mapa o local desejavel.</ion-label>
           </ion-item>
+          
+          <app-google-map *ngIf="!editingLocalizacao" [isAdmin]="true"
+            (placeSelected)="handlePlaceSelected($event)"></app-google-map>
 
-          <ion-item>
-            <ion-label position="floating">Longitude</ion-label>
-            <ion-input type="number" [(ngModel)]="newLocalizacao.longitude"></ion-input>
-          </ion-item>
+          <app-google-map *ngIf="editingLocalizacao" [isAdmin]="true"
+            [defaultLocation]="{ lat: newLocalizacao.latitude, lng: newLocalizacao.longitude }"
+            (placeSelected)="handlePlaceSelected($event)">
+          </app-google-map>
 
           <ion-button class="btn-primario" (click)="cadastrarLocalizacao()">Salvar</ion-button>
         </ion-content>
