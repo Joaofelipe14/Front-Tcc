@@ -128,5 +128,35 @@ export class MeuPerfilComponent implements OnInit {
     }
   }
 
+  isModalOpen: boolean = false;
+  campoEditado: string = '';
+  campoValor: string = '';
+  openModal(campo: string) {
+    this.campoEditado = campo;
+    this.campoValor = this.meuPerfilForm.get(campo)?.value || '';
+    this.isModalOpen = true;
+    console.log('abrindo modal '+ campo)
+  }
+
+  // Método para fechar o modal
+  dismissModal() {
+    this.isModalOpen = false;
+  }
+
+  // Atualiza o campo com o valor editado
+  updateField() {
+    if (this.campoEditado) {
+      this.meuPerfilForm.get(this.campoEditado)?.setValue(this.campoValor);
+      console.log(`Valor atualizado para o campo ${this.campoEditado}: ${this.campoValor}`);
+    }
+    this.dismissModal();
+  }
+
+  // Atualiza o valor do campo conforme a digitação
+  onInputChange(event: any) {
+    this.campoValor = event.detail.value;
+  }
+
+  
 
 }

@@ -1,8 +1,10 @@
 <app-header title="Meu perfil"></app-header>
 
+
+
 <div class="container-principal">
-    <ion-content ionScroll="true">
-        <ion-card scroll-y="false">
+    <ion-content ionScroll="false">
+        <ion-card>
             <ion-card-header class="card-header-cadastro">
                 <ion-card-title class="title-card">Meu perfil</ion-card-title>
             </ion-card-header>
@@ -11,10 +13,7 @@
                 <form [formGroup]="meuPerfilForm" class="content-card" (ngSubmit)="onSubmit()">
                     <div class="profile-item">
                         <div class="profile-container" (click)="fileInput.click()">
-                            <!-- Oculta o campo de input file -->
-                            <input type="file" accept="image/*" (change)="onFileSelected($event)" hidden
-                                #fileInput />
-                            <!-- Imagem de perfil -->
+                            <input type="file" accept="image/*" (change)="onFileSelected($event)" hidden #fileInput />
                             <div class="profile-image-container">
                                 <img *ngIf="selectedImage; else placeholderImage" [src]="selectedImage"
                                     alt="Foto de Perfil" class="profile-image" />
@@ -29,27 +28,30 @@
                         </div>
                     </div>
 
+                    <!-- Nome -->
                     <div class="form-field">
                         <div class="label-card-cadastro">Nome:</div>
-                        <ion-input placeholder="Digite seu nome" class="card-input" formControlName="nome"
-                            type="text" required></ion-input>
+                        <ion-input placeholder="Digite seu nome" class="card-input" formControlName="nome" type="text"
+                            required></ion-input>
+                        <ion-icon name="chevron-forward" class="edit-icon" (click)="openModal('nome')"></ion-icon>
                     </div>
-                    <div class="form-field">
-                        <div class="label-card-cadastro">CPF:</div>
-                        <ion-input class="card-input" placeholder="Digite seu CPF" formControlName="cpf" type="text"
-                            [disabled]="true">
-                        </ion-input>
-                    </div>
+
+                    <!-- CAP -->
                     <div class="form-field">
                         <div class="label-card-cadastro">CAP:</div>
                         <ion-input placeholder="CAP" class="card-input" formControlName="cap" type="text"
                             required></ion-input>
+                        <ion-icon name="chevron-forward" class="edit-icon" (click)="openModal('cap')"></ion-icon>
                     </div>
+
+                    <!-- Contato -->
                     <div class="form-field">
                         <div class="label-card-cadastro">Contato:</div>
-                        <ion-input   (input)="maskContato($event)" placeholder="Contato" class="card-input" formControlName="contato" type="text"
-                            required></ion-input>
+                        <ion-input (input)="maskContato($event)" placeholder="Contato" class="card-input"
+                            formControlName="contato" type="text" required></ion-input>
+                        <ion-icon name="chevron-forward" class="edit-icon" (click)="openModal('contato')"></ion-icon>
                     </div>
+
                     <div class="form-field">
                         <div class="label-card-cadastro">Tipo de Usuário:</div>
                         <ion-select formControlName="tipoUsuario" placeholder="Tipo de Usuário" [disabled]="true">
@@ -57,12 +59,38 @@
                             <ion-select-option value="colaborador">Colaborador</ion-select-option>
                         </ion-select>
                     </div>
-                    
-
-                    <ion-button class="btn-primario" [disabled]="meuPerfilForm.invalid" type="submit">Salvar</ion-button>
                 </form>
             </ion-card-content>
         </ion-card>
     </ion-content>
 </div>
+
+<ion-modal [isOpen]="isModalOpen">
+    <ng-template>
+
+        <ion-header>
+            <ion-toolbar>
+                <ion-title>{{ campoEditado | titlecase }} - Editar</ion-title>
+                <ion-buttons slot="end">
+                    <ion-button (click)="dismissModal()">Fechar</ion-button>
+                </ion-buttons>
+            </ion-toolbar>
+        </ion-header>
+
+
+
+        <ion-content>
+            <div class="modal-content">
+                <ion-label>{{ campoEditado | titlecase }}</ion-label>
+                <ion-input [value]="campoValor" (ionInput)="onInputChange($event)" placeholder="Novo valor"></ion-input>
+                <ion-button expand="full" (click)="updateField()">Atualizar</ion-button>
+            </div>
+        </ion-content>
+    </ng-template>
+
+</ion-modal>
+
+
+
+
 <app-menu></app-menu>
