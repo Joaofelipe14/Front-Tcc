@@ -35,6 +35,9 @@ ion-content {
   margin-top: 5px;
 }
 
+.card-input{
+  cursor: pointer;
+}
 .profile-item {
   display: flex;
   justify-content: center;
@@ -53,6 +56,8 @@ ion-content {
   height: 150px;
   border-radius: 50%;
   object-fit: cover;
+  cursor: pointer;
+
 }
 
 .logo {
@@ -66,6 +71,7 @@ ion-content {
   font-size: 13px;
   text-align: center;
   opacity: 50%;
+  
 }
 
 .remove-image {
