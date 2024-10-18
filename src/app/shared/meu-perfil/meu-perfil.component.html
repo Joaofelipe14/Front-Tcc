@@ -1,12 +1,10 @@
 <app-header title="Meu perfil"></app-header>
 
-
-
 <div class="container-principal">
-    <ion-content ionScroll="false">
+    <ion-content>
         <ion-card>
             <ion-card-header class="card-header-cadastro">
-                <ion-card-title class="title-card">Meu perfil</ion-card-title>
+                <ion-card-title class="title-card">Dados pessoais</ion-card-title>
             </ion-card-header>
 
             <ion-card-content>
@@ -29,27 +27,35 @@
                     </div>
 
                     <!-- Nome -->
-                    <div class="form-field">
+                    <div class="form-field" (click)="openModal('nome')">
                         <div class="label-card-cadastro">Nome:</div>
                         <ion-input placeholder="Digite seu nome" class="card-input" formControlName="nome" type="text"
                             required></ion-input>
-                        <ion-icon name="chevron-forward" class="edit-icon" (click)="openModal('nome')"></ion-icon>
+                        <ion-icon name="chevron-forward" class="edit-icon"></ion-icon>
                     </div>
 
                     <!-- CAP -->
-                    <div class="form-field">
+                    <div class="form-field" (click)="openModal('cap')">
                         <div class="label-card-cadastro">CAP:</div>
                         <ion-input placeholder="CAP" class="card-input" formControlName="cap" type="text"
                             required></ion-input>
-                        <ion-icon name="chevron-forward" class="edit-icon" (click)="openModal('cap')"></ion-icon>
+                        <ion-icon name="chevron-forward" class="edit-icon"></ion-icon>
                     </div>
 
                     <!-- Contato -->
-                    <div class="form-field">
+                    <div class="form-field" (click)="openModal('contato')">
                         <div class="label-card-cadastro">Contato:</div>
                         <ion-input (input)="maskContato($event)" placeholder="Contato" class="card-input"
-                            formControlName="contato" type="text" required></ion-input>
-                        <ion-icon name="chevron-forward" class="edit-icon" (click)="openModal('contato')"></ion-icon>
+                            formControlName="contato" type="text" pattern="[\d\-\(\)\s]*"  required></ion-input>
+                        <ion-icon name="chevron-forward" class="edit-icon"></ion-icon>
+                    </div>
+
+                    <!-- CPF -->
+
+                    <div class="form-field">
+                        <div class="label-card-cadastro">CPF:</div>
+                        <ion-input [disabled]="true" placeholder="cpf" class="card-input" formControlName="cpf"
+                            type="text" required></ion-input>
                     </div>
 
                     <div class="form-field">
@@ -65,7 +71,7 @@
     </ion-content>
 </div>
 
-<ion-modal [isOpen]="isModalOpen">
+<ion-modal [isOpen]="isModalOpen" (ionModalDidDismiss)="dismissModal()">
     <ng-template>
 
         <ion-header>
@@ -77,20 +83,17 @@
             </ion-toolbar>
         </ion-header>
 
-
-
-        <ion-content>
+        <ion-content class="ion-modal-content">
             <div class="modal-content">
-                <ion-label>{{ campoEditado | titlecase }}</ion-label>
-                <ion-input [value]="campoValor" (ionInput)="onInputChange($event)" placeholder="Novo valor"></ion-input>
-                <ion-button expand="full" (click)="updateField()">Atualizar</ion-button>
+                <ion-label>{{ campoEditado | titlecase }}:</ion-label>
+                <ion-input [value]="campoValor" class='card-input' (ionInput)="onInputChange($event)"
+                    placeholder="Novo valor"></ion-input>
+                <ion-button class="btn-primario" (click)="updateField()">Atualizar</ion-button>
             </div>
         </ion-content>
     </ng-template>
 
 </ion-modal>
-
-
 
 
 <app-menu></app-menu>

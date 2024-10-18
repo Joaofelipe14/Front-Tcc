@@ -16,6 +16,11 @@ export class MeuPerfilComponent implements OnInit {
   selectedFile: File | null = null;
   userId!: number
 
+
+  isModalOpen: boolean = false;
+  campoEditado: string = '';
+  campoValor: string = '';
+
   constructor(
     private formBuilder: FormBuilder,
     private auth: AuthService,
@@ -62,13 +67,12 @@ export class MeuPerfilComponent implements OnInit {
     );
   }
 
-  maskContato(event: any){
+  maskContato(event: any) {
     const input = event.target as HTMLInputElement;
-
-    const  contatoFormatado = Utils.applyPhoneMask(input.value)
+    const contatoFormatado = Utils.applyPhoneMask(input.value)
     this.meuPerfilForm.get('contato')?.setValue(contatoFormatado);
-
   }
+
   async onSubmit() {
     if (this.meuPerfilForm.valid) {
 
@@ -81,8 +85,6 @@ export class MeuPerfilComponent implements OnInit {
         novoformData.append('profile_image', this.selectedFile);
       }
 
-
-      // Log do conteúdo do FormData
       novoformData.forEach((value, key) => {
         console.log(`${key}:`, value);
       });
@@ -91,8 +93,8 @@ export class MeuPerfilComponent implements OnInit {
       try {
         const response = await this.auth.atualizar(novoformData, this.userId).toPromise();
 
-        if (response.sucesso) {  
-        Utils.showSucesso("Dados atualizado",this.toastController)
+        if (response.sucesso) {
+          Utils.showSucesso("Dados atualizado", this.toastController)
         }
 
       } catch (error) {
@@ -128,35 +130,31 @@ export class MeuPerfilComponent implements OnInit {
     }
   }
 
-  isModalOpen: boolean = false;
-  campoEditado: string = '';
-  campoValor: string = '';
   openModal(campo: string) {
     this.campoEditado = campo;
     this.campoValor = this.meuPerfilForm.get(campo)?.value || '';
     this.isModalOpen = true;
-    console.log('abrindo modal '+ campo)
+    console.log('abrindo modal ' + campo)
   }
 
-  // Método para fechar o modal
   dismissModal() {
     this.isModalOpen = false;
   }
 
-  // Atualiza o campo com o valor editado
-  updateField() {
+  async updateField() {
     if (this.campoEditado) {
       this.meuPerfilForm.get(this.campoEditado)?.setValue(this.campoValor);
       console.log(`Valor atualizado para o campo ${this.campoEditado}: ${this.campoValor}`);
+
+      this.onSubmit();
     }
     this.dismissModal();
   }
 
-  // Atualiza o valor do campo conforme a digitação
   onInputChange(event: any) {
     this.campoValor = event.detail.value;
   }
 
-  
+
 
 }
