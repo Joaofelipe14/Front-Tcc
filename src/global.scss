@@ -114,7 +114,9 @@ ion-card {
   --background-activated: var(--btn-secundario);
   --background-focused: var(--btn-secundario);
   --background-hover: var(--btn-secundario);
+  scale: 1.05;
 }
+
 
 
 .btn-primario {
@@ -127,6 +129,7 @@ ion-card {
   transition: transform 0.1s ease, box-shadow 0.1s ease, border-radius 0.1s ease;
 }
 
+
 .btn-primario:active {
   transform: scale(0.98);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
@@ -138,6 +141,8 @@ ion-card {
   --background-activated: var(--btn-principal);
   --background-focused: var(--btn-principal);
   --background-hover: var(--btn-principal);
+  scale: 1.05;
+
 }
 
 .toast-erro {

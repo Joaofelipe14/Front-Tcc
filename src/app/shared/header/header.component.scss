@@ -30,4 +30,13 @@
     color: var(--fonte-titulo);
     font-weight: bold;
   }
+
+  @media (min-width: 756px) {
+
+    .header{
+      display: none;
+    }
+
+  }
+  
   
