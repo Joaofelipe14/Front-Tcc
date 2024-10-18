@@ -1,5 +1,5 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { AlertController, LoadingController } from '@ionic/angular';
+import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
+import { AlertController, IonContent, LoadingController, ScrollDetail } from '@ionic/angular';
 import { AuthService } from 'src/app/services/auth.service';
 import { LocalizacaoService } from 'src/app/services/localizacao.service';
 import { Utils } from 'src/app/utils/utils';
@@ -31,6 +31,51 @@ export class ConfiguracoesComponent implements OnInit {
   isModalOpenLocalizacao: boolean = false;
   editingLocalizacao: any = null;
 
+
+
+  @ViewChild('modalContent') modalContent!: IonContent; 
+  isAtTop: boolean = true; 
+  isAtBottom: boolean = false;  
+
+  onScroll(event: any) {
+    console.log(event)
+    const scrollTop = event.detail.scrollTop;
+    const scrollHeight = event.detail.scrollHeight;
+    const offsetHeight = event.detail.offsetHeight;
+
+    this.isAtTop = scrollTop === 0;
+
+    // Verifica se o conteúdo está no fundo
+    this.isAtBottom = scrollTop + offsetHeight >= scrollHeight;
+
+    console.log(this.isAtBottom)
+  }
+
+  handleScrollStart() {
+    console.log('scroll start');
+  }
+
+  handleScroll(ev: CustomEvent<ScrollDetail>) {
+    console.log('scroll', JSON.stringify(ev.detail));
+  }
+
+  handleScrollEnd() {
+    console.log('scroll end');
+  }
+  scrollToTop() {
+    this.isAtBottom=false
+    this.isAtTop= true;
+    this.modalContent.scrollToTop(300).then(() => {
+    });
+  }
+
+  // Scroll para o fundo
+  scrollToBottom() {
+    this.isAtBottom=true
+    this.isAtTop= false;
+    this.modalContent.scrollToBottom(300).then(() => {
+    });
+  }
   constructor(private authService: AuthService,
     private loadingController: LoadingController,
     private alertController: AlertController,

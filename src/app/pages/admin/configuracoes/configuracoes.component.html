@@ -130,7 +130,8 @@
           </ion-toolbar>
         </ion-header>
 
-        <ion-content class="custom-ion-localizacao">
+        <ion-content #modalContent class="custom-ion-localizacao"   [scrollEvents]="true"
+        (ionScroll)="onScroll($event)">
           <ion-item>
             <ion-label position="floating">Descrição</ion-label>
             <ion-input [(ngModel)]="newLocalizacao.descricao"></ion-input>
@@ -144,7 +145,7 @@
           <ion-item>
             <ion-label>Selecione no mapa o local desejavel.</ion-label>
           </ion-item>
-          
+
           <app-google-map *ngIf="!editingLocalizacao" [isAdmin]="true"
             (placeSelected)="handlePlaceSelected($event)"></app-google-map>
 
@@ -152,6 +153,9 @@
             [defaultLocation]="{ lat: newLocalizacao.latitude, lng: newLocalizacao.longitude }"
             (placeSelected)="handlePlaceSelected($event)">
           </app-google-map>
+
+          <ion-icon *ngIf="!isAtTop" (click)="scrollToTop()" name="arrow-up-circle" class="scroll-bottom-icon"></ion-icon>
+          <ion-icon *ngIf="!isAtBottom" (click)="scrollToBottom()" name="arrow-down-circle" class="scroll-top-icon"></ion-icon>
 
           <ion-button class="btn-primario" (click)="cadastrarLocalizacao()">Salvar</ion-button>
         </ion-content>
