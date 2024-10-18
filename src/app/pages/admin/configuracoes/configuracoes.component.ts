@@ -33,9 +33,9 @@ export class ConfiguracoesComponent implements OnInit {
 
 
 
-  @ViewChild('modalContent') modalContent!: IonContent; 
-  isAtTop: boolean = true; 
-  isAtBottom: boolean = false;  
+  @ViewChild('modalContent') modalContent!: IonContent;
+  isAtTop: boolean = true;
+  isAtBottom: boolean = false;
 
   onScroll(event: any) {
     console.log(event)
@@ -63,16 +63,16 @@ export class ConfiguracoesComponent implements OnInit {
     console.log('scroll end');
   }
   scrollToTop() {
-    this.isAtBottom=false
-    this.isAtTop= true;
+    this.isAtBottom = false
+    this.isAtTop = true;
     this.modalContent.scrollToTop(300).then(() => {
     });
   }
 
   // Scroll para o fundo
   scrollToBottom() {
-    this.isAtBottom=true
-    this.isAtTop= false;
+    this.isAtBottom = true
+    this.isAtTop = false;
     this.modalContent.scrollToBottom(300).then(() => {
     });
   }
@@ -136,8 +136,15 @@ export class ConfiguracoesComponent implements OnInit {
     try {
       const response = await this.authService.atualizar(payload, this.selectedUsuario.id).toPromise();
       // Lidar com a resposta do servidor
-      console.log('Tipo de usuário atualizado com sucesso:', response);
+      if (response.sucesso) {
+        alert('Grupo atualizado.')
+        this.closeModal()
+      } else {
+        alert('Erro')
+      }
     } catch (error) {
+      alert('Erro')
+
       console.error('Erro ao atualizar tipo de usuário:', error);
     }
   }
@@ -193,9 +200,16 @@ export class ConfiguracoesComponent implements OnInit {
     try {
       const response = await this.authService.atualizar(payload, this.selectedUsuario.id).toPromise();
       // Lidar com a resposta do servidor
-      console.log('Senha resetada com sucesso:', response);
+      if (response.sucesso) {
+        alert('Senha resetada para o CPF.')
+        this.closeModal()
+      } else {
+        alert('Erro')
+      }
     } catch (error) {
       console.error('Erro ao resetar a senha:', error);
+      alert('Erro')
+
     }
   }
 
