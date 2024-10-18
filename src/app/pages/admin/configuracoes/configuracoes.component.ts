@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { AlertController, LoadingController } from '@ionic/angular';
 import { AuthService } from 'src/app/services/auth.service';
 import { LocalizacaoService } from 'src/app/services/localizacao.service';
@@ -29,11 +29,14 @@ export class ConfiguracoesComponent implements OnInit {
   localizacoes: any[] = [];
   filteredLocalizacoes: any[] = [];
   isModalOpenLocalizacao: boolean = false;
+  editingLocalizacao: any = null;
 
   constructor(private authService: AuthService,
     private loadingController: LoadingController,
     private alertController: AlertController,
-    private localizacaoService: LocalizacaoService
+    private localizacaoService: LocalizacaoService,
+    private cdr: ChangeDetectorRef,
+
   ) { }
 
   ngOnInit() {
@@ -79,12 +82,11 @@ export class ConfiguracoesComponent implements OnInit {
     this.selectedSegment = event.detail.value;
   }
 
-
-
-  async updateTipoUsuario() {
+  async updateTipoUsuario(selectedTipoUsuario: string) {
     const payload = {
-      tipo_usuario: 'teste',
+      tipo_usuario: selectedTipoUsuario,
     };
+
 
     try {
       const response = await this.authService.atualizar(payload, this.selectedUsuario.id).toPromise();
@@ -93,6 +95,28 @@ export class ConfiguracoesComponent implements OnInit {
     } catch (error) {
       console.error('Erro ao atualizar tipo de usuário:', error);
     }
+  }
+
+
+  async confirmUpdateGrupoUser(selectedTipoUsuario: string) {
+    const alert = await this.alertController.create({
+      header: 'Confirmar',
+      message: 'Tem certeza que deseja alterar o grupo tipo desse usuarios??',
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel',
+        },
+        {
+          text: 'Confirmar',
+          handler: () => {
+            this.updateTipoUsuario(selectedTipoUsuario);
+          }
+        }
+      ]
+    });
+
+    await alert.present();
   }
 
   async confirmResetPassword() {
@@ -131,11 +155,11 @@ export class ConfiguracoesComponent implements OnInit {
   }
 
 
-
   loadLocalizacoes() {
+
     this.localizacaoService.getLocalizacoes().subscribe(data => {
-      this.localizacoes = data.dados.registros; 
-      this.filteredLocalizacoes = this.localizacoes; 
+      this.localizacoes = data.dados.registros;
+      this.filteredLocalizacoes = this.localizacoes;
     });
   }
 
@@ -143,19 +167,66 @@ export class ConfiguracoesComponent implements OnInit {
     this.isModalOpenLocalizacao = true;
   }
 
+  openEditModal(localizacao: any) {
+
+    this.newLocalizacao = {
+      descricao: localizacao.descricao,
+      descricao_amigavel: localizacao.descricao_amigavel,
+      latitude: localizacao.latitude,
+      longitude: localizacao.longitude
+    };
+
+    // Abrir o modal
+    this.isModalOpenLocalizacao = true;
+    this.editingLocalizacao = true;
+  }
+
+
   closeModalLocalizacao() {
     this.isModalOpenLocalizacao = false;
+    this.editingLocalizacao = false;
     this.resetNewLocalizacao();
   }
 
-  cadastrarLocalizacao() {
-    this.localizacaoService.createLocalizacao(this.newLocalizacao).subscribe(response => {
-      console.log('Localização cadastrada:', response);
-      this.loadLocalizacoes(); 
-      this.closeModal(); 
-    }, error => {
-      console.error('Erro ao cadastrar localização:', error);
+  async cadastrarLocalizacao() {
+    const loading = await this.loadingController.create({
+      message: this.editingLocalizacao ? 'Atualizando localização...' : 'Salvando localização...',
     });
+    await loading.present();
+
+    if (this.editingLocalizacao) {
+
+      this.localizacaoService.updateLocalizacao(this.newLocalizacao, this.editingLocalizacao.id).subscribe(
+        async response => {
+          console.log('Localização atualizada:', response);
+          this.loadLocalizacoes();
+          this.closeModalLocalizacao();
+          loading.dismiss();
+          this.editingLocalizacao = false;
+
+        },
+        error => {
+          alert('Erro ao atualizar localização');
+          console.error('Erro ao atualizar localização:', error);
+          loading.dismiss();
+        }
+      );
+    } else {
+
+      this.localizacaoService.createLocalizacao(this.newLocalizacao).subscribe(
+        async response => {
+          console.log('Localização cadastrada:', response);
+          this.loadLocalizacoes();
+          this.closeModalLocalizacao();
+          loading.dismiss();
+        },
+        error => {
+          alert('Erro ao cadastrar nova localização');
+          console.error('Erro ao cadastrar localização:', error);
+          loading.dismiss();
+        }
+      );
+    }
   }
 
   filterLocalizacoes() {
@@ -164,12 +235,26 @@ export class ConfiguracoesComponent implements OnInit {
         localizacao.descricao.toLowerCase().includes(this.searchTerm.toLowerCase())
       );
     } else {
-      this.filteredLocalizacoes = this.localizacoes; 
+      this.filteredLocalizacoes = this.localizacoes;
     }
   }
 
   resetNewLocalizacao() {
     this.newLocalizacao = { descricao: '', descricao_amigavel: '', latitude: null, longitude: null };
   }
+  handlePlaceSelected(coordinates: { lat: number, lng: number, name: string, address: string }) {
+    console.log('Local Selecionado:', coordinates.name);
+    console.log('Endereço:', coordinates.address);
+    console.log('Latitude:', coordinates.lat);
+    console.log('Longitude:', coordinates.lng);
+
+    this.newLocalizacao.descricao = coordinates.address;
+    this.newLocalizacao.latitude = coordinates.lat;
+    this.newLocalizacao.longitude = coordinates.lng;
+    this.cdr.detectChanges();
+
+  }
+
+
 
 }

@@ -10,6 +10,7 @@ import { MeuPerfilComponent } from './shared/meu-perfil/meu-perfil.component';
 import { NovaSenhaComponent } from './pages/nova-senha/nova-senha.component';
 import { CadastrarVendaComponent } from './pages/colaborador/cadastrar-venda/cadastrar-venda.component';
 import { ConfiguracoesComponent } from './pages/admin/configuracoes/configuracoes.component';
+import {  GoogleMapsComponent } from './shared/google-map/google-map.component';
 
 const routes: Routes = [
 
@@ -60,7 +61,12 @@ const routes: Routes = [
   {
     path: 'colaborador/cadastrar-venda',
     component: CadastrarVendaComponent
-  }
+  },
+  {
+    path: 'teste',
+    component: GoogleMapsComponent
+  },
+
 ];
 
 @NgModule({

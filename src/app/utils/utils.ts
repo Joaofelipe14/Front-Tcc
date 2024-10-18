@@ -9,6 +9,9 @@ export class Utils {
    * @returns O CPF formatado.
    */
   static formatCpf(value: string): string {
+    if (!value) {
+      return '';
+    }
     const onlyNumbers = value.replace(/\D/g, '');
     return onlyNumbers.replace(/(\d{3})(\d{3})(\d{3})(\d{1,2})/, '$1.$2.$3-$4');
   }
@@ -95,6 +98,9 @@ export class Utils {
 
 
   static applyPhoneMask(contato: string): string {
+    if (!contato) {
+      return '';
+    }
     let value = contato.replace(/\D/g, '');
 
     if (value.length > 0) {
