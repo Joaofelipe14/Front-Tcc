@@ -8,3 +8,13 @@ ion-content{
     margin: 1em 0;
   }
   
+  .selecao{
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 15px;
+  }
+
+  ion-select {
+    width: 50%;
+  }

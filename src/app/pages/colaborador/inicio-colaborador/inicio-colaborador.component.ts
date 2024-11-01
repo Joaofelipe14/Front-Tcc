@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { CadastroPescaService } from 'src/app/services/cadastro-pesca.service';
 import { CadastroVendaService } from 'src/app/services/cadastro-venda.service';
+import { DetailModalComponent } from '../../../colaborar/detail-modal/detail-modal.component';
+import { ModalController } from '@ionic/angular';
 
 @Component({
   selector: 'app-inicio-colaborador',
@@ -8,43 +10,45 @@ import { CadastroVendaService } from 'src/app/services/cadastro-venda.service';
   styleUrls: ['./inicio-colaborador.component.scss'],
 })
 export class InicioColaboradorComponent implements OnInit {
-  registros: any[] = []; // Array para armazenar pescas e vendas combinados
+  registros: any[] = [];
+  segment: string = 'pesca';
+  currentPagePesca: number = 1;
+  currentPageVenda: number = 1;
+  itemsPerPage: number = 5; 
+  totalPagesPesca: number = 1;
+  totalPagesVenda: number = 1;
 
-  constructor(private cadastroPescaService: CadastroPescaService, private cadastroVendaService: CadastroVendaService) { }
+  constructor(
+    private cadastroPescaService: CadastroPescaService,
+    private cadastroVendaService: CadastroVendaService,
+    private modalController: ModalController
+  ) {}
 
   ngOnInit() {
+    this.cadastroPescaService.pescas$.subscribe(newPescas => {
+      if (newPescas.length) {
+        this.updateRegistros(newPescas[0], 'pesca');
+      }
+    });
+  
+    this.cadastroVendaService.vendas$.subscribe(newVendas => {
+      if (newVendas.length) {
+        this.updateRegistros(newVendas[0], 'venda');
+      }
+    });
+  
     this.loadPesca();
     this.loadVendas();
-
-    this.cadastroPescaService.pescas$.subscribe(pescas => {
-      if ([pescas]) {
-        this.updateRegistros(pescas, 'pesca');
-      }
-    });
-
-    this.cadastroVendaService.vendas$.subscribe(pescas => {
-      if ([pescas]) {
-        this.updateRegistros(pescas, 'venda');
-      }
-    });
-
   }
 
   loadPesca(): void {
     this.cadastroPescaService.getRegistrosByUserId().subscribe(
-      (response) => {
+      response => {
         if (response.status) {
-          const pescas = response.dados.registros.map((registro: { data_com_hora: string; local: any; codigo: any; }) => ({
-            dateTime: new Date(registro.data_com_hora).getTime(),
-            local: registro.local,
-            codigo: registro.codigo,
-            type: 'pesca'
-          }));
-          this.registros = [...this.registros, ...pescas];
-          this.sortRegistros();
+          this.updateRegistros(response.dados.registros, 'pesca');
         }
       },
-      (error) => {
+      error => {
         console.error('Erro ao carregar registros de pesca', error);
       }
     );
@@ -52,31 +56,15 @@ export class InicioColaboradorComponent implements OnInit {
 
   loadVendas(): void {
     this.cadastroVendaService.getRegistrosByUserId().subscribe(
-      (response) => {
+      response => {
         if (response.status) {
-          const vendas = response.dados.registros.map((registro: {
-            created_at: string; ponto_venda: any; quantidade: any; valor: any
-          }) => ({
-            dateTime: new Date(registro.created_at).getTime(),
-            ponto_venda: registro.ponto_venda,
-            quantidade: registro.quantidade,
-            valor: registro.valor,
-            type: 'venda'
-          }));
-          this.registros = [...this.registros, ...vendas];
-          this.sortRegistros();
+          this.updateRegistros(response.dados.registros, 'venda');
         }
       },
-      (error) => {
+      error => {
         console.error('Erro ao carregar registros de vendas', error);
       }
     );
-  }
-
-  sortRegistros(): void {
-    this.registros.sort((a, b) => {
-      return new Date(b.dateTime).getTime() - new Date(a.dateTime).getTime();
-    });
   }
 
   updateRegistros(newRecords: any[], type: string): void {
@@ -88,9 +76,67 @@ export class InicioColaboradorComponent implements OnInit {
 
     this.registros = [...this.registros, ...updatedRecords];
     this.sortRegistros();
+    this.calculateTotalPages();
   }
 
-  formatDateTime(dateTime: number): string {
+  sortRegistros(): void {
+    this.registros.sort((a, b) => new Date(b.dateTime).getTime() - new Date(a.dateTime).getTime());
+  }
+
+  calculateTotalPages(): void {
+    this.totalPagesPesca = Math.ceil(this.pescas.length / this.itemsPerPage);
+    this.totalPagesVenda = Math.ceil(this.vendas.length / this.itemsPerPage);
+  }
+
+  get paginatedPescas() {
+    return this.pescas.slice((this.currentPagePesca - 1) * this.itemsPerPage, this.currentPagePesca * this.itemsPerPage);
+  }
+
+  get paginatedVendas() {
+    return this.vendas.slice((this.currentPageVenda - 1) * this.itemsPerPage, this.currentPageVenda * this.itemsPerPage);
+  }
+
+  get pescas() {
+    return this.registros.filter(registro => registro.type === 'pesca');
+  }
+
+  get vendas() {
+    return this.registros.filter(registro => registro.type === 'venda');
+  }
+
+  previousPagePesca() {
+    if (this.currentPagePesca > 1) {
+      this.currentPagePesca--;
+    }
+  }
+
+  nextPagePesca() {
+    if (this.currentPagePesca < this.totalPagesPesca) {
+      this.currentPagePesca++;
+    }
+  }
+
+  previousPageVenda() {
+    if (this.currentPageVenda > 1) {
+      this.currentPageVenda--;
+    }
+  }
+
+  nextPageVenda() {
+    if (this.currentPageVenda < this.totalPagesVenda) {
+      this.currentPageVenda++;
+    }
+  }
+
+  async openDetailModal(registro: any) {
+    const modal = await this.modalController.create({
+      component: DetailModalComponent,
+      componentProps: { registro: registro },
+    });
+    return await modal.present();
+  }
+
+  formatDateTime(dateTime: string): string {
     const date = new Date(dateTime);
     return `${date.getDate().toString().padStart(2, '0')}/${(date.getMonth() + 1).toString().padStart(2, '0')}/${date.getFullYear()} ${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}`;
   }

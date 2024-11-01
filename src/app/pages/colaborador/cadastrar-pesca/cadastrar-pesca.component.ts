@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Keyboard } from '@capacitor/keyboard';
 import { ToastController } from '@ionic/angular';
 import { CadastroPescaService } from 'src/app/services/cadastro-pesca.service';
+import { LocalizacaoService } from 'src/app/services/localizacao.service';
 import { Utils } from 'src/app/utils/utils';
 
 // Keyboard.setResizeMode('none'); // Desativa o ajuste automático do teclado
@@ -14,19 +15,37 @@ import { Utils } from 'src/app/utils/utils';
 })
 export class CadastrarPescaComponent implements OnInit {
 
-  cadastrarPescaForm!: FormGroup;
-
-  constructor(private formBuilder: FormBuilder, private cadastroPescaService: CadastroPescaService, private toastController: ToastController) { }
+  cadastrarPescaForm!: FormGroup; 
+  localizacoes:any;
+  constructor(private formBuilder: FormBuilder, private cadastroPescaService: CadastroPescaService, private toastController: ToastController, private localizacaoService: LocalizacaoService) { }
 
   ngOnInit() {
     this.initializeForm();
+    this.loadLocalizacoes(); 
   }
-
+  
+  loadLocalizacoes() {
+    this.localizacaoService.getLocalizacoes().subscribe(
+      (data) => {
+        this.localizacoes = data.dados.registros; 
+        console.log('Localizações carregadas:', this.localizacoes);
+        if (this.localizacoes && this.localizacoes.length > 0) {
+          this.cadastrarPescaForm.patchValue({ local: this.localizacoes[0].id });
+        }
+      },
+      (error) => {
+        console.error('Erro ao carregar localizações:', error);
+        Utils.showErro('Erro ao carregar localizações', this.toastController);
+      }
+    );
+  }
   initializeForm() {
     this.cadastrarPescaForm = this.formBuilder.group({
       local: ['', Validators.required],
       data_com_hora: ['', Validators.required],
-      codigo: ['', Validators.required],
+      quantidade: ['', Validators.required],
+      pescado: ['', Validators.required],
+
     });
   }
 

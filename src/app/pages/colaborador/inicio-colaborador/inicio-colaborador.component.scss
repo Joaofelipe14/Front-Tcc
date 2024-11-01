@@ -18,3 +18,19 @@ ion-content {
   justify-content: center;
   flex-direction: column;
 }
+
+.content-list {
+  padding: 16px;
+
+  ul {
+      list-style: none;
+      padding: 0;
+
+      li {
+          margin-bottom: 16px;
+          padding: 12px;
+          border: 1px solid #ccc;
+          border-radius: 8px;
+      }
+  }
+}

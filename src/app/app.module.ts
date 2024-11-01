@@ -24,6 +24,7 @@ import { CadastrarVendaComponent } from './pages/colaborador/cadastrar-venda/cad
 import { AuthInterceptor } from './services/interceptor.service';
 import { ConfiguracoesComponent } from './pages/admin/configuracoes/configuracoes.component';
 import { GoogleMapsComponent } from './google-map/google-map-autocomplete.component';
+import { DetailModalComponent } from './colaborar/detail-modal/detail-modal.component';
 
 
 @NgModule({
@@ -41,7 +42,8 @@ import { GoogleMapsComponent } from './google-map/google-map-autocomplete.compon
     NovaSenhaComponent,
     CadastrarVendaComponent,
     ConfiguracoesComponent,
-    GoogleMapsComponent
+    GoogleMapsComponent,
+    DetailModalComponent
 
   ],
   imports: [

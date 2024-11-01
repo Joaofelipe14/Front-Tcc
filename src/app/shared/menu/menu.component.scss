@@ -2,13 +2,12 @@
   position: fixed;
   bottom: 0;
   width: 100%;
-  background-color: #ECECEC;
-  border-top-left-radius: 10px;
-  border-top-right-radius: 10px;
-  border-top: 2px solid #ECECEC;
-  box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
-  height: 85px;
-  border-radius: 40px 40px 0px 0px;
+  background-color: rgb(230, 235, 245);
+
+  // border-top: 2px solid #ECECEC;
+  // box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+  height: 75px;
+  border-radius: 20px 20px 0px 0px;
   z-index: 999;
 
 }

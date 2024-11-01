@@ -9,9 +9,17 @@
 
             <ion-card-content>
                 <form [formGroup]="cadastrarPescaForm" class="content-card" (ngSubmit)="onSubmit()">
-                    <div>
-                        <ion-input class="card-input" placeholder="Local" formControlName="local" type="text" required></ion-input>
+                   
+
+                    <div class="selecao">
+                        <ion-label>Ponto de Venda:</ion-label>
+                        <ion-select formControlName="local" required>
+                          <ion-select-option *ngFor="let localizacao of localizacoes" [value]="localizacao.id">
+                            {{ localizacao.descricao_amigavel }} <!-- Exibe a descrição amigável -->
+                          </ion-select-option>
+                        </ion-select>
                     </div>
+                      
 
                     <div style="align-items: center; flex-direction: row;">
                         <ion-label>Data e Horário</ion-label>
@@ -19,7 +27,10 @@
                             datetime="datetime"></ion-datetime-button>
                     </div>
 
-                        <ion-input class="card-input" placeholder="Codigo" formControlName="codigo" type="text" required></ion-input>
+                    <ion-input class="card-input" placeholder="Pescado" formControlName="pescado" type="text" required></ion-input>
+
+
+                        <ion-input class="card-input" placeholder="Quantidade(Aproximada)" formControlName="quantidade" type="text" required></ion-input>
                    
                     <ion-button class="btn-primario posicao-btn-card " [disabled]="cadastrarPescaForm.invalid" type="submit">Enviar</ion-button>
                 </form>

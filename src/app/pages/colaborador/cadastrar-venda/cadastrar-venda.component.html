@@ -9,9 +9,16 @@
 
           <ion-card-content>
               <form [formGroup]="cadastrarVendaForm" class="content-card" (ngSubmit)="onSubmit()">
-                  <div>
-                      <ion-input class="card-input" placeholder="Ponto de venda" formControlName="ponto_venda" type="text" required></ion-input>
-                  </div>
+
+                <div class="selecao">
+                    <ion-label>Ponto de Venda:</ion-label>
+                    <ion-select formControlName="ponto_venda" required>
+                      <ion-select-option *ngFor="let localizacao of localizacoes" [value]="localizacao.id">
+                        {{ localizacao.descricao_amigavel }} <!-- Exibe a descrição amigável -->
+                      </ion-select-option>
+                    </ion-select>
+                </div>
+                  
                   <div>
                     <ion-input class="card-input" placeholder="Quantidade" formControlName="quantidade" type="text" required></ion-input>
                 </div>
