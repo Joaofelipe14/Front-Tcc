@@ -1,6 +1,10 @@
 import { Component, OnInit } from '@angular/core';
+import { ModalController } from '@ionic/angular';
 import { CadastroPescaService } from 'src/app/services/cadastro-pesca.service';
 import { CadastroVendaService } from 'src/app/services/cadastro-venda.service';
+import { DetailModalComponent } from 'src/app/shared/detail-modal/detail-modal.component';
+import { LocalizacaoService } from 'src/app/services/localizacao.service'; 
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-inicio-admin',
@@ -8,39 +12,53 @@ import { CadastroVendaService } from 'src/app/services/cadastro-venda.service';
   styleUrls: ['./inicio-admin.component.scss'],
 })
 export class InicioAdminComponent implements OnInit {
+  segment: string = 'pesca';
+  registrosPesca: any[] = [];
+  registrosVenda: any[] = [];
+  searchTerm: string = ''; 
+  selectedLocalizacao: string = ''; 
+  localizacoes: any[] = []; 
+  
+  // Registros filtrados
+  filteredPesca: any[] = [];
+  filteredVenda: any[] = [];
 
-  registros: any[] = []; // Array para armazenar pescas e vendas combinados
-
+  // Paginação
+  currentPagePesca: number = 1;
+  currentPageVenda: number = 1;
+  itemsPerPage: number = 5;
+  totalPagesPesca: number = 0;
+  totalPagesVenda: number = 0;
 
   constructor(
     private cadastroPescaService: CadastroPescaService,
-    private cadastroVendaService: CadastroVendaService) { }
-
+    private cadastroVendaService: CadastroVendaService,
+    private modalController: ModalController,
+    private localizacaoService: LocalizacaoService ,
+    private toastr: ToastrService
+  ) {}
 
   ngOnInit() {
     this.loadPescaAll();
     this.loadVendasAll();
+    this.loadLocalizacoes(); 
+  }
 
+
+  showSuccess() {
+    this.toastr.success('Hello world!', 'Toastr fun!');
   }
 
   loadPescaAll(): void {
     this.cadastroPescaService.getRegistrosAll().subscribe(
       (response) => {
         if (response.status) {
-          console.log(response)
-          const pescas = response.dados.registros.map((registro: {
-            user: any; data_com_hora: string; local: any; codigo: any;
-          }) => ({
-            dateTime: new Date(registro.data_com_hora).getTime(),
-            local: registro.local,
-            codigo: registro.codigo,
-            type: 'pesca',
-            usuario: registro.user.name
+          this.registrosPesca = response.dados.registros.map((registro: any) => ({
+            ...registro,
+            type: 'pesca'
           }));
-          console.log(pescas)
-
-          this.registros = [...this.registros, ...pescas];
-          this.sortRegistros();
+          this.filteredPesca = this.registrosPesca;
+          this.totalPagesPesca = Math.ceil(this.filteredPesca.length / this.itemsPerPage);
         }
       },
       (error) => {
@@ -53,18 +71,12 @@ export class InicioAdminComponent implements OnInit {
     this.cadastroVendaService.getRegistrosAll().subscribe(
       (response) => {
         if (response.status) {
-          const vendas = response.dados.registros.map((registro: {
-            created_at: string; ponto_venda: any; quantidade: any; valor: any, user: any;}) => ({
-            dateTime: new Date(registro.created_at).getTime(),
-            ponto_venda: registro.ponto_venda,
-            quantidade: registro.quantidade,
-            valor: registro.valor,
-            type: 'venda',
-            usuario: registro.user.name
-
+          this.registrosVenda = response.dados.registros.map((registro: any) => ({
+            ...registro,
+            type: 'venda'
           }));
-          this.registros = [...this.registros, ...vendas];
-          this.sortRegistros();
+          this.filteredVenda = this.registrosVenda;
+          this.totalPagesVenda = Math.ceil(this.filteredVenda.length / this.itemsPerPage);
         }
       },
       (error) => {
@@ -73,15 +85,84 @@ export class InicioAdminComponent implements OnInit {
     );
   }
 
-  sortRegistros(): void {
-    this.registros.sort((a, b) => {
-      return new Date(b.dateTime).getTime() - new Date(a.dateTime).getTime();
-    });
-
-    console.log(this.registros)
+  loadLocalizacoes(): void {
+    this.localizacaoService.getLocalizacoes().subscribe(
+      (data) => {
+        this.localizacoes = data.dados.registros; 
+        console.log('Localizações carregadas:', this.localizacoes);
+      },
+      (error) => {
+        console.error('Erro ao carregar localizações', error);
+      }
+    );
   }
 
-  formatDateTime(dateTime: number): string {
+  segmentChanged(event: any): void {
+    this.segment = event.detail.value;
+  }
+
+  filterRecords() {
+    if (this.segment === 'pesca') {
+      this.filteredPesca = this.registrosPesca.filter(registro =>
+        registro.user.name.toLowerCase().includes(this.searchTerm.toLowerCase()) &&
+        (this.selectedLocalizacao ? registro.local === this.selectedLocalizacao : true) 
+      );
+      this.currentPagePesca = 1;
+      this.totalPagesPesca = Math.ceil(this.filteredPesca.length / this.itemsPerPage);
+    } else {
+      this.filteredVenda = this.registrosVenda.filter(registro =>
+        registro.user.name.toLowerCase().includes(this.searchTerm.toLowerCase()) &&
+        (this.selectedLocalizacao ? registro.ponto_venda === this.selectedLocalizacao : true) 
+      );
+      this.currentPageVenda = 1;
+      this.totalPagesVenda = Math.ceil(this.filteredVenda.length / this.itemsPerPage);
+    }
+  }
+
+  get paginatedPesca() {
+    const start = (this.currentPagePesca - 1) * this.itemsPerPage;
+    return this.filteredPesca.slice(start, start + this.itemsPerPage);
+  }
+
+  get paginatedVenda() {
+    const start = (this.currentPageVenda - 1) * this.itemsPerPage;
+    return this.filteredVenda.slice(start, start + this.itemsPerPage);
+  }
+
+  previousPagePesca(): void {
+    if (this.currentPagePesca > 1) {
+      this.currentPagePesca--;
+    }
+  }
+
+  nextPagePesca(): void {
+    if (this.currentPagePesca < this.totalPagesPesca) {
+      this.currentPagePesca++;
+    }
+  }
+
+  previousPageVenda(): void {
+    if (this.currentPageVenda > 1) {
+      this.currentPageVenda--;
+    }
+  }
+
+  nextPageVenda(): void {
+    if (this.currentPageVenda < this.totalPagesVenda) {
+      this.currentPageVenda++;
+    }
+  }
+
+  async openModal(registro: any) {
+    console.log(registro);
+    const modal = await this.modalController.create({
+      component: DetailModalComponent,
+      componentProps: { registro }
+    });
+    return await modal.present();
+  }
+
+  formatDateTime(dateTime: string): string {
     const date = new Date(dateTime);
     return `${date.getDate().toString().padStart(2, '0')}/${(date.getMonth() + 1).toString().padStart(2, '0')}/${date.getFullYear()} ${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}`;
   }

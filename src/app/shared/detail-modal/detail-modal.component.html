@@ -9,18 +9,32 @@
 
 <ion-content>
   <div *ngIf="registro">
-    <p><strong></strong> {{ registro.type === 'pesca' ? 'Registro de Pesca' : 'Registro de Venda' }}</p>
-    <p><strong>Data e Horário:</strong> {{ formatDateTime(registro.dateTime) }}</p>
+    <p><strong>{{ registro.type === 'pesca' ? 'Registro de Pesca' : 'Registro de Venda' }}</strong></p>
+    
+    <div *ngIf="registro.user">
+      <ion-item>
+        <ion-avatar slot="start">
+          <img [src]="registro.user.url_perfil" alt="Foto de Perfil">
+        </ion-avatar>
+        <ion-label>
+          <h2>{{ registro.user.name }}</h2>
+          <h3>{{ registro.user.contato }}</h3>
+        </ion-label>
+      </ion-item>
+    </div>
+    
     <div *ngIf="registro.type === 'pesca'">
       <p><strong>Área:</strong> {{ registro.localizacao.descricao_amigavel }}</p>
       <p><strong>Pescado:</strong> {{ registro.pescado }}</p>
+      <p><strong>Data e Horário:</strong> {{ formatDateTime(registro.data_com_hora) }}</p>
       <p><strong>Quantidade:</strong> {{ registro.quantidade }}</p>
       <p><strong>Código:</strong> {{ registro.codigo }}</p>
     </div>
+    
     <div *ngIf="registro.type === 'venda'">
-      <p><strong>Ponta da venda:</strong> {{ registro.ponto_venda }}</p>
+      <p><strong>Ponto de Venda:</strong>{{ registro.localizacao.descricao_amigavel }}</p>
       <p><strong>Quantidade:</strong> {{ registro.quantidade }}</p>
-      <p><strong>Valor:</strong> {{ registro.valor }}</p>
+      <p><strong>Valor:</strong> R$ {{ registro.valor }}</p>
     </div>
   </div>
 </ion-content>
