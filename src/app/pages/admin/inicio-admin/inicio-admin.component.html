@@ -1,45 +1,67 @@
 <ion-content>
   <app-header title="Meus Registros"></app-header>
 
-  <div class="content-card">
-      <ion-card class="card-cadastro" *ngFor="let registro of registros">
-          <ion-card-header class="card-header-cadastro">
-              <ion-card-title class="title-card">{{ registro.type === 'pesca' ? 'Registro de Pesca' : 'Registro de Venda' }}</ion-card-title>
-          </ion-card-header>
+  <ion-segment [(ngModel)]="segment" (ionChange)="segmentChanged($event)">
+    <ion-segment-button value="pesca">
+      Pesca
+    </ion-segment-button>
+    <ion-segment-button value="venda">
+      Venda
+    </ion-segment-button>
+  </ion-segment>
 
-          <ion-card-content>
-            <div style="margin-top: 10px;">
-              <ion-label>Participante</ion-label>
-              <p>{{ (registro.usuario) }}</p>
-          </div>
-              <div style="margin-top: 10px;">
-                  <ion-label>Data e Horário:</ion-label>
-                  <p>{{ formatDateTime(registro.dateTime) }}</p>
-              </div>
-              <div *ngIf="registro.type === 'pesca'">
-                  <ion-label>Área:</ion-label>
-                  <p>{{ registro.local }}</p>
-              </div>
-              <div *ngIf="registro.type === 'pesca'">
-                  <ion-label>Código:</ion-label>
-                  <p>{{ registro.codigo }}</p>
-              </div>
-              <div *ngIf="registro.type === 'venda'">
-                  <ion-label>Ponta da venda:</ion-label>
-                  <p>{{ registro.ponto_venda }}</p>
-              </div>
-              <div *ngIf="registro.type === 'venda'">
-                  <ion-label>Quantidade:</ion-label>
-                  <p>{{ registro.quantidade }}</p>
-              </div>
-              <div *ngIf="registro.type === 'venda'">
-                  <ion-label>Valor:</ion-label>
-                  <p>{{ registro.valor }}</p>
-              </div>
-              <ion-button class="btn-primario posicao-btn-card" type="submit">Ver mais</ion-button>
-              <br><br>
-          </ion-card-content>
-      </ion-card>
+  <ion-searchbar [(ngModel)]="searchTerm" (ionInput)="filterRecords()" placeholder="Buscar por nome..."></ion-searchbar>
+
+  <ion-select [(ngModel)]="selectedLocalizacao" (ionChange)="filterRecords()" placeholder="Filtrar por localização">
+    <ion-select-option value="">Todos</ion-select-option> 
+    <ion-select-option *ngFor="let localizacao of localizacoes" [value]="localizacao.id">{{ localizacao.descricao_amigavel }}</ion-select-option>
+  </ion-select>
+
+  <div *ngIf="segment === 'pesca'">
+    <ion-list>
+      <ion-item *ngFor="let registro of paginatedPesca" (click)="openModal(registro)">
+        <ion-avatar slot="start">
+          <img [src]="registro.user.url_perfil" alt="{{ registro.user.name }}">
+        </ion-avatar>
+        <ion-label>
+          <h2>{{ registro.user.name }}</h2>
+          <h3>Pescado: {{ registro.pescado }}</h3>
+          <p>Quantidade: {{ registro.quantidade }}</p>
+        </ion-label>
+      </ion-item>
+    </ion-list>
+    <ion-toolbar>
+      <ion-buttons slot="start">
+        <ion-button (click)="previousPagePesca()" [disabled]="currentPagePesca === 1">Anterior</ion-button>
+      </ion-buttons>
+      <ion-buttons slot="end">
+        <ion-button (click)="nextPagePesca()" [disabled]="currentPagePesca === totalPagesPesca">Próximo</ion-button>
+      </ion-buttons>
+    </ion-toolbar>
   </div>
+
+  <div *ngIf="segment === 'venda'">
+    <ion-list>
+      <ion-item *ngFor="let registro of paginatedVenda" (click)="openModal(registro)">
+        <ion-avatar slot="start">
+          <img [src]="registro.user.url_perfil" alt="{{ registro.user.name }}">
+        </ion-avatar>
+        <ion-label>
+          <h2>{{ registro.user.name }}</h2>
+          <h3>Quantidade: {{ registro.quantidade }}</h3>
+          <p>Valor: R$ {{ registro.valor }}</p>
+        </ion-label>
+      </ion-item>
+    </ion-list>
+    <ion-toolbar>
+      <ion-buttons slot="start">
+        <ion-button (click)="previousPageVenda()" [disabled]="currentPageVenda === 1">Anterior</ion-button>
+      </ion-buttons>
+      <ion-buttons slot="end">
+        <ion-button (click)="nextPageVenda()" [disabled]="currentPageVenda === totalPagesVenda">Próximo</ion-button>
+      </ion-buttons>
+    </ion-toolbar>
+  </div>
+
+  <app-menu></app-menu>
 </ion-content>
-<app-menu></app-menu>

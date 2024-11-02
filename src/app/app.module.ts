@@ -23,8 +23,8 @@ import { NovaSenhaComponent } from './pages/nova-senha/nova-senha.component';
 import { CadastrarVendaComponent } from './pages/colaborador/cadastrar-venda/cadastrar-venda.component';
 import { AuthInterceptor } from './services/interceptor.service';
 import { ConfiguracoesComponent } from './pages/admin/configuracoes/configuracoes.component';
-import { GoogleMapsComponent } from './google-map/google-map-autocomplete.component';
-import { DetailModalComponent } from './colaborar/detail-modal/detail-modal.component';
+import { GoogleMapsComponent } from './shared/google-map/google-map-autocomplete.component';
+import { DetailModalComponent } from './shared/detail-modal/detail-modal.component';
 
 
 @NgModule({

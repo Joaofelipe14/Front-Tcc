@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CadastroPescaService } from 'src/app/services/cadastro-pesca.service';
 import { CadastroVendaService } from 'src/app/services/cadastro-venda.service';
-import { DetailModalComponent } from '../../../colaborar/detail-modal/detail-modal.component';
+import { DetailModalComponent } from '../../../shared/detail-modal/detail-modal.component';
 import { ModalController } from '@ionic/angular';
 
 @Component({

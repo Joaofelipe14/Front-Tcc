@@ -134,7 +134,6 @@ export class MeuPerfilComponent implements OnInit {
     this.campoEditado = campo;
     this.campoValor = this.meuPerfilForm.get(campo)?.value || '';
     this.isModalOpen = true;
-    console.log('abrindo modal ' + campo)
   }
 
   dismissModal() {

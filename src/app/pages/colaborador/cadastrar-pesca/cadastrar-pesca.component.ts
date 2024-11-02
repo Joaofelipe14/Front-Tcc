@@ -1,12 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Keyboard } from '@capacitor/keyboard';
 import { ToastController } from '@ionic/angular';
 import { CadastroPescaService } from 'src/app/services/cadastro-pesca.service';
 import { LocalizacaoService } from 'src/app/services/localizacao.service';
 import { Utils } from 'src/app/utils/utils';
-
-// Keyboard.setResizeMode('none'); // Desativa o ajuste automático do teclado
 
 @Component({
   selector: 'app-cadastrar-pesca',

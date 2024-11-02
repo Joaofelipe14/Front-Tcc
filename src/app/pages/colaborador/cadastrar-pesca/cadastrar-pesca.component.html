@@ -15,7 +15,7 @@
                         <ion-label>Ponto de Venda:</ion-label>
                         <ion-select formControlName="local" required>
                           <ion-select-option *ngFor="let localizacao of localizacoes" [value]="localizacao.id">
-                            {{ localizacao.descricao_amigavel }} <!-- Exibe a descrição amigável -->
+                            {{ localizacao.descricao_amigavel }} 
                           </ion-select-option>
                         </ion-select>
                     </div>
