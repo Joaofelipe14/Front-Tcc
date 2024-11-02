@@ -49,12 +49,21 @@
               (ionInput)="onCpfInput($event)"
               type="text"
               required
-              (ionBlur)="onCpfBlur()"
             ></ion-input>
           </ion-item>
+
+          <ion-text class="error" color="danger" *ngIf="loginForm.get('cpf')?.hasError('required') && loginForm.get('cpf')?.touched">
+            <p>CPF é obrigatório.</p>
+          </ion-text>
+          <ion-text class="error" color="danger" *ngIf="loginForm.get('cpf')?.hasError('minlength') && loginForm.get('cpf')?.touched">
+            <p>CPF deve ter 11 dígitos.</p>
+          </ion-text>
+          <ion-text class="error" color="danger" *ngIf="loginForm.get('cpf')?.hasError('invalidCpf') && loginForm.get('cpf')?.touched">
+            <p>CPF inválido.</p>
+          </ion-text>
+          
           <ion-item>
             <ion-input placeholder="CAF" formControlName="cap" type="text"  required></ion-input>
-           
           </ion-item>
           <ion-text class="error" color="danger" *ngIf="loginForm.get('cap')?.hasError('minlength') && loginForm.get('cap')?.touched">
             <p>O comprimento mínimo é 6 caracteres.</p>
@@ -63,7 +72,14 @@
             <ion-input placeholder="Contato" formControlName="contato" type="text" (input)="applyPhoneMask($event)" required></ion-input>
           </ion-item>
      
-          <ion-button type="submit" class="btn-primario" [disabled]="loginForm.invalid">Cadastrar</ion-button>
+
+          <ion-button type="submit" class="btn-primario" [disabled]="loginForm.invalid || isLoading"
+          (click)="onSubmit()">
+          <ng-container *ngIf="isLoading; else loginText">
+            <ion-spinner size="small"></ion-spinner>
+          </ng-container>
+          <ng-template #loginText>Cadastrar</ng-template>
+        </ion-button>
         </form>
       </ion-card-content>
     </ion-card>

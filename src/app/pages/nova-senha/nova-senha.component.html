@@ -4,50 +4,44 @@
     <ion-card>
       <ion-card-header class="header-card">
         <img class="logo" src="./../../../assets/logo.svg" alt="">
+
         <ion-card-title>Atualize sua senha</ion-card-title>
       </ion-card-header>
       <ion-card-content>
         <ion-item>
-          {{ nome }}
+          {{ dataUser?.name }}
         </ion-item>
         <form [formGroup]="novaSenha" (ngSubmit)="onSubmit()">
           <ion-item>
-            <ion-input 
-              placeholder="Digite sua senha" 
-              formControlName="password" 
-              maxlength="14" 
-              type="password" 
+            <ion-input placeholder="Digite sua senha" formControlName="password" maxlength="14" type="password"
               required>
             </ion-input>
           </ion-item>
           <ion-item>
-            <ion-input 
-              placeholder="Confirme sua nova senha" 
-              (ionBlur)="erroMsg()" 
-              formControlName="confirmPassword" 
-              type="password" 
-              required>
+            <ion-input placeholder="Confirme sua nova senha" (ionBlur)="erroMsg()" formControlName="confirmPassword"
+              type="password" required>
             </ion-input>
           </ion-item>
-          <!-- Exibir mensagem de erro se as senhas não coincidirem -->
-          <!-- <div *ngIf="!passwordsMatch" class="error-message">
-            As senhas não coincidem.
-          </div> -->
-          <ion-button 
-            type="submit" 
-            class="btn-primario" 
-            [disabled]="!passwordsMatch">
-            Salvar
+          <ion-text class="error" color="danger"
+            *ngIf="novaSenha.get('password')?.hasError('minlength') && novaSenha.get('password')?.touched">
+            <p>O comprimento mínimo é 8 caracteres.</p>
+          </ion-text>
+          <ion-button type="submit" class="btn-primario" [disabled]="!passwordsMatch || isLoading || novaSenha.invalid"
+            (click)="onSubmit()">
+            <ng-container *ngIf="isLoading; else loginText">
+              <ion-spinner size="small"></ion-spinner>
+            </ng-container>
+            <ng-template #loginText>Login</ng-template>
           </ion-button>
-          <ion-button type="button" class="btn-secundario">
+
+          <ion-button href="/login" type="button" class="btn-secundario">
+
             Voltar
           </ion-button>
         </form>
       </ion-card-content>
     </ion-card>
     <!-- Link "Esqueceu sua senha?" fora do card -->
-    <div class="forgot-password">
-      <a href="/registrar">Voltar?</a>
-    </div>
+
   </div>
 </ion-content>

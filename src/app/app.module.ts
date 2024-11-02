@@ -57,8 +57,16 @@ import { ToastrModule } from 'ngx-toastr';
     HttpClientModule,
     FormsModule,
     CommonModule,
-    BrowserAnimationsModule, // required animations module
-    ToastrModule.forRoot(), // ToastrModule added
+    BrowserAnimationsModule, 
+    ToastrModule.forRoot({
+      positionClass: 'toast-top-right',
+      closeButton: true,
+      progressBar: true,
+      timeOut: 3000,
+      preventDuplicates: true,
+      tapToDismiss: true,
+      progressAnimation:'increasing'
+    }),
     AppRoutingModule, ServiceWorkerModule.register('ngsw-worker.js', {
       enabled: !isDevMode(),
       // Register the ServiceWorker as soon as the application is stable

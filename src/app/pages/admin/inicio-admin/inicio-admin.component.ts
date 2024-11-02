@@ -45,9 +45,7 @@ export class InicioAdminComponent implements OnInit {
   }
 
 
-  showSuccess() {
-    this.toastr.success('Hello world!', 'Toastr fun!');
-  }
+
 
   loadPescaAll(): void {
     this.cadastroPescaService.getRegistrosAll().subscribe(

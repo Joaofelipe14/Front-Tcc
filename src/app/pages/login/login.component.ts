@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ToastController } from '@ionic/angular';
+import { ToastrService } from 'ngx-toastr';
 import { AuthService } from 'src/app/services/auth.service';
 import { TokenService } from 'src/app/services/token.service';
 import { Utils } from 'src/app/utils/utils';
@@ -15,6 +16,8 @@ import { Utils } from 'src/app/utils/utils';
 export class LoginComponent implements OnInit {
   loginForm: FormGroup;
   formattedCpf: string = '';
+  isLoading: boolean = false;
+
 
   constructor(
     private fb: FormBuilder,
@@ -22,10 +25,12 @@ export class LoginComponent implements OnInit {
     private toastController: ToastController,
     private authService: AuthService,
     private tokenService: TokenService,
-    private auth: AuthService
+    private auth: AuthService,
+    private toastr: ToastrService
+
   ) {
     this.loginForm = this.fb.group({
-      cpf: ['', [Validators.required, Validators.pattern(/^\d{3}\.\d{3}\.\d{3}-\d{2}$/)]],
+      cpf: ['', [Validators.required, Validators.minLength(11), Utils.cpfValidator()]],
       password: ['', Validators.required]
     });
   }
@@ -69,13 +74,19 @@ export class LoginComponent implements OnInit {
         cpf: formData.cpf,
         password: this.loginForm.value.password
       }
+
+      this.isLoading = true;
+
       this.authService.logar(payload).subscribe(
         (response: any) => {
-          this.tokenService.setToken(response.dados.token)
+          this.isLoading = false;
 
           if (response.dados.usuario.primeiro_acesso === "S") {
-            this.router.navigate(['/nova-senha', response.dados.usuario.id]);
+            this.router.navigate(['/nova-senha'], {
+              state: { dataUser: response.dados }
+            });
           } else {
+            this.tokenService.setToken(response.dados.token)
 
             if (response.dados.usuario.tipo_usuario === "colaborador") {
               this.router.navigate(['/colaborador/inicio']);
@@ -85,9 +96,11 @@ export class LoginComponent implements OnInit {
           }
         },
         (error: any) => {
-          console.error('Erro ao carregar respostas:', error);
-          Utils.showErro('Erro fazer login, tente novamente mais tarde.', this.toastController);
+          this.isLoading = false;
 
+          console.error('Erro ao carregar respostas:', error);
+
+          this.toastr.error('Não foi possivel realizar o login', 'Erro')
         }
       );
 

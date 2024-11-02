@@ -10,23 +10,36 @@
       <ion-card-content>
         <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
           <ion-item>
-            <ion-input   
-            placeholder="Digite seu CPF"
-            formControlName="cpf"
-            maxlength="14"
-            [value]="formattedCpf"
-            (ionInput)="onCpfInput($event)"
-            type="text"
-            required
-            (ionBlur)="onCpfBlur()"
-
-            ></ion-input>
+            <ion-input placeholder="Digite seu CPF" formControlName="cpf" maxlength="14" [value]="formattedCpf"
+              (ionInput)="onCpfInput($event)" type="text" required></ion-input>
           </ion-item>
+
+          <ion-text class="error" color="danger"
+            *ngIf="loginForm.get('cpf')?.hasError('required') && loginForm.get('cpf')?.touched">
+            <p>CPF é obrigatório.</p>
+          </ion-text>
+          <ion-text class="error" color="danger"
+            *ngIf="loginForm.get('cpf')?.hasError('minlength') && loginForm.get('cpf')?.touched">
+            <p>CPF deve ter 11 dígitos.</p>
+          </ion-text>
+          <ion-text class="error" color="danger"
+            *ngIf="loginForm.get('cpf')?.hasError('invalidCpf') && loginForm.get('cpf')?.touched">
+            <p>CPF inválido.</p>
+          </ion-text>
+
           <ion-item>
             <ion-input placeholder="Digite sua senha" formControlName="password" type="password" required></ion-input>
           </ion-item>
-          <ion-button type="submit" class="btn-primario" [disabled]="loginForm.invalid">Login</ion-button>
-          <ion-button  type="button" class="btn-secundario" (click)="onRegister()">Registrar</ion-button>
+          
+          <ion-button type="submit" class="btn-primario" [disabled]="loginForm.invalid || isLoading"
+            (click)="onSubmit()">
+            <ng-container *ngIf="isLoading; else loginText">
+              <ion-spinner size="small"></ion-spinner>
+            </ng-container>
+            <ng-template #loginText>Login</ng-template>
+          </ion-button>
+          
+          <ion-button type="button" class="btn-secundario" (click)="onRegister()">Registrar</ion-button>
         </form>
       </ion-card-content>
     </ion-card>

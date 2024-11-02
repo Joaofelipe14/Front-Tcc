@@ -1,8 +1,43 @@
 // src/app/utils/utils.ts
 import { ToastController } from '@ionic/angular';
+import { AbstractControl, ValidatorFn } from '@angular/forms';
+
 
 export class Utils {
 
+  // Método estático para validar CPF
+  static validateCpf(cpf: string): { [key: string]: boolean } | null {
+    cpf = cpf.replace(/\D/g, ''); // Remove caracteres não numéricos
+
+    if (!cpf) return null; // Sem CPF, não faz validação
+    const cpfPattern = /^\d{11}$/; // Apenas 11 dígitos
+    if (!cpfPattern.test(cpf)) return { invalidCpf: true };
+
+    // Lógica para validação real do CPF
+    const sum = cpf.split('').slice(0, 9).reduce((acc: number, num: string, index: number) => {
+      return acc + (Number(num) * (10 - index));
+    }, 0) * 10 % 11;
+    
+    const checkDigit1 = sum >= 10 ? 0 : sum;
+    const sum2 = cpf.split('').slice(0, 10).reduce((acc: number, num: string, index: number) => {
+      return acc + (Number(num) * (11 - index));
+    }, 0) * 10 % 11;
+
+    const checkDigit2 = sum2 >= 10 ? 0 : sum2;
+
+    if (checkDigit1 !== Number(cpf[9]) || checkDigit2 !== Number(cpf[10])) {
+      return { invalidCpf: true };
+    }
+
+    return null;
+  }
+
+  // Método para retornar o validador de CPF
+  static cpfValidator(): ValidatorFn {
+    return (control: AbstractControl): { [key: string]: any } | null => {
+      return Utils.validateCpf(control.value); // Chama a validação de CPF
+    };
+  }
   /**
    * Formata um CPF com a máscara `000.000.000-00`.
    * @param value O valor do CPF, que pode conter caracteres não numéricos.

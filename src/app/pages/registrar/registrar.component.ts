@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AlertController, ModalController, ToastController } from '@ionic/angular';
+import { ToastrService } from 'ngx-toastr';
 import { AuthService } from 'src/app/services/auth.service';
 import { Utils } from 'src/app/utils/utils';
 
@@ -15,25 +16,28 @@ export class RegistrarComponent {
   formattedCpf: string = '';
   selectedImage: string | ArrayBuffer | null = null;
   selectedFile: File | null = null;
-  private copyAlert: HTMLIonAlertElement | null = null;  // Referência para o alerta de cópia
+  private copyAlert: HTMLIonAlertElement | null = null;
+  isLoading= false;
 
 
   constructor(
     private fb: FormBuilder,
     private router: Router,
-    private toastController: ToastController,
     private authService: AuthService,
-    private alertController: AlertController
+    private alertController: AlertController,
+    private toastr: ToastrService
   ) {
+
+
     this.loginForm = this.fb.group({
       nome: ['', Validators.required],
       contato: ['', Validators.required],
-      cpf: ['', [Validators.required, Validators.pattern(/^\d{3}\.\d{3}\.\d{3}-\d{2}$/)]],
+      cpf: ['', [Validators.required, Validators.minLength(11), Utils.cpfValidator()]], 
       cap: ['', [Validators.required, Validators.minLength(6)]]
-        });
+    });
   }
 
-
+  
   async onSubmit() {
     if (this.loginForm.valid) {
       const formData = this.loginForm.value;
@@ -52,15 +56,19 @@ export class RegistrarComponent {
       }
 
       try {
+        this.isLoading = true;
 
         const response = await this.authService.cadastrar(novoformData).toPromise();
         if (response.dados.senha) {
+          this.isLoading = false
           this.showAlertWithCopy((response.dados.senha))
         }
 
       } catch (error) {
+        this.isLoading = false
+
         console.error('Erro ao cadastrar usuário', error);
-        await Utils.showToast('Erro ao cadastrar contra, tente novamente mais tarde.', this.toastController, 'toast-erro', 'alert-circle-outline');
+        this.toastr.error('Tente novamente mais tarde.', 'Erro ao cadastrar ');
       }
 
     } else {
@@ -90,14 +98,14 @@ export class RegistrarComponent {
         errorMessage += '\n- CAP é obrigatório.';
       }
 
-      await Utils.showErro(errorMessage, this.toastController);
+      this.toastr.error('errorMessage', 'Erro ao cadastrar ');
+
     }
   }
 
   onLogin() {
     this.router.navigate(['/login']);
   }
-
 
   async showAlertWithCopy(senha: string) {
     this.copyAlert = await this.alertController.create({
@@ -147,22 +155,6 @@ export class RegistrarComponent {
     const rawValue = event.target.value;
     this.formattedCpf = Utils.formatCpf(rawValue);
     event.target.value = this.formattedCpf;
-  }
-
-  async onCpfBlur() {
-    const cpfControl = this.loginForm.get('cpf');
-    if (cpfControl && cpfControl.invalid) {
-      let errorMessage = '';
-      if (cpfControl.hasError('required')) {
-        errorMessage = 'CPF é obrigatório.';
-      }
-      if (cpfControl.hasError('pattern')) {
-        errorMessage = 'CPF incorreto.';
-      }
-      if (errorMessage) {
-        await Utils.showErro(errorMessage, this.toastController);
-      }
-    }
   }
 
   onFileSelected(event: Event) {
