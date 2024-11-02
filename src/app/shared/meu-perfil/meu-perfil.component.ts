@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AlertController } from '@ionic/angular';
 import { ToastrService } from 'ngx-toastr';
@@ -181,6 +181,8 @@ export class MeuPerfilComponent implements OnInit {
   onInputChange(event: any) {
     this.campoValor = event.detail.value;
   }
+
+
 
 
 

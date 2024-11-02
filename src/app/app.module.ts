@@ -52,12 +52,14 @@ import { ToastrModule } from 'ngx-toastr';
   imports: [
     BrowserModule,
     ReactiveFormsModule,
-    IonicModule.forRoot(),
+    IonicModule.forRoot({
+      scrollAssist: true,
+    }),
     NgxMaskDirective,
     HttpClientModule,
     FormsModule,
     CommonModule,
-    BrowserAnimationsModule, 
+    BrowserAnimationsModule,
     ToastrModule.forRoot({
       positionClass: 'toast-top-right',
       closeButton: true,
@@ -65,7 +67,7 @@ import { ToastrModule } from 'ngx-toastr';
       timeOut: 3000,
       preventDuplicates: true,
       tapToDismiss: true,
-      progressAnimation:'increasing'
+      progressAnimation: 'increasing'
     }),
     AppRoutingModule, ServiceWorkerModule.register('ngsw-worker.js', {
       enabled: !isDevMode(),
