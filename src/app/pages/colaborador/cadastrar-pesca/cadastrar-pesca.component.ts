@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ToastController } from '@ionic/angular';
+import { ToastrService } from 'ngx-toastr';
 import { CadastroPescaService } from 'src/app/services/cadastro-pesca.service';
 import { LocalizacaoService } from 'src/app/services/localizacao.service';
-import { Utils } from 'src/app/utils/utils';
 
 @Component({
   selector: 'app-cadastrar-pesca',
@@ -12,19 +12,25 @@ import { Utils } from 'src/app/utils/utils';
 })
 export class CadastrarPescaComponent implements OnInit {
 
-  cadastrarPescaForm!: FormGroup; 
-  localizacoes:any;
-  constructor(private formBuilder: FormBuilder, private cadastroPescaService: CadastroPescaService, private toastController: ToastController, private localizacaoService: LocalizacaoService) { }
+  cadastrarPescaForm!: FormGroup;
+  localizacoes: any;
+  isLoading = false
+  constructor(
+    private formBuilder: FormBuilder,
+    private cadastroPescaService: CadastroPescaService,
+    private localizacaoService: LocalizacaoService,
+    private toast: ToastrService
+  ) { }
 
   ngOnInit() {
     this.initializeForm();
-    this.loadLocalizacoes(); 
+    this.loadLocalizacoes();
   }
-  
+
   loadLocalizacoes() {
     this.localizacaoService.getLocalizacoes().subscribe(
       (data) => {
-        this.localizacoes = data.dados.registros; 
+        this.localizacoes = data.dados.registros;
         console.log('Localizações carregadas:', this.localizacoes);
         if (this.localizacoes && this.localizacoes.length > 0) {
           this.cadastrarPescaForm.patchValue({ local: this.localizacoes[0].id });
@@ -32,7 +38,6 @@ export class CadastrarPescaComponent implements OnInit {
       },
       (error) => {
         console.error('Erro ao carregar localizações:', error);
-        Utils.showErro('Erro ao carregar localizações', this.toastController);
       }
     );
   }
@@ -46,25 +51,29 @@ export class CadastrarPescaComponent implements OnInit {
     });
   }
 
-    async onSubmit() {
+  async onSubmit() {
 
-      if (this.cadastrarPescaForm.valid) {
-        const formData = this.cadastrarPescaForm.value;
+    if (this.cadastrarPescaForm.valid) {
+      const formData = this.cadastrarPescaForm.value;
 
-        try {
-          const response = await this.cadastroPescaService.createRegistro(formData).toPromise();
-          Utils.showSucesso('Registro criado com sucesso.', this.toastController)
+      this.isLoading = true;
+      try {
+        const response = await this.cadastroPescaService.createRegistro(formData).toPromise();
 
-          this.cadastroPescaService.setPescas([response.dados.registro]); 
+        this.isLoading = false;
+        this.toast.success('Registro criado com sucesso', 'Nova Pesca')
+        this.cadastroPescaService.setPescas([response.dados.registro]);
 
-        } catch (error) {
-          console.error('Erro ao criar registro:', error);
-          Utils.showErro('Erro ao criar registro:', this.toastController)
+      } catch (error) {
+        this.isLoading = false;
+        console.error('Erro ao criar registro:', error);
+        this.toast.error('Erro ao criar registro', 'Error')
 
-        }
-      } else {
+
       }
+    } else {
     }
+  }
 
   onDateChange(event: any) {
     const selectedDate = event.detail.value;

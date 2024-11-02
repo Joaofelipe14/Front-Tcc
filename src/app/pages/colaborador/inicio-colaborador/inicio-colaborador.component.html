@@ -9,26 +9,38 @@
         </ion-segment-button>
     </ion-segment>
 
+    <ng-template #notaData>
+        <p>
+            Nenhum resultado encontrado.
+        </p>
+    </ng-template>
+
     <ion-list *ngIf="segment === 'pesca'">
-        <ion-item *ngFor="let registro of paginatedPescas" (click)="openDetailModal(registro)">
-            <ion-label>
-                <h2>Pescado - {{ registro.pescado }}</h2>
-                <p>Local: {{ registro.localizacao.descricao_amigavel }}</p>
-                <p>Quantidade: {{ registro.quantidade }}</p>
-            </ion-label>
-        </ion-item>
+        <ng-container *ngIf="paginatedPescas.length > 0; else notaData">
+            <ion-item *ngFor="let registro of paginatedPescas" (click)="openDetailModal(registro)">
+                <ion-label>
+                    <h2>Pescado - {{ registro.pescado }}</h2>
+                    <p>Local: {{ registro.localizacao.descricao_amigavel }}</p>
+                    <p>Quantidade: {{ registro.quantidade }}</p>
+                </ion-label>
+            </ion-item>
+        </ng-container>
     </ion-list>
 
     <ion-list *ngIf="segment === 'venda'">
-        <ion-item *ngFor="let registro of paginatedVendas" (click)="openDetailModal(registro)">
-            <ion-label>
-                <h2>Venda</h2>
-                <p>Data: {{ formatDateTime(registro.dateTime) }}</p>
-                <p>Local: {{ registro.localizacao.descricao_amigavel }}</p>
-                <p>Quantidade: {{ registro.quantidade }}</p>
-                <p>Valor: {{ registro.valor }}</p>
-            </ion-label>
-        </ion-item>
+        <ng-container *ngIf="paginatedVendas.length > 0 ; else notaData ">
+
+            <ion-item *ngFor="let registro of paginatedVendas" (click)="openDetailModal(registro)">
+                <ion-label>
+                    <h2>Venda</h2>
+                    <p>Data: {{ formatDateTime(registro.dateTime) }}</p>
+                    <p>Local: {{ registro.localizacao.descricao_amigavel }}</p>
+                    <p>Quantidade: {{ registro.quantidade }}</p>
+                    <p>Valor: {{ registro.valor }}</p>
+                </ion-label>
+            </ion-item>
+        </ng-container>
+
     </ion-list>
 
     <ion-toolbar *ngIf="registros.length > 0">
@@ -38,7 +50,7 @@
         <ion-buttons slot="end" *ngIf="segment === 'pesca'">
             <ion-button (click)="nextPagePesca()" [disabled]="currentPagePesca >= totalPagesPesca">Próximo</ion-button>
         </ion-buttons>
-        
+
         <ion-buttons slot="start" *ngIf="segment === 'venda'">
             <ion-button (click)="previousPageVenda()" [disabled]="currentPageVenda === 1">Anterior</ion-button>
         </ion-buttons>

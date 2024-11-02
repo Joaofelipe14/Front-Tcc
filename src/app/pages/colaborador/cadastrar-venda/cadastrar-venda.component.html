@@ -2,39 +2,46 @@
   <app-header title="Cadastrar Pesca"></app-header>
 
   <div class="container-principal">
-      <ion-card class="card-cadastro">
-          <ion-card-header class="card-header-cadastro">
-              <ion-card-title class="title-card">Registro de venda</ion-card-title>
-          </ion-card-header>
+    <ion-card class="card-cadastro">
+      <ion-card-header class="card-header-cadastro">
+        <ion-card-title class="title-card">Registro de venda</ion-card-title>
+      </ion-card-header>
 
-          <ion-card-content>
-              <form [formGroup]="cadastrarVendaForm" class="content-card" (ngSubmit)="onSubmit()">
+      <ion-card-content>
+        <form [formGroup]="cadastrarVendaForm" class="content-card" (ngSubmit)="onSubmit()">
 
-                <div class="selecao">
-                    <ion-label>Ponto de Venda:</ion-label>
-                    <ion-select formControlName="ponto_venda" required>
-                      <ion-select-option *ngFor="let localizacao of localizacoes" [value]="localizacao.id">
-                        {{ localizacao.descricao_amigavel }} <!-- Exibe a descrição amigável -->
-                      </ion-select-option>
-                    </ion-select>
-                </div>
-                  
-                  <div>
-                    <ion-input class="card-input" placeholder="Quantidade" formControlName="quantidade" type="text" required></ion-input>
-                </div>
+          <div class="selecao">
+            <ion-label>Ponto de Venda:</ion-label>
+            <ion-select formControlName="ponto_venda" required>
+              <ion-select-option *ngFor="let localizacao of localizacoes" [value]="localizacao.id">
+                {{ localizacao.descricao_amigavel }} <!-- Exibe a descrição amigável -->
+              </ion-select-option>
+            </ion-select>
+          </div>
 
-                      <ion-input class="card-input" placeholder="Valor" formControlName="valor" type="text" required></ion-input>
-                 
-                  <ion-button class="btn-primario posicao-btn-card " [disabled]="cadastrarVendaForm.invalid" type="submit">Enviar</ion-button>
-              </form>
-          </ion-card-content>
-      </ion-card>
+          <div>
+            <ion-input class="card-input" placeholder="Quantidade" formControlName="quantidade" type="text"
+              required></ion-input>
+          </div>
+
+          <ion-input class="card-input" placeholder="Valor" formControlName="valor" type="text" required></ion-input>
+
+          <ion-button type="submit" class="btn-primario" [disabled]="cadastrarVendaForm.invalid || isLoading"
+            (click)="onSubmit()">
+            <ng-container *ngIf="isLoading; else Loading">
+              <ion-spinner size="small"></ion-spinner>
+            </ng-container>
+            <ng-template #Loading>Enviar</ng-template>
+          </ion-button>
+        </form>
+      </ion-card-content>
+    </ion-card>
   </div>
 
   <ion-modal [keepContentsMounted]="true">
-      <ng-template>
-          <ion-datetime id="datetime" (ionChange)="onDateChange($event)"></ion-datetime>
-      </ng-template>
+    <ng-template>
+      <ion-datetime id="datetime" (ionChange)="onDateChange($event)"></ion-datetime>
+    </ng-template>
   </ion-modal>
 </ion-content>
 

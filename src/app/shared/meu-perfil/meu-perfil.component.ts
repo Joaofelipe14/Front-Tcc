@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ToastController } from '@ionic/angular';
+import { AlertController } from '@ionic/angular';
+import { ToastrService } from 'ngx-toastr';
 import { AuthService } from 'src/app/services/auth.service';
 import { Utils } from 'src/app/utils/utils';
 
@@ -24,7 +25,9 @@ export class MeuPerfilComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private auth: AuthService,
-    private toastController: ToastController
+    private toast: ToastrService,
+    private alertController: AlertController
+
   ) {
     this.meuPerfilForm = this.formBuilder.group({
       nome: ['', Validators.required],
@@ -94,31 +97,56 @@ export class MeuPerfilComponent implements OnInit {
         const response = await this.auth.atualizar(novoformData, this.userId).toPromise();
 
         if (response.sucesso) {
-          Utils.showSucesso("Dados atualizado", this.toastController)
+
+          this.toast.success("Daddos atualizados", 'Sucesso')
         }
 
       } catch (error) {
         console.error('Erro ao atualizar a senha:', error);
-        Utils.showErro('Erro ao atualizar a dados. Tente novamente mais tarde.', this.toastController)
+        this.toast.error("Tente novamente mais tarde", 'Erro')
 
       }
     }
   }
 
-  onFileSelected(event: Event) {
-    const input = event.target as HTMLInputElement;
-    if (input.files && input.files[0]) {
-      const file = input.files[0];
-      this.selectedFile = file;
-      const reader = new FileReader();
 
-      reader.onload = () => {
-        this.selectedImage = reader.result;
-      };
 
-      reader.readAsDataURL(file);
-    }
+  async onFileSelected(event: Event) {
+    const alert = await this.alertController.create({
+      header: 'Confirmar',
+      message: 'Deseja alterar a foto de perfil?',
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel',
+        },
+        {
+          text: 'Confirmar',
+          handler: () => {
+
+            const input = event.target as HTMLInputElement;
+            if (input.files && input.files[0]) {
+              const file = input.files[0];
+              this.selectedFile = file;
+              const reader = new FileReader();
+
+              reader.onload = () => {
+                this.selectedImage = reader.result;
+              };
+
+              reader.readAsDataURL(file);
+            }
+
+            this.onSubmit()
+
+          },
+        },
+      ],
+    });
+
+    await alert.present();
   }
+
 
   removeImage(event: Event) {
     event.stopPropagation();

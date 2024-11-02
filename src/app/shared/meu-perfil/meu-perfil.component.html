@@ -46,12 +46,11 @@
                     <div class="form-field" (click)="openModal('contato')">
                         <div class="label-card-cadastro">Contato:</div>
                         <ion-input (input)="maskContato($event)" placeholder="Contato" class="card-input"
-                            formControlName="contato" type="text" pattern="[\d\-\(\)\s]*"  required></ion-input>
+                            formControlName="contato" type="text" pattern="[\d\-\(\)\s]*" required></ion-input>
                         <ion-icon name="chevron-forward" class="edit-icon"></ion-icon>
                     </div>
 
                     <!-- CPF -->
-
                     <div class="form-field">
                         <div class="label-card-cadastro">CPF:</div>
                         <ion-input [disabled]="true" placeholder="cpf" class="card-input" formControlName="cpf"
@@ -89,10 +88,9 @@
                 <ion-input [value]="campoValor" class='card-input' (ionInput)="onInputChange($event)"
                     placeholder="Novo valor"></ion-input>
                 <ion-button class="btn-primario" (click)="updateField()">Atualizar</ion-button>
+
             </div>
         </ion-content>
     </ng-template>
 
 </ion-modal>
-
-

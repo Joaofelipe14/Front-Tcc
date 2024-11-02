@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CadastroPescaService } from 'src/app/services/cadastro-pesca.service';
 import { CadastroVendaService } from 'src/app/services/cadastro-venda.service';
 import { DetailModalComponent } from '../../../shared/detail-modal/detail-modal.component';
-import { ModalController } from '@ionic/angular';
+import { LoadingController, ModalController } from '@ionic/angular';
 
 @Component({
   selector: 'app-inicio-colaborador',
@@ -14,29 +14,35 @@ export class InicioColaboradorComponent implements OnInit {
   segment: string = 'pesca';
   currentPagePesca: number = 1;
   currentPageVenda: number = 1;
-  itemsPerPage: number = 5; 
+  itemsPerPage: number = 5;
   totalPagesPesca: number = 1;
   totalPagesVenda: number = 1;
+  loading: any = ''
 
   constructor(
     private cadastroPescaService: CadastroPescaService,
     private cadastroVendaService: CadastroVendaService,
-    private modalController: ModalController
-  ) {}
+    private modalController: ModalController,
+    private loadingController: LoadingController
+  ) { }
 
-  ngOnInit() {
+  async ngOnInit() {
     this.cadastroPescaService.pescas$.subscribe(newPescas => {
       if (newPescas.length) {
         this.updateRegistros(newPescas[0], 'pesca');
       }
     });
-  
+
     this.cadastroVendaService.vendas$.subscribe(newVendas => {
       if (newVendas.length) {
         this.updateRegistros(newVendas[0], 'venda');
       }
     });
-  
+
+    this.loading = await this.loadingController.create({
+      message: 'Carregando...',
+    });
+    await this.loading.present();
     this.loadPesca();
     this.loadVendas();
   }
@@ -49,6 +55,7 @@ export class InicioColaboradorComponent implements OnInit {
         }
       },
       error => {
+
         console.error('Erro ao carregar registros de pesca', error);
       }
     );
@@ -58,10 +65,14 @@ export class InicioColaboradorComponent implements OnInit {
     this.cadastroVendaService.getRegistrosByUserId().subscribe(
       response => {
         if (response.status) {
+          this.loading.dismiss()
+
           this.updateRegistros(response.dados.registros, 'venda');
         }
       },
       error => {
+        this.loading.dismiss()
+
         console.error('Erro ao carregar registros de vendas', error);
       }
     );

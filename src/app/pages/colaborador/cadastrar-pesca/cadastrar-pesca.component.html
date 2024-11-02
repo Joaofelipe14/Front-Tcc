@@ -9,30 +9,41 @@
 
             <ion-card-content>
                 <form [formGroup]="cadastrarPescaForm" class="content-card" (ngSubmit)="onSubmit()">
-                   
+
 
                     <div class="selecao">
                         <ion-label>Ponto de Venda:</ion-label>
                         <ion-select formControlName="local" required>
-                          <ion-select-option *ngFor="let localizacao of localizacoes" [value]="localizacao.id">
-                            {{ localizacao.descricao_amigavel }} 
-                          </ion-select-option>
+                            <ion-select-option *ngFor="let localizacao of localizacoes" [value]="localizacao.id">
+                                {{ localizacao.descricao_amigavel }}
+                            </ion-select-option>
                         </ion-select>
                     </div>
-                      
+
 
                     <div style="align-items: center; flex-direction: row;">
                         <ion-label>Data e Horário</ion-label>
-                        <ion-datetime-button style="margin-top: 20px; "
-                            datetime="datetime"></ion-datetime-button>
+                        <ion-datetime-button style="margin-top: 20px; " datetime="datetime"></ion-datetime-button>
                     </div>
 
-                    <ion-input class="card-input" placeholder="Pescado" formControlName="pescado" type="text" required></ion-input>
+                    <ion-input class="card-input" placeholder="Pescado" formControlName="pescado" type="text"
+                        required></ion-input>
 
 
-                        <ion-input class="card-input" placeholder="Quantidade(Aproximada)" formControlName="quantidade" type="text" required></ion-input>
-                   
-                    <ion-button class="btn-primario posicao-btn-card " [disabled]="cadastrarPescaForm.invalid" type="submit">Enviar</ion-button>
+                    <ion-input class="card-input" placeholder="Quantidade(Aproximada)" formControlName="quantidade"
+                        type="text" required></ion-input>
+
+                    <ion-button class="btn-primario posicao-btn-card " [disabled]="cadastrarPescaForm.invalid"
+                        type="submit">Enviar</ion-button>
+
+                    <ion-button type="submit" class="btn-primario" [disabled]="cadastrarPescaForm.invalid || isLoading"
+                        (click)="onSubmit()">
+                        <ng-container *ngIf="isLoading; else Loading">
+                            <ion-spinner size="small"></ion-spinner>
+                        </ng-container>
+                        <ng-template #Loading>Enviar</ng-template>
+                    </ion-button>
+
                 </form>
             </ion-card-content>
         </ion-card>
