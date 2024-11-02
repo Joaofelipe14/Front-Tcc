@@ -25,6 +25,9 @@ import { AuthInterceptor } from './services/interceptor.service';
 import { ConfiguracoesComponent } from './pages/admin/configuracoes/configuracoes.component';
 import { GoogleMapsComponent } from './shared/google-map/google-map-autocomplete.component';
 import { DetailModalComponent } from './shared/detail-modal/detail-modal.component';
+import { CommonModule } from '@angular/common';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ToastrModule } from 'ngx-toastr';
 
 
 @NgModule({
@@ -53,6 +56,9 @@ import { DetailModalComponent } from './shared/detail-modal/detail-modal.compone
     NgxMaskDirective,
     HttpClientModule,
     FormsModule,
+    CommonModule,
+    BrowserAnimationsModule, // required animations module
+    ToastrModule.forRoot(), // ToastrModule added
     AppRoutingModule, ServiceWorkerModule.register('ngsw-worker.js', {
       enabled: !isDevMode(),
       // Register the ServiceWorker as soon as the application is stable

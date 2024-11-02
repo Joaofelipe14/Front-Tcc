@@ -1,6 +1,9 @@
 <ion-content>
   <app-header title="Meus Registros"></app-header>
 
+  <button (click)="showSuccess()" > clica</button>
+
+
   <ion-segment [(ngModel)]="segment" (ionChange)="segmentChanged($event)">
     <ion-segment-button value="pesca">
       Pesca
@@ -62,6 +65,7 @@
       </ion-buttons>
     </ion-toolbar>
   </div>
+
 
   <app-menu></app-menu>
 </ion-content>

@@ -4,6 +4,7 @@ import { CadastroPescaService } from 'src/app/services/cadastro-pesca.service';
 import { CadastroVendaService } from 'src/app/services/cadastro-venda.service';
 import { DetailModalComponent } from 'src/app/shared/detail-modal/detail-modal.component';
 import { LocalizacaoService } from 'src/app/services/localizacao.service'; 
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-inicio-admin',
@@ -33,13 +34,19 @@ export class InicioAdminComponent implements OnInit {
     private cadastroPescaService: CadastroPescaService,
     private cadastroVendaService: CadastroVendaService,
     private modalController: ModalController,
-    private localizacaoService: LocalizacaoService 
+    private localizacaoService: LocalizacaoService ,
+    private toastr: ToastrService
   ) {}
 
   ngOnInit() {
     this.loadPescaAll();
     this.loadVendasAll();
     this.loadLocalizacoes(); 
+  }
+
+
+  showSuccess() {
+    this.toastr.success('Hello world!', 'Toastr fun!');
   }
 
   loadPescaAll(): void {
