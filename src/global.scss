@@ -154,6 +154,10 @@ ion-card {
   max-width: 300px;
 }
 
+.button-container {
+  display: flex;
+  justify-content: center; 
+}
 
 .btn-primario:active {
   transform: scale(0.98);

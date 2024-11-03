@@ -2,8 +2,10 @@
 
   <app-header title="Meus Registros"></app-header>
 
-  <ion-button style="margin-top: 80px;" (click)="openModal()" class="btn-primario">Cadastrar Venda</ion-button>
-
+  <div class="button-container" style="margin-top: 80px;">
+    <ion-button class="btn-primario" (click)="openModal()">Cadastrar Venda</ion-button>
+  </div>
+  <div style="border-top: 1px solid #ccc; margin: 10px 0;"></div>
   <ng-template #notaData>
     <p>
       Nenhum resultado encontrado.
@@ -12,23 +14,18 @@
 
   <ion-list>
     <ng-container *ngIf="paginatedVendas.length > 0 ; else notaData ">
-
       <ion-item *ngFor="let registro of paginatedVendas" (click)="openDetailModal(registro)">
         <ion-label>
-          <h2>Venda</h2>
+          <h2>Local: {{ registro.localizacao.descricao_amigavel }}</h2>
           <p>Data: {{ formatDateTime(registro.dateTime) }}</p>
-          <p>Local: {{ registro.localizacao.descricao_amigavel }}</p>
           <p>Quantidade: {{ registro.quantidade }}</p>
           <p>Valor: {{ registro.valor }}</p>
         </ion-label>
       </ion-item>
     </ng-container>
-
   </ion-list>
 
-
-  <ion-toolbar *ngIf="registros.length > 0">
-
+  <ion-toolbar *ngIf="registros.length > 0" style="margin-bottom: 80px;">
     <ion-buttons slot="start">
       <ion-button (click)="previousPageVenda()" [disabled]="currentPageVenda === 1">Anterior</ion-button>
     </ion-buttons>

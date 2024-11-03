@@ -1,8 +1,8 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>Cadastrar Venda</ion-title>
+    <ion-title  class="title-card" >Cadastrar Venda</ion-title>
     <ion-buttons slot="end">
-      <ion-button (click)="dismissModal()">Fechar</ion-button>
+      <ion-button  class="title-card" (click)="dismissModal()">Fechar</ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
@@ -28,11 +28,14 @@
       <ion-input type="number" formControlName="valor" required></ion-input>
     </ion-item>
 
-    <ion-button type="submit" class="btn-primario" [disabled]="cadastrarVendaForm.invalid || isLoading">
+    <div class="button-container" style="margin-top: 10px;">
+      <ion-button type="submit" class="btn-primario" [disabled]="cadastrarVendaForm.invalid || isLoading">
       <ng-container *ngIf="isLoading; else Loading">
         <ion-spinner size="small"></ion-spinner>
       </ng-container>
       <ng-template #Loading>Enviar</ng-template>
     </ion-button>
+  </div>
+
   </form>
 </ion-content>

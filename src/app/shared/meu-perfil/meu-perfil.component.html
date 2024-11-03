@@ -72,12 +72,11 @@
 
 <ion-modal [isOpen]="isModalOpen" (ionModalDidDismiss)="dismissModal()">
     <ng-template>
-
         <ion-header>
             <ion-toolbar>
-                <ion-title>{{ campoEditado | titlecase }} - Atualizando</ion-title>
+                <ion-title class="title-card">{{ campoEditado | titlecase }} - Atualizando</ion-title>
                 <ion-buttons slot="end">
-                    <ion-button (click)="dismissModal()">Fechar</ion-button>
+                    <ion-button class="title-card" (click)="dismissModal()">Fechar</ion-button>
                 </ion-buttons>
             </ion-toolbar>
         </ion-header>
@@ -87,7 +86,10 @@
                 <ion-label>{{ campoEditado | titlecase }}:</ion-label>
                 <ion-input [value]="campoValor" class='card-input' (ionInput)="onInputChange($event)"
                     placeholder="Novo valor"></ion-input>
-                <ion-button class="btn-primario" (click)="updateField()">Atualizar</ion-button>
+                <div class="button-container" style="margin-top: 10px;">
+                    <ion-button class="btn-primario" (click)="updateField()">Atualizar</ion-button>
+
+                </div>
 
             </div>
         </ion-content>

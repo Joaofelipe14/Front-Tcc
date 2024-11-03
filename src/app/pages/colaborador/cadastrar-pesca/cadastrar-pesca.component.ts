@@ -66,6 +66,7 @@ export class CadastrarPescaComponent implements OnInit {
       error => {
         console.error('Erro ao carregar registros de pesca', error);
         this.loading.dismiss()
+
       }
     );
   }

@@ -1,8 +1,8 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>Detalhes do Registro</ion-title>
+    <ion-title  class="title-card">Detalhes da {{ registro.type === 'pesca' ? 'pesca' : ' venda' }} </ion-title>
     <ion-buttons slot="end">
-      <ion-button (click)="dismiss()">Fechar</ion-button>
+      <ion-button  class="title-card" (click)="dismiss()">Fechar</ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
