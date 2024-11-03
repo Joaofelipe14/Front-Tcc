@@ -9,6 +9,11 @@ import { LoadingController, ModalController } from '@ionic/angular';
   templateUrl: './inicio-colaborador.component.html',
   styleUrls: ['./inicio-colaborador.component.scss'],
 })
+
+/*DEPRECIADO NAO USADO MAIS - REFAROTADO PARA LOGICA DE MODAIS*/
+/*DEPRECIADO NAO USADO MAIS - REFAROTADO PARA LOGICA DE MODAIS*/
+/*DEPRECIADO NAO USADO MAIS - REFAROTADO PARA LOGICA DE MODAIS*/
+
 export class InicioColaboradorComponent implements OnInit {
   registros: any[] = [];
   segment: string = 'pesca';

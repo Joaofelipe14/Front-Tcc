@@ -1,10 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ToastController } from '@ionic/angular';
+import { LoadingController, ModalController } from '@ionic/angular';
 import { ToastrService } from 'ngx-toastr';
 import { CadastroVendaService } from 'src/app/services/cadastro-venda.service';
-import { LocalizacaoService } from 'src/app/services/localizacao.service';
-import { Utils } from 'src/app/utils/utils';
+import { ModalCadastrarVendaComponent } from '../modal-cadastrar-venda/modal-cadastrar-venda.component';
+import { DetailModalComponent } from 'src/app/shared/detail-modal/detail-modal.component';
 @Component({
   selector: 'app-cadastrar-venda',
   templateUrl: './cadastrar-venda.component.html',
@@ -12,71 +11,111 @@ import { Utils } from 'src/app/utils/utils';
 })
 export class CadastrarVendaComponent implements OnInit {
 
-  cadastrarVendaForm!: FormGroup;
-  localizacoes: any
-  isLoading = false
+  registros: any[] = [];
+  currentPageVenda: number = 1;
+  itemsPerPage: number = 5;
+  totalPagesVenda: number = 1;
+  loading: any = ''
 
   constructor(
-    private formBuilder: FormBuilder, 
-    private cadastroVendaService: CadastroVendaService, 
-    private toastController: ToastController, 
-    private localizacaoService: LocalizacaoService, 
-    private toast: ToastrService
+    private cadastroVendaService: CadastroVendaService,
+    private modalController: ModalController,
+    private loadingController: LoadingController
+
   ) { }
-  ngOnInit() {
-    this.initializeForm();
-    this.loadLocalizacoes();
+  async ngOnInit() {
+    this.cadastroVendaService.vendas$.subscribe(newVendas => {
+      if (newVendas.length) {
+        this.updateRegistros(newVendas[0], 'venda');
+      }
+    });
+
+    this.loading = await this.loadingController.create({
+      message: 'Carregando...',
+    });
+    await this.loading.present();
+    this.loadVendas();
   }
 
-  loadLocalizacoes() {
-    this.localizacaoService.getLocalizacoes().subscribe(
-      (data) => {
-        this.localizacoes = data.dados.registros;
-        console.log('Localizações carregadas:', this.localizacoes);
-        if (this.localizacoes && this.localizacoes.length > 0) {
-          this.cadastrarVendaForm.patchValue({ ponto_venda: this.localizacoes[0].id });
+  loadVendas(): void {
+    this.cadastroVendaService.getRegistrosByUserId().subscribe(
+      response => {
+        if (response.status) {
+          this.updateRegistros(response.dados.registros, 'venda');
+          this.loading.dismiss()
+
         }
       },
-      (error) => {
-        console.error('Erro ao carregar localizações:', error);
+      error => {
+        console.error('Erro ao carregar registros de vendas', error);
+        this.loading.dismiss()
+
       }
     );
   }
 
-  initializeForm() {
-    this.cadastrarVendaForm = this.formBuilder.group({
-      ponto_venda: ['', Validators.required],
-      quantidade: ['', Validators.required],
-      valor: ['', Validators.required],
+  updateRegistros(newRecords: any[], type: string): void {
+    const updatedRecords = newRecords.map(record => ({
+      ...record,
+      type: type,
+      dateTime: type === 'pesca' ? record.data_com_hora : record.created_at
+    }));
+
+    this.registros = [...this.registros, ...updatedRecords];
+    this.sortRegistros();
+    this.calculateTotalPages();
+  }
+
+  sortRegistros(): void {
+    this.registros.sort((a, b) => new Date(b.dateTime).getTime() - new Date(a.dateTime).getTime());
+  }
+
+  calculateTotalPages(): void {
+    this.totalPagesVenda = Math.ceil(this.vendas.length / this.itemsPerPage);
+  }
+
+  get pescas() {
+    return this.registros.filter(registro => registro.type === 'pesca');
+  }
+
+  get vendas() {
+    return this.registros.filter(registro => registro.type === 'venda');
+  }
+
+  previousPageVenda() {
+    if (this.currentPageVenda > 1) {
+      this.currentPageVenda--;
+    }
+  }
+
+  get paginatedVendas() {
+    return this.vendas.slice((this.currentPageVenda - 1) * this.itemsPerPage, this.currentPageVenda * this.itemsPerPage);
+  }
+
+  nextPageVenda() {
+    if (this.currentPageVenda < this.totalPagesVenda) {
+      this.currentPageVenda++;
+    }
+  }
+
+  async openDetailModal(registro: any) {
+    const modal = await this.modalController.create({
+      component: DetailModalComponent,
+      componentProps: { registro: registro },
     });
+    return await modal.present();
   }
 
-  async onSubmit() {
-    if (this.cadastrarVendaForm.valid) {
-      const formData = this.cadastrarVendaForm.value;
-
-      try {
-        this.isLoading = false;
-
-        const response = await this.cadastroVendaService.createRegistro(formData).toPromise();
-        this.toast.success('Registro criado com sucesso', 'Nova venda')
-        this.cadastroVendaService.setvendas([response.dados.registro]);
-      } catch (error) {
-        this.isLoading = false;
-        console.error('Erro ao criar registro:', error);
-        this.toast.error('Erro ao criar registro', 'Error')
-
-      }
-    }
+  async openModal() {
+    const modal = await this.modalController.create({
+      component: ModalCadastrarVendaComponent,
+    });
+    return await modal.present();
   }
 
-  onDateChange(event: any) {
-    const selectedDate = event.detail.value;
-    // Verifica se o FormControl existe antes de usar
-    const dataEHorarioControl = this.cadastrarVendaForm.get('data_com_hora');
-    if (dataEHorarioControl) {
-      dataEHorarioControl.setValue(selectedDate);
-    }
+  formatDateTime(dateTime: string): string {
+    const date = new Date(dateTime);
+    return `${date.getDate().toString().padStart(2, '0')}/${(date.getMonth() + 1).toString().padStart(2, '0')}/${date.getFullYear()} ${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}`;
   }
 
 }

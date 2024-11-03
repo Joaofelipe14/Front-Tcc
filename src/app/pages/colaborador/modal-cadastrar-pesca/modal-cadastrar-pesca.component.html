@@ -1,6 +1,6 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>Cadastrar Venda</ion-title>
+    <ion-title>Cadastrar Pesca</ion-title>
     <ion-buttons slot="end">
       <ion-button (click)="dismissModal()">Fechar</ion-button>
     </ion-buttons>
@@ -21,11 +21,12 @@
       <ion-datetime-button datetime="datetime"></ion-datetime-button>
       <ion-modal [keepContentsMounted]="true">
         <ng-template>
-          <ion-datetime id="datetime" (ionChange)="onDateChange($event)" displayFormat="MMM DD, YYYY HH:mm" pickerFormat="MMM DD, YYYY HH:mm"></ion-datetime>
+          <ion-datetime id="datetime" (ionChange)="onDateChange($event)" displayFormat="MMM DD, YYYY HH:mm"
+            pickerFormat="MMM DD, YYYY HH:mm"></ion-datetime>
         </ng-template>
       </ion-modal>
     </ion-item>
-    
+
     <ion-item>
       <ion-label position="floating">Quantidade</ion-label>
       <ion-input type="number" formControlName="quantidade"></ion-input>
@@ -34,7 +35,11 @@
       <ion-label position="floating">Pescado</ion-label>
       <ion-input formControlName="pescado"></ion-input>
     </ion-item>
-    <ion-button class="btn-primario" type="submit" >Cadastrar</ion-button>
+    <ion-button type="submit" class="btn-primario" [disabled]="cadastrarPescaForm.invalid || isLoading">
+      <ng-container *ngIf="isLoading; else Loading">
+        <ion-spinner size="small"></ion-spinner>
+      </ng-container>
+      <ng-template #Loading>Enviar</ng-template>
+    </ion-button>
   </form>
 </ion-content>
-

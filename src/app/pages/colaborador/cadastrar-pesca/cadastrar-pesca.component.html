@@ -1,59 +1,33 @@
 <ion-content scroll-y="true">
-    <app-header title="Cadastrar Pesca"></app-header>
-
-    <div class="container-principal">
-        <ion-card class="card-cadastro">
-            <ion-card-header class="card-header-cadastro">
-                <ion-card-title class="title-card">Registro de Pesca</ion-card-title>
-            </ion-card-header>
-
-            <ion-card-content>
-                <form [formGroup]="cadastrarPescaForm" class="content-card" (ngSubmit)="onSubmit()">
+    <app-header title="Pesca"></app-header>
 
 
-                    <div class="selecao">
-                        <ion-label>Ponto de Venda:</ion-label>
-                        <ion-select formControlName="local" required>
-                            <ion-select-option *ngFor="let localizacao of localizacoes" [value]="localizacao.id">
-                                {{ localizacao.descricao_amigavel }}
-                            </ion-select-option>
-                        </ion-select>
-                    </div>
+    <ng-template #notaData>
+        <p>
+            Nenhum resultado encontrado.
+        </p>
+    </ng-template>
+    <ion-button style="margin-top: 80px;" (click)="openModal()" class="btn-primario">Cadastrar Pesca</ion-button>
 
+    <ng-container *ngIf="paginatedPescas.length > 0; else notaData">
+        <ion-item *ngFor="let registro of paginatedPescas" (click)="openDetailModal(registro)">
+            <ion-label>
+                <h2>Pescado - {{ registro.pescado }}</h2>
+                <p>Local: {{ registro.localizacao.descricao_amigavel }}</p>
+                <p>Quantidade: {{ registro.quantidade }}</p>
+            </ion-label>
+        </ion-item>
+    </ng-container>
 
-                    <div style="align-items: center; flex-direction: row;">
-                        <ion-label>Data e Horário</ion-label>
-                        <ion-datetime-button style="margin-top: 20px; " datetime="datetime"></ion-datetime-button>
-                    </div>
+    <ion-toolbar *ngIf="registros.length > 0">
+        <ion-buttons slot="start">
+            <ion-button (click)="previousPagePesca()" [disabled]="currentPagePesca === 1">Anterior</ion-button>
+        </ion-buttons>
+        <ion-buttons slot="end">
+            <ion-button (click)="nextPagePesca()" [disabled]="currentPagePesca >= totalPagesPesca">Próximo</ion-button>
+        </ion-buttons>
+    </ion-toolbar>
 
-                    <ion-input class="card-input" placeholder="Pescado" formControlName="pescado" type="text"
-                        required></ion-input>
-
-
-                    <ion-input class="card-input" placeholder="Quantidade(Aproximada)" formControlName="quantidade"
-                        type="text" required></ion-input>
-
-                    <ion-button class="btn-primario posicao-btn-card " [disabled]="cadastrarPescaForm.invalid"
-                        type="submit">Enviar</ion-button>
-
-                    <ion-button type="submit" class="btn-primario" [disabled]="cadastrarPescaForm.invalid || isLoading"
-                        (click)="onSubmit()">
-                        <ng-container *ngIf="isLoading; else Loading">
-                            <ion-spinner size="small"></ion-spinner>
-                        </ng-container>
-                        <ng-template #Loading>Enviar</ng-template>
-                    </ion-button>
-
-                </form>
-            </ion-card-content>
-        </ion-card>
-    </div>
-
-    <ion-modal [keepContentsMounted]="true">
-        <ng-template>
-            <ion-datetime id="datetime" (ionChange)="onDateChange($event)"></ion-datetime>
-        </ng-template>
-    </ion-modal>
 </ion-content>
 
 <app-menu></app-menu>

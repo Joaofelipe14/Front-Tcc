@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ToastController } from '@ionic/angular';
-import { ToastrService } from 'ngx-toastr';
+import { LoadingController, ModalController } from '@ionic/angular';
 import { CadastroPescaService } from 'src/app/services/cadastro-pesca.service';
-import { LocalizacaoService } from 'src/app/services/localizacao.service';
+import { ModalCadastrarPescaComponent } from '../modal-cadastrar-pesca/modal-cadastrar-pesca.component';
+import { DetailModalComponent } from 'src/app/shared/detail-modal/detail-modal.component';
 
 @Component({
   selector: 'app-cadastrar-pesca',
@@ -12,76 +11,104 @@ import { LocalizacaoService } from 'src/app/services/localizacao.service';
 })
 export class CadastrarPescaComponent implements OnInit {
 
-  cadastrarPescaForm!: FormGroup;
   localizacoes: any;
-  isLoading = false
+  isLoading = false;
+  isModalOpen = false;
+  currentPagePesca: number = 1;
+  itemsPerPage: number = 5;
+  totalPagesPesca: number = 1;
+  loading: any = ''
+  registros: any[] = [];
+
   constructor(
-    private formBuilder: FormBuilder,
     private cadastroPescaService: CadastroPescaService,
-    private localizacaoService: LocalizacaoService,
-    private toast: ToastrService
+    private modalController: ModalController,
+    private loadingController: LoadingController
   ) { }
 
-  ngOnInit() {
-    this.initializeForm();
-    this.loadLocalizacoes();
+  async ngOnInit() {
+    this.cadastroPescaService.pescas$.subscribe(newPescas => {
+      if (newPescas.length) {
+        this.updateRegistros(newPescas[0], 'pesca');
+      }
+    });
+
+    this.loading = await this.loadingController.create({
+      message: 'Carregando...',
+    });
+    await this.loading.present();
+    this.loadPesca()
   }
 
-  loadLocalizacoes() {
-    this.localizacaoService.getLocalizacoes().subscribe(
-      (data) => {
-        this.localizacoes = data.dados.registros;
-        console.log('Localizações carregadas:', this.localizacoes);
-        if (this.localizacoes && this.localizacoes.length > 0) {
-          this.cadastrarPescaForm.patchValue({ local: this.localizacoes[0].id });
+  get paginatedPescas() {
+    return this.pescas.slice((this.currentPagePesca - 1) * this.itemsPerPage, this.currentPagePesca * this.itemsPerPage);
+  }
+
+  get pescas() {
+    return this.registros.filter(registro => registro.type === 'pesca');
+  }
+
+  async openModal() {
+    const modal = await this.modalController.create({
+      component: ModalCadastrarPescaComponent,
+    });
+    return await modal.present();
+  }
+
+  loadPesca(): void {
+    this.cadastroPescaService.getRegistrosByUserId().subscribe(
+      response => {
+        if (response.status) {
+          this.updateRegistros(response.dados.registros, 'pesca');
         }
+        this.loading.dismiss()
       },
-      (error) => {
-        console.error('Erro ao carregar localizações:', error);
+      error => {
+        console.error('Erro ao carregar registros de pesca', error);
+        this.loading.dismiss()
       }
     );
   }
-  initializeForm() {
-    this.cadastrarPescaForm = this.formBuilder.group({
-      local: ['', Validators.required],
-      data_com_hora: ['', Validators.required],
-      quantidade: ['', Validators.required],
-      pescado: ['', Validators.required],
 
+  updateRegistros(newRecords: any[], type: string): void {
+    const updatedRecords = newRecords.map(record => ({
+      ...record,
+      type: type,
+      dateTime: type === 'pesca' ? record.data_com_hora : record.created_at
+    }));
+
+    this.registros = [...this.registros, ...updatedRecords];
+    this.sortRegistros();
+    this.calculateTotalPages();
+  }
+
+  sortRegistros(): void {
+    this.registros.sort((a, b) => new Date(b.dateTime).getTime() - new Date(a.dateTime).getTime());
+  }
+
+  calculateTotalPages(): void {
+    this.totalPagesPesca = Math.ceil(this.pescas.length / this.itemsPerPage);
+  }
+
+  nextPagePesca() {
+    if (this.currentPagePesca < this.totalPagesPesca) {
+      this.currentPagePesca++;
+    }
+  }
+
+  previousPagePesca() {
+    if (this.currentPagePesca > 1) {
+      this.currentPagePesca--;
+    }
+  }
+
+  async openDetailModal(registro: any) {
+    const modal = await this.modalController.create({
+      component: DetailModalComponent,
+      componentProps: { registro: registro },
     });
+    return await modal.present();
   }
 
-  async onSubmit() {
-
-    if (this.cadastrarPescaForm.valid) {
-      const formData = this.cadastrarPescaForm.value;
-
-      this.isLoading = true;
-      try {
-        const response = await this.cadastroPescaService.createRegistro(formData).toPromise();
-
-        this.isLoading = false;
-        this.toast.success('Registro criado com sucesso', 'Nova Pesca')
-        this.cadastroPescaService.setPescas([response.dados.registro]);
-
-      } catch (error) {
-        this.isLoading = false;
-        console.error('Erro ao criar registro:', error);
-        this.toast.error('Erro ao criar registro', 'Error')
-
-
-      }
-    } else {
-    }
-  }
-
-  onDateChange(event: any) {
-    const selectedDate = event.detail.value;
-    // Verifica se o FormControl existe antes de usar
-    const dataEHorarioControl = this.cadastrarPescaForm.get('data_com_hora');
-    if (dataEHorarioControl) {
-      dataEHorarioControl.setValue(selectedDate);
-    }
-  }
 
 }

@@ -1,0 +1,38 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Cadastrar Venda</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="dismissModal()">Fechar</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="teste">
+  <form [formGroup]="cadastrarVendaForm" (ngSubmit)="onSubmit()">
+    <ion-item>
+      <ion-label position="floating">Ponto de Venda</ion-label>
+      <ion-select formControlName="ponto_venda" required>
+        <ion-select-option *ngFor="let localizacao of localizacoes" [value]="localizacao.id">
+          {{ localizacao.descricao_amigavel }}
+        </ion-select-option>
+      </ion-select>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="floating">Quantidade</ion-label>
+      <ion-input type="number" formControlName="quantidade" required></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="floating">Valor</ion-label>
+      <ion-input type="number" formControlName="valor" required></ion-input>
+    </ion-item>
+
+    <ion-button type="submit" class="btn-primario" [disabled]="cadastrarVendaForm.invalid || isLoading">
+      <ng-container *ngIf="isLoading; else Loading">
+        <ion-spinner size="small"></ion-spinner>
+      </ng-container>
+      <ng-template #Loading>Enviar</ng-template>
+    </ion-button>
+  </form>
+</ion-content>

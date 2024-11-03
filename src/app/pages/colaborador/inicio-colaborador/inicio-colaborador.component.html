@@ -15,6 +15,7 @@
         </p>
     </ng-template>
 
+    
     <ion-list *ngIf="segment === 'pesca'">
         <ng-container *ngIf="paginatedPescas.length > 0; else notaData">
             <ion-item *ngFor="let registro of paginatedPescas" (click)="openDetailModal(registro)">

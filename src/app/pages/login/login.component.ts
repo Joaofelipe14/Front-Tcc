@@ -89,7 +89,7 @@ export class LoginComponent implements OnInit {
             this.tokenService.setToken(response.dados.token)
 
             if (response.dados.usuario.tipo_usuario === "colaborador") {
-              this.router.navigate(['/colaborador/inicio']);
+              this.router.navigate(['/colaborador/cadastrar-pesca']);
             } else {
               this.router.navigate(['/admin/inicio']);
             }

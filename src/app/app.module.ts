@@ -28,6 +28,8 @@ import { DetailModalComponent } from './shared/detail-modal/detail-modal.compone
 import { CommonModule } from '@angular/common';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr';
+import { ModalCadastrarPescaComponent } from './pages/colaborador/modal-cadastrar-pesca/modal-cadastrar-pesca.component';
+import { ModalCadastrarVendaComponent } from './pages/colaborador/modal-cadastrar-venda/modal-cadastrar-venda.component';
 
 
 @NgModule({
@@ -46,7 +48,9 @@ import { ToastrModule } from 'ngx-toastr';
     CadastrarVendaComponent,
     ConfiguracoesComponent,
     GoogleMapsComponent,
-    DetailModalComponent
+    DetailModalComponent,
+    ModalCadastrarPescaComponent,
+    ModalCadastrarVendaComponent
 
   ],
   imports: [
