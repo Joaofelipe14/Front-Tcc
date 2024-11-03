@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { LoadingController, ModalController } from '@ionic/angular';
 import { ToastrService } from 'ngx-toastr';
 import { CadastroVendaService } from 'src/app/services/cadastro-venda.service';
-import { ModalCadastrarVendaComponent } from './modal-cadastrar-venda/modal-cadastrar-venda.component';
+import { ModalCadastrarVendaComponent } from '../modal-cadastrar-venda/modal-cadastrar-venda.component';
 import { DetailModalComponent } from 'src/app/shared/detail-modal/detail-modal.component';
 @Component({
   selector: 'app-cadastrar-venda',

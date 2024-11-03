@@ -13,8 +13,9 @@
   <ion-searchbar [(ngModel)]="searchTerm" (ionInput)="filterRecords()" placeholder="Buscar por nome..."></ion-searchbar>
 
   <ion-select [(ngModel)]="selectedLocalizacao" (ionChange)="filterRecords()" placeholder="Filtrar por localização">
-    <ion-select-option value="">Todos</ion-select-option> 
-    <ion-select-option *ngFor="let localizacao of localizacoes" [value]="localizacao.id">{{ localizacao.descricao_amigavel }}</ion-select-option>
+    <ion-select-option value="">Todos</ion-select-option>
+    <ion-select-option *ngFor="let localizacao of localizacoes" [value]="localizacao.id">{{
+      localizacao.descricao_amigavel }}</ion-select-option>
   </ion-select>
 
   <div *ngIf="segment === 'pesca'">
@@ -34,6 +35,7 @@
       <ion-buttons slot="start">
         <ion-button (click)="previousPagePesca()" [disabled]="currentPagePesca === 1">Anterior</ion-button>
       </ion-buttons>
+      <p style="text-align: center;">Pag. {{ currentPagePesca }} de {{ totalPagesPesca }}</p>
       <ion-buttons slot="end">
         <ion-button (click)="nextPagePesca()" [disabled]="currentPagePesca === totalPagesPesca">Próximo</ion-button>
       </ion-buttons>
@@ -56,7 +58,9 @@
     <ion-toolbar>
       <ion-buttons slot="start">
         <ion-button (click)="previousPageVenda()" [disabled]="currentPageVenda === 1">Anterior</ion-button>
+        <p style="text-align: center;">Pag. {{ currentPageVenda }} de {{ totalPagesVenda }}</p>
       </ion-buttons>
+
       <ion-buttons slot="end">
         <ion-button (click)="nextPageVenda()" [disabled]="currentPageVenda === totalPagesVenda">Próximo</ion-button>
       </ion-buttons>

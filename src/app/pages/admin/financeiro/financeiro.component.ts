@@ -11,7 +11,14 @@ import { CadastrarFinanceiroComponent } from './cadastrar-financeiro/cadastrar-f
 export class FinanceiroComponent implements OnInit {
 
   registrosFinanceiros: any[] = [];
-
+  dataInicial!: string;
+  dataFinal!: string;
+  registrosFinanceirosFiltrados: any[] = [];
+  filtroCondicao: string = 'todos';
+  filtroData!: string;
+  filtroDataInicial!: string;
+  filtroDataFinal!: string;
+  filtroExpansao: boolean = false;
   constructor(
     private financeiroService: FinancerioService,
     private loadingController: LoadingController,
@@ -30,16 +37,6 @@ export class FinanceiroComponent implements OnInit {
   }
 
 
-
-  dataInicial!: string;
-  dataFinal!: string;
-  registrosFinanceirosFiltrados: any[] = [];
-
-  filtroCondicao: string = 'todos';
-  filtroData!: string;
-  filtroDataInicial!: string;
-  filtroDataFinal!: string;
-  filtroExpansao: boolean = false;
 
   toggleFiltro() {
     this.filtroExpansao = !this.filtroExpansao;

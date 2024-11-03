@@ -1,5 +1,6 @@
 import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { AlertController, IonContent, LoadingController, ScrollDetail } from '@ionic/angular';
+import { ToastrService } from 'ngx-toastr';
 import { AuthService } from 'src/app/services/auth.service';
 import { LocalizacaoService } from 'src/app/services/localizacao.service';
 import { Utils } from 'src/app/utils/utils';
@@ -30,7 +31,7 @@ export class ConfiguracoesComponent implements OnInit {
   filteredLocalizacoes: any[] = [];
   isModalOpenLocalizacao: boolean = false;
   editingLocalizacao: any = null;
-
+  isLoadingBtn = false;
 
 
   @ViewChild('modalContent') modalContent!: IonContent;
@@ -81,6 +82,8 @@ export class ConfiguracoesComponent implements OnInit {
     private alertController: AlertController,
     private localizacaoService: LocalizacaoService,
     private cdr: ChangeDetectorRef,
+    private toast: ToastrService,
+
 
   ) { }
 
@@ -100,19 +103,46 @@ export class ConfiguracoesComponent implements OnInit {
       this.usuarios = data.dados;
       this.filteredUsuarios = this.usuarios;
       loading.dismiss();
+      this.updatePagination()
     }, error => {
       loading.dismiss();
-      // Trate o erro conforme necessário
     });
   }
+
+  totalPagesUsers: number = 1;
+  itemsPerPage: number = 15;
+  totalPagesUser: number = 0;
+  paginatedUsuarios: any[] = []; 
 
   filterUsuarios() {
     this.filteredUsuarios = this.usuarios.filter(usuario =>
       usuario.name.toLowerCase().includes(this.searchName.toLowerCase())
     );
+
+    this.updatePagination();
+
   }
 
+    updatePagination() {
+      this.totalPagesUser = Math.ceil(this.filteredUsuarios.length / this.itemsPerPage);
+      this.paginatedUsuarios = this.filteredUsuarios.slice((this.totalPagesUsers - 1) * this.itemsPerPage, this.totalPagesUsers * this.itemsPerPage);
+    }
+  
+    prevPage() {
+      if (this.totalPagesUsers > 1) {
+        this.totalPagesUsers--;
+        this.updatePagination();
+      }
+    }
+  
+    nextPage() {
+      if (this.totalPagesUsers < this.totalPagesUser) {
+        this.totalPagesUsers++;
+        this.updatePagination();
+      }
+    }
   openUsuarioDetails(usuario: any) {
+    console.log(usuario)
     this.selectedUsuario = usuario;
     this.selectedTipoUsuario = usuario.tipo_usuario
     this.isModalOpen = true;
@@ -137,13 +167,15 @@ export class ConfiguracoesComponent implements OnInit {
       const response = await this.authService.atualizar(payload, this.selectedUsuario.id).toPromise();
       // Lidar com a resposta do servidor
       if (response.sucesso) {
-        alert('Grupo atualizado.')
+        this.toast.success('Grupo do usuario atualizado.', 'Sucesso');
+
         this.closeModal()
       } else {
-        alert('Erro')
+        this.toast.error('Erro ao atualizar grupo de usuario.', 'Erro');
+
       }
     } catch (error) {
-      alert('Erro')
+      this.toast.error('Erro ao atualizar grupo de usuario.', 'Erro');
 
       console.error('Erro ao atualizar tipo de usuário:', error);
     }
@@ -198,17 +230,22 @@ export class ConfiguracoesComponent implements OnInit {
     };
 
     try {
+      this.isLoadingBtn = true;
       const response = await this.authService.atualizar(payload, this.selectedUsuario.id).toPromise();
       // Lidar com a resposta do servidor
       if (response.sucesso) {
-        alert('Senha resetada para o CPF.')
+        this.isLoadingBtn = false
+        this.toast.success('Senha resetada para o CPF.', 'Sucesso');
         this.closeModal()
       } else {
-        alert('Erro')
+        this.isLoadingBtn = false
+        this.toast.error('Erro ao resetar senha de usuario.', 'Erro');
+
       }
     } catch (error) {
+      this.isLoadingBtn = false
       console.error('Erro ao resetar a senha:', error);
-      alert('Erro')
+      this.toast.error('Erro ao resetar a senha.', 'Erro');
 
     }
   }
@@ -257,7 +294,8 @@ export class ConfiguracoesComponent implements OnInit {
 
       this.localizacaoService.updateLocalizacao(this.newLocalizacao, this.editingLocalizacao.id).subscribe(
         async response => {
-          console.log('Localização atualizada:', response);
+          this.toast.success('Localização atualizada.', 'Sucesso');
+
           this.loadLocalizacoes();
           this.closeModalLocalizacao();
           loading.dismiss();
@@ -266,7 +304,9 @@ export class ConfiguracoesComponent implements OnInit {
         },
         error => {
           alert('Erro ao atualizar localização');
-          console.error('Erro ao atualizar localização:', error);
+          console.error(error);
+          this.toast.error('Erro ao atualizar localização', 'Error');
+
           loading.dismiss();
         }
       );
@@ -274,13 +314,14 @@ export class ConfiguracoesComponent implements OnInit {
 
       this.localizacaoService.createLocalizacao(this.newLocalizacao).subscribe(
         async response => {
-          console.log('Localização cadastrada:', response);
+          this.toast.success('Nova localização cadastrada.', 'Sucesso');
+
           this.loadLocalizacoes();
           this.closeModalLocalizacao();
           loading.dismiss();
         },
         error => {
-          alert('Erro ao cadastrar nova localização');
+          this.toast.error('Erro ao cadastrar localização.', 'Sucesso');
           console.error('Erro ao cadastrar localização:', error);
           loading.dismiss();
         }
@@ -301,19 +342,11 @@ export class ConfiguracoesComponent implements OnInit {
   resetNewLocalizacao() {
     this.newLocalizacao = { descricao: '', descricao_amigavel: '', latitude: null, longitude: null };
   }
-  handlePlaceSelected(coordinates: { lat: number, lng: number, name: string, address: string }) {
-    console.log('Local Selecionado:', coordinates.name);
-    console.log('Endereço:', coordinates.address);
-    console.log('Latitude:', coordinates.lat);
-    console.log('Longitude:', coordinates.lng);
 
+  handlePlaceSelected(coordinates: { lat: number, lng: number, name: string, address: string }) {
     this.newLocalizacao.descricao = coordinates.address;
     this.newLocalizacao.latitude = coordinates.lat;
     this.newLocalizacao.longitude = coordinates.lng;
     this.cdr.detectChanges();
-
   }
-
-
-
 }

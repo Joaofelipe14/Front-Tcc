@@ -17,7 +17,7 @@
     <ion-searchbar [(ngModel)]="searchName" (ionInput)="filterUsuarios()" placeholder="Buscar usuário"></ion-searchbar>
 
     <ion-list>
-      <ion-item class="hoverable-item" *ngFor="let usuario of filteredUsuarios" (click)="openUsuarioDetails(usuario)">
+      <ion-item class="hoverable-item" *ngFor="let usuario of paginatedUsuarios" (click)="openUsuarioDetails(usuario)">
         <ion-avatar slot="start">
           <img
             [src]="usuario.url_perfil ? usuario.url_perfil : 'https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png'"
@@ -26,9 +26,24 @@
         <ion-label>
           <h2 class="hoverable-item">{{ usuario.name }}</h2>
         </ion-label>
+        <ion-icon *ngIf="usuario?.primeiro_acesso=='S'" slot="end" style="color: wheat;"
+          name="alert-circle-sharp"></ion-icon>
         <ion-icon name="chevron-forward" slot="end"></ion-icon>
       </ion-item>
     </ion-list>
+
+    <ion-toolbar>
+      <ion-buttons slot="start">
+        <ion-button (click)="prevPage()" [disabled]="totalPagesUsers === 1">Anterior</ion-button>
+      </ion-buttons>
+
+      <p style="text-align: center;">Pag. {{ totalPagesUsers }} de {{ totalPagesUser }}</p>
+
+      <ion-buttons slot="end">
+        <ion-button (click)="nextPage()" [disabled]="totalPagesUsers === totalPagesUser">Próximo</ion-button>
+      </ion-buttons>
+    </ion-toolbar>
+
 
 
     <ion-modal [isOpen]="isModalOpen" (ionModalDidDismiss)="closeModal()" class="custom-modal">
@@ -76,9 +91,27 @@
                 </ion-select>
               </div>
             </div>
-            <ion-button class="btn-primario" (click)="confirmResetPassword()">Resetar Senha</ion-button>
+
+            <div class="info-row" style="align-items: flex-start;" *ngIf="selectedUsuario?.primeiro_acesso=='S'">
+              <ion-icon style="color: wheat;" name="alert-circle-sharp"></ion-icon>
+              <div>Colaborador com senha padrão.</div>
+            </div>
+
+            <ion-button class="btn-primario" (click)="confirmResetPassword()">
+              <ng-container *ngIf="isLoadingBtn; else loadingTemplate">
+                <ion-spinner size="small"></ion-spinner>
+              </ng-container>
+              <ng-template #loadingTemplate>
+                Resetar Senha
+              </ng-template>
+            </ion-button>
+
+
           </div>
         </div>
+
+
+
       </ng-template>
     </ion-modal>
 
@@ -130,8 +163,7 @@
           </ion-toolbar>
         </ion-header>
 
-        <ion-content #modalContent class="custom-ion-localizacao"   [scrollEvents]="true"
-        (ionScroll)="onScroll($event)">
+        <ion-content #modalContent class="custom-ion-localizacao" [scrollEvents]="true" (ionScroll)="onScroll($event)">
           <ion-item>
             <ion-label position="floating">Descrição</ion-label>
             <ion-input [(ngModel)]="newLocalizacao.descricao"></ion-input>
@@ -154,10 +186,15 @@
             (placeSelected)="handlePlaceSelected($event)">
           </app-google-map>
 
-          <ion-icon *ngIf="!isAtTop" (click)="scrollToTop()" name="arrow-up-circle" class="scroll-bottom-icon"></ion-icon>
-          <ion-icon *ngIf="!isAtBottom" (click)="scrollToBottom()" name="arrow-down-circle" class="scroll-top-icon"></ion-icon>
+          <ion-icon *ngIf="!isAtTop" (click)="scrollToTop()" name="arrow-up-circle"
+            class="scroll-bottom-icon"></ion-icon>
+          <ion-icon *ngIf="!isAtBottom" (click)="scrollToBottom()" name="arrow-down-circle"
+            class="scroll-top-icon"></ion-icon>
 
-          <ion-button class="btn-primario" (click)="cadastrarLocalizacao()">Salvar</ion-button>
+          <div class="button-container">
+            <ion-button class="btn-primario" (click)="cadastrarLocalizacao()">Salvar</ion-button>
+          </div>
+
         </ion-content>
       </ng-template>
     </ion-modal>

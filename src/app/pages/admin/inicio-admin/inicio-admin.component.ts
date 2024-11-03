@@ -18,12 +18,10 @@ export class InicioAdminComponent implements OnInit {
   searchTerm: string = ''; 
   selectedLocalizacao: string = ''; 
   localizacoes: any[] = []; 
-  
   // Registros filtrados
   filteredPesca: any[] = [];
   filteredVenda: any[] = [];
-
-  // Paginação
+  // Paginação 
   currentPagePesca: number = 1;
   currentPageVenda: number = 1;
   itemsPerPage: number = 5;
@@ -35,7 +33,6 @@ export class InicioAdminComponent implements OnInit {
     private cadastroVendaService: CadastroVendaService,
     private modalController: ModalController,
     private localizacaoService: LocalizacaoService ,
-    private toastr: ToastrService
   ) {}
 
   ngOnInit() {
@@ -43,9 +40,6 @@ export class InicioAdminComponent implements OnInit {
     this.loadVendasAll();
     this.loadLocalizacoes(); 
   }
-
-
-
 
   loadPescaAll(): void {
     this.cadastroPescaService.getRegistrosAll().subscribe(
