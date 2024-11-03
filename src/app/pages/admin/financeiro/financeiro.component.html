@@ -1,143 +1,86 @@
-<ion-content >
-    <app-header title="Financeiro"></app-header>
-
-    <ion-segment [(ngModel)]="selectedSegment" (ionChange)="segmentChanged()">
-        <ion-segment-button value="cadastro">Cadastro</ion-segment-button>
-        <ion-segment-button value="relatorios">Relatórios</ion-segment-button>
-    </ion-segment>
+<ion-content>
+    <app-header title="Controle Financeiro"></app-header>
 
     <div class="container-principal">
-        <ng-container *ngIf="selectedSegment === 'cadastro'">
-            <ion-card class="card-cadastro">
-                <ion-card-header class="card-header-cadastro">
-                    <ion-card-title class="title-card">Registro Financeiro</ion-card-title>
-                </ion-card-header>
 
-                <ion-card-content>
-                    <form [formGroup]="cadastrarFinancerioForm" (ngSubmit)="onSubmit()">
-
-                        <div style="align-items: center; flex-direction: row;">
-                            <ion-label>Data Inicial</ion-label>
-                            <ion-datetime-button datetime="datetime" preferWheel="false"
-                                (click)="currentField='data_inicial'"></ion-datetime-button>
-                        </div>
-
-                        <div style="align-items: center; flex-direction: row;">
-                            <ion-label>Data Final</ion-label>
-                            <ion-datetime-button datetime="date" preferWheel="false"
-                                (click)="currentField='data_final'"></ion-datetime-button>
-                        </div>
-
-                        <ion-modal [keepContentsMounted]="true">
-                            <ng-template>
-                                <ion-datetime id="datetime" (ionChange)="onDateChange($event)"
-                                    displayFormat="MMM DD, YYYY" pickerFormat="MMM DD, YYYY"
-                                    showDefaultTimeLabel="false">
-                                </ion-datetime>
-                            </ng-template>
-                        </ion-modal>
-
-                        <ion-modal [keepContentsMounted]="true">
-                            <ng-template>
-                                <ion-datetime id="date" (ionChange)="onDateChange($event)" displayFormat="MMM DD, YYYY"
-                                    pickerFormat="MMM DD, YYYY" showDefaultTimeLabel="false">
-                                </ion-datetime>
-                            </ng-template>
-                        </ion-modal>
-
-
-                        <ion-modal [keepContentsMounted]="true">
-                            <ng-template>
-                                <ion-datetime (ionChange)="onDateChange($event)" displayFormat="MMM DD, YYYY"
-                                    pickerFormat="MMM DD, YYYY" showDefaultTimeLabel="false">
-                                </ion-datetime>
-                            </ng-template>
-                        </ion-modal>
-
-                        <div>
-                            <ion-label>Transporte</ion-label>
-                            <ion-select formControlName="transporte" required>
-                                <ion-select-option value="carro">Carro</ion-select-option>
-                                <ion-select-option value="moto">Moto</ion-select-option>
-                                <ion-select-option value="bicicleta">Bicicleta</ion-select-option>
-                                <ion-select-option value="onibus">Ônibus</ion-select-option>
-                            </ion-select>
-                        </div>
-
-                        <div>
-                            <ion-input placeholder="Combustível" formControlName="combustivel" type="text"
-                                required></ion-input>
-                        </div>
-
-                        <div>
-                            <ion-input placeholder="Embarcação" formControlName="embarcacao" type="text"
-                                required></ion-input>
-                        </div>
-
-                        <div>
-                            <ion-input placeholder="Material" formControlName="material" type="text"
-                                required></ion-input>
-                        </div>
-
-                        <div>
-                            <ion-input placeholder="Energia (kw)" formControlName="energia" type="text" required
-                                (ionBlur)="formatEnergy()"></ion-input>
-                        </div>
-
-                        <br>
-                        <ion-button [disabled]="cadastrarFinancerioForm.invalid" class="btn-primario" type="submit">Enviar</ion-button>
-                    </form>
-                </ion-card-content>
-            </ion-card>
-        </ng-container>
-   
-
-        <div style="width: 100%;" *ngIf="selectedSegment === 'relatorios'">
+        <div style="width: 100%;">
             <ion-card class="card-relatorios">
                 <ion-card-header>
-                    <ion-card-title class="title-card">Relatórios Financeiros</ion-card-title>
+                    <ion-card-title class="title-card container-plus">Relatórios Financeiros
+                         <ion-icon (click)='openCadastroFinancerio()'name="add-circle-outline"></ion-icon>
+                    </ion-card-title>
+
                 </ion-card-header>
                 <ion-card-content>
                     <ion-item (click)="toggleFiltro()" lines="none">
                         <ion-label>Filtros</ion-label>
                         <ion-icon slot="end" [name]="filtroExpansao ? 'chevron-up' : 'chevron-down'"></ion-icon>
                     </ion-item>
-                    <div *ngIf="filtroExpansao" class="ion-padding">
-                        <ion-label>Filtro</ion-label>
-                        <ion-select [(ngModel)]="filtroCondicao">
-                            <ion-select-option value="todos">Todos</ion-select-option>
-                            <ion-select-option select="maior">Maior que</ion-select-option>
-                            <ion-select-option value="menor">Menor que</ion-select-option>
-                            <ion-select-option value="igual">Igual a</ion-select-option>
-                            <ion-select-option value="entre">Entre</ion-select-option>
-                        </ion-select>
+                    <div *ngIf="filtroExpansao">
+                        <ion-item lines="none">
+                            <ion-label>Tipo de busca:</ion-label>
+                            <ion-select [(ngModel)]="filtroCondicao" interface="popover">
+                                <ion-select-option value="todos">Todos</ion-select-option>
+                                <ion-select-option value="maior">Maior que</ion-select-option>
+                                <ion-select-option value="menor">Menor que</ion-select-option>
+                                <ion-select-option value="igual">Igual a</ion-select-option>
+                                <ion-select-option value="entre">Entre</ion-select-option>
+                            </ion-select>
+                        </ion-item>
+
                         <div *ngIf="filtroCondicao !== 'entre'">
-                            <ion-label>Data</ion-label>
-                            <ion-datetime displayFormat="MMM DD, YYYY" [(ngModel)]="filtroData"></ion-datetime>
+                            <ion-item>
+                                <ion-label>Data</ion-label>
+                                <ion-datetime displayFormat="MMM DD, YYYY" [(ngModel)]="filtroData"></ion-datetime>
+                            </ion-item>
                         </div>
+
                         <div *ngIf="filtroCondicao === 'entre'">
-                            <ion-label>Data Inicial</ion-label>
-                            <ion-datetime displayFormat="MMM DD, YYYY" [(ngModel)]="filtroDataInicial"></ion-datetime>
-                            <ion-label>Data Final</ion-label>
-                            <ion-datetime displayFormat="MMM DD, YYYY" [(ngModel)]="filtroDataFinal"></ion-datetime>
+                            <ion-item>
+                                <ion-label>Data Inicial</ion-label>
+                                <ion-datetime displayFormat="MMM DD, YYYY"
+                                    [(ngModel)]="filtroDataInicial"></ion-datetime>
+                            </ion-item>
+                            <ion-item>
+                                <ion-label>Data Final</ion-label>
+                                <ion-datetime displayFormat="MMM DD, YYYY" [(ngModel)]="filtroDataFinal"></ion-datetime>
+                            </ion-item>
                         </div>
-                        <ion-button expand="full" class="'btn-primario" (click)="filtrarRegistros(); toggleFiltro();">Filtrar</ion-button>
+
+                        <ion-button expand="full" class="btn-primario"
+                            (click)="filtrarRegistros(); toggleFiltro();">Filtrar</ion-button>
+
                     </div>
-                    <p (click)="imprimirAllPdf()">Click aqui para imprimir todos os registro filtrados. </p>
-                    <p>Aqui você pode visualizar os relatórios financeiros.</p>
+
+                    <div class="button-container">
+                        <ion-button class="btn-primario">Imprimir tudo </ion-button>
+                    </div>
+                    <p>Click para poder imprimir todos os registro filtrados. </p>
+
                 </ion-card-content>
             </ion-card>
-        
-            <ion-card class="card-relatorios" *ngFor="let registro of registrosFinanceirosFiltrados">
-                <ion-card-content>
-                    <div class="card-row">
-                        <p>Dt Inicial: {{ registro.data_inicial }}</p>
-                        <img (click)="baixarPdf(registro.id)" src="../../../../assets/icons/download.svg" alt="">
-                    </div>
-                </ion-card-content>
-            </ion-card>
+
+            <ng-container *ngIf="registrosFinanceirosFiltrados.length > 0 ; else notaData ">
+
+                <ion-card class="card-relatorios" *ngFor="let registro of registrosFinanceirosFiltrados">
+                    <ion-card-content>
+                        <div class="card-row">
+                            <p>Dt Inicial: {{ registro.data_inicial }}</p>
+                            <img (click)="baixarPdf(registro.id)" src="../../../../assets/icons/download.svg" alt="">
+                        </div>
+                    </ion-card-content>
+                </ion-card>
+            </ng-container>
+
+            <ng-template #notaData>
+                <ion-card class="card-relatorios">
+                    <ion-card-content>
+                        Nenhum resultado encontrado.
+                    </ion-card-content>
+                </ion-card>
+            </ng-template>
         </div>
-        
+
 
     </div>
 </ion-content>

@@ -1,0 +1,73 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title class="title-card">Cadastrar Financerio</ion-title>
+    <ion-buttons slot="end">
+      <ion-button class="title-card" (click)="dismissModal()">Fechar</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="teste">
+  <form [formGroup]="cadastrarFinancerioForm" (ngSubmit)="onSubmit()">
+    <ion-item>
+      <ion-label>Transporte</ion-label>
+      <ion-select formControlName="transporte" required>
+        <ion-select-option value="carro">Carro</ion-select-option>
+        <ion-select-option value="moto">Moto</ion-select-option>
+        <ion-select-option value="bicicleta">Bicicleta</ion-select-option>
+        <ion-select-option value="onibus">Ônibus</ion-select-option>
+      </ion-select>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="floating">Combustível</ion-label>
+      <ion-input formControlName="combustivel" type="text" required></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="floating">Embarcação</ion-label>
+      <ion-input formControlName="embarcacao" type="text" required></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="floating">Material</ion-label>
+      <ion-input formControlName="material" type="text" required></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="floating">Energia (kw)</ion-label>
+      <ion-input formControlName="energia" type="text" required (ionBlur)="formatEnergy()"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>Data Inicial</ion-label>
+      <ion-datetime-button (click)="currentField='data_inicial'" datetime="data_inicial"></ion-datetime-button>
+      <ion-modal [keepContentsMounted]="true">
+        <ng-template>
+          <ion-datetime id="data_inicial" (ionChange)="onDateChange($event)" displayFormat="MMM DD, YYYY"
+            pickerFormat="MMM DD, YYYY"></ion-datetime>
+        </ng-template>
+      </ion-modal>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>Data Final</ion-label>
+      <ion-datetime-button (click)="currentField='data_final'" datetime="data_final"></ion-datetime-button>
+      <ion-modal [keepContentsMounted]="true">
+        <ng-template>
+          <ion-datetime id="data_final" (ionChange)="onDateChange($event)" displayFormat="MMM DD, YYYY"
+            pickerFormat="MMM DD, YYYY"></ion-datetime>
+        </ng-template>
+      </ion-modal>
+    </ion-item>
+
+    <div class="button-container" style="margin-top: 10px;">
+      <ion-button type="submit" class="btn-primario" [disabled]="cadastrarFinancerioForm.invalid || isLoading">
+        <ng-container *ngIf="isLoading; else Loading">
+          <ion-spinner size="small"></ion-spinner>
+        </ng-container>
+        <ng-template #Loading>Enviar</ng-template>
+      </ion-button>
+    </div>
+  </form>
+</ion-content>

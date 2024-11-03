@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { LoadingController, ToastController } from '@ionic/angular';
+import { LoadingController, ModalController } from '@ionic/angular';
 import { FinancerioService } from 'src/app/services/financeiro.service';
-import { Utils } from 'src/app/utils/utils';
+import { CadastrarFinanceiroComponent } from './cadastrar-financeiro/cadastrar-financeiro.component';
 
 @Component({
   selector: 'app-financeiro',
@@ -11,86 +10,25 @@ import { Utils } from 'src/app/utils/utils';
 })
 export class FinanceiroComponent implements OnInit {
 
-  cadastrarFinancerioForm!: FormGroup;
-  selectedSegment: string = 'cadastro';
-  currentField: string | null = null;
-  private originalEnergyValue: any | null = null;
-  registrosFinanceiros: any[] = []; // Adiciona esta linha
-
-
-
+  registrosFinanceiros: any[] = [];
 
   constructor(
-    private formBuilder: FormBuilder,
     private financeiroService: FinancerioService,
-    private toastController: ToastController, private loadingController: LoadingController
+    private loadingController: LoadingController,
+    private modalController: ModalController
   ) { }
 
   ngOnInit() {
-    this.initializeForm();
     this.loadFinancerio();
   }
 
-  initializeForm() {
-    this.cadastrarFinancerioForm = this.formBuilder.group({
-      transporte: ['', Validators.required],
-      combustivel: ['', Validators.required],
-      embarcacao: ['', Validators.required],
-      material: ['', Validators.required],
-      energia: ['', [Validators.required, Validators.pattern(/^\d+([.,]\d+)? kw$/)]],
-      data_inicial: ['', Validators.required],
-      data_final: ['', Validators.required],
+  async openCadastroFinancerio() {
+    const modal = await this.modalController.create({
+      component: CadastrarFinanceiroComponent,
     });
+    return await modal.present();
   }
 
-  onDateChange(event: any) {
-    const selectedDate = event.detail.value;
-    if (this.currentField) {
-      this.cadastrarFinancerioForm.get(this.currentField)?.setValue(selectedDate);
-    }
-    this.currentField = null;
-  }
-
-
-  formatEnergy() {
-    const energyControl = this.cadastrarFinancerioForm.get('energia');
-    this.originalEnergyValue = energyControl?.value;
-
-    if (energyControl && energyControl.value) {
-      const value = energyControl.value.replace(',', '.').trim();
-      const formattedValue = `${parseFloat(value).toFixed(2)} kw`;
-      energyControl.setValue(formattedValue);
-    }
-
-  }
-
-  async onSubmit() {
-    if (this.cadastrarFinancerioForm.valid) {
-      const formData = this.cadastrarFinancerioForm.value;
-      formData.energia = this.originalEnergyValue;
-
-      try {
-        const response = await this.financeiroService.createRegistroFinanceiro(formData).toPromise();
-
-        if (response.sucesso) {
-          Utils.showSucesso("Dados atualizado", this.toastController)
-        }
-
-      } catch (error) {
-        console.error('Erro:', error);
-        Utils.showErro('Erro . Tente novamente mais tarde.', this.toastController)
-
-      }
-
-
-    } else {
-      console.log('Formulário inválido');
-    }
-  }
-
-  segmentChanged() {
-    // Lógica para manipular mudanças no segmento
-  }
 
 
   dataInicial!: string;
@@ -108,7 +46,6 @@ export class FinanceiroComponent implements OnInit {
   }
 
   async loadFinancerio() {
-
     this.financeiroService.getRegistrosFinancerios().subscribe((data: any) => {
       this.registrosFinanceiros = data.registros;
       this.registrosFinanceirosFiltrados = this.registrosFinanceiros;
@@ -119,7 +56,6 @@ export class FinanceiroComponent implements OnInit {
     });
   }
 
-  // seu-componente.ts
   async baixarPdf(id: any) {
 
     const loading = await this.loadingController.create({
@@ -192,7 +128,7 @@ export class FinanceiroComponent implements OnInit {
 
     console.log('filtrando')
     if (this.filtroCondicao === 'todos') {
-      // Se "Todos" for selecionado, mostra todos os registros
+
       this.registrosFinanceirosFiltrados = this.registrosFinanceiros;
       return;
     }
