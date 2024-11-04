@@ -57,46 +57,73 @@
   display: none;
 }
 
+// @media (min-width: 756px) {
+
+//   .logout {
+//     cursor: pointer;
+//   }
+
+//   .custom-nav {
+//     position: fixed;
+//     top: 0;
+//     width: 100%;
+//     background-color: #ECECEC;
+//     border-top-left-radius: 0px;
+//     border-top-right-radius: 0px;
+//     border-top: 0px;
+//     box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+//     height: 85px;
+
+//     display: flex;
+//     justify-content: space-between;
+//     padding-left: 50px;
+//     padding-right: 50px;
+
+
+//   }
+
+//   .custom-nav ul {
+//     flex-direction: row;
+//     justify-content: flex-start;
+//     gap: 25px;
+//   }
+
+//   .custom-nav li {
+//     flex: initial;
+//   }
+
+
+//   .custom-nav .nav-item {
+//     flex-direction: column;
+//     font-size: 16px;
+//     padding: 0 10px;
+//   }
+
+// }
 @media (min-width: 756px) {
-
-  .logout {
-    cursor: pointer;
-  }
-
   .custom-nav {
-    position: fixed;
-    top: 0;
-    width: 100%;
-    background-color: #ECECEC;
-    border-top-left-radius: 0px;
-    border-top-right-radius: 0px;
-    border-top: 0px;
-    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
-    height: 85px;
-
-    display: flex;
-    justify-content: space-between;
-    padding-left: 50px;
-    padding-right: 50px;
-
-
+    position: fixed; /* Fixa a sidebar na tela */
+    top: 0; /* Alinha ao topo */
+    left: 0; /* Alinha à esquerda */
+    height: 100%; /* Altura total da tela */
+    width: 250px; /* Largura da sidebar */
+    background-color: rgb(230, 235, 245); /* Mantém a cor de fundo */
+    border-radius: 0; /* Remove o arredondamento */
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2); /* Adiciona sombra */
+    z-index: 999; /* Mantém a hierarquia de camadas */
   }
 
   .custom-nav ul {
-    flex-direction: row;
-    justify-content: flex-start;
-    gap: 25px;
+    flex-direction: column; /* Alinha os itens em coluna */
+    justify-content: flex-start; /* Alinha no início */
+    height: auto; /* Permite altura automática */
   }
 
   .custom-nav li {
-    flex: initial;
+    width: 100%; /* Faz cada item ocupar toda a largura */
   }
 
-
-  .custom-nav .nav-item {
-    flex-direction: column;
-    font-size: 16px;
-    padding: 0 10px;
+  .logout {
+    display: block; /* Mostra o link de logout */
   }
-
 }

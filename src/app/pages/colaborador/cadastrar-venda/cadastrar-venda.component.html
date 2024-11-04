@@ -2,10 +2,21 @@
 
   <app-header title="Meus Registros"></app-header>
 
-  <div class="button-container" style="margin-top: 80px;">
+  <!-- <div class="button-container" style="margin-top: 80px;">
     <ion-button class="btn-primario" (click)="openModal()">Cadastrar Venda</ion-button>
-  </div>
-  <div style="border-top: 1px solid #ccc; margin: 10px 0;"></div>
+  </div> -->
+
+  <ion-header class="margin-titulo-header">
+    <ion-toolbar>
+        <ion-title class="title-card" >Minhas vendas</ion-title>
+        <ion-buttons slot="end">
+            <div (click)='openModal()' class="container-novo">
+                Novo <ion-icon name="add-circle-outline"></ion-icon>
+            </div>
+        </ion-buttons>
+    </ion-toolbar>
+</ion-header>
+
   <ng-template #notaData>
     <p>
       Nenhum resultado encontrado.

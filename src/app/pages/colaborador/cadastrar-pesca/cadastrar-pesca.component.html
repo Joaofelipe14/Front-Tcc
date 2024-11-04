@@ -1,15 +1,27 @@
 <ion-content scroll-y="true">
     <app-header title="Pesca"></app-header>
-    
-    <ng-template #notaData>
-        <p *ngIf="!loading" style="text-align: center; margin-top: 28px;">Nenhum resultado encontrado.</p>
-    </ng-template>
 
-    <div class="button-container" style="margin-top: 80px;">
+    <!-- <div class="button-container" style="margin-top: 80px;">
         <ion-button class="btn-primario" (click)="openModal()">Cadastrar Pesca</ion-button>
     </div>
-    <div style="border-top: 1px solid #ccc; margin: 10px 0;"></div>
+    <div style="border-top: 1px solid #ccc; margin: 10px 0;"></div> -->
 
+    <ion-header class="margin-titulo-header">
+        <ion-toolbar>
+            <ion-title class="title-card">Minhas pescas</ion-title>
+            <ion-buttons slot="end">
+                <div (click)='openModal()' class="container-novo">
+                    Novo <ion-icon name="add-circle-outline"></ion-icon>
+                </div>
+            </ion-buttons>
+        </ion-toolbar>
+    </ion-header>
+
+    <ng-template #notaData>
+        <p>
+            Nenhum resultado encontrado.
+        </p>
+    </ng-template>
     <ng-container *ngIf="paginatedPescas.length > 0; else notaData">
         <ion-list>
             <ion-item *ngFor="let registro of paginatedPescas" (click)="openDetailModal(registro)" detail>
@@ -22,7 +34,7 @@
         </ion-list>
     </ng-container>
 
-    <ion-toolbar *ngIf="paginatedPescas.length > 0" style="margin-bottom: 80px;" >
+    <ion-toolbar *ngIf="paginatedPescas.length > 0" style="margin-bottom: 80px;">
         <ion-buttons slot="start">
             <ion-button (click)="previousPagePesca()" [disabled]="currentPagePesca === 1">Anterior</ion-button>
         </ion-buttons>

@@ -33,9 +33,14 @@ export class FinanceiroComponent implements OnInit {
     const modal = await this.modalController.create({
       component: CadastrarFinanceiroComponent,
     });
+  
+    modal.onDidDismiss().then(() => {
+      this.loadFinancerio();
+    });
+  
     return await modal.present();
   }
-
+  
 
 
   toggleFiltro() {

@@ -19,7 +19,7 @@ export class CadastrarPescaComponent implements OnInit {
   totalPagesPesca: number = 1;
   loading: any = ''
   registros: any[] = [];
-
+  user : any=[];
   constructor(
     private cadastroPescaService: CadastroPescaService,
     private modalController: ModalController,
@@ -59,7 +59,11 @@ export class CadastrarPescaComponent implements OnInit {
     this.cadastroPescaService.getRegistrosByUserId().subscribe(
       response => {
         if (response.status) {
+            
           this.updateRegistros(response.dados.registros, 'pesca');
+          this.user= response.dados.user
+
+
         }
         this.loading.dismiss()
       },
@@ -75,9 +79,12 @@ export class CadastrarPescaComponent implements OnInit {
     const updatedRecords = newRecords.map(record => ({
       ...record,
       type: type,
-      dateTime: type === 'pesca' ? record.data_com_hora : record.created_at
+      dateTime: type === 'pesca' ? record.data_com_hora : record.created_at,
+      user: this.user
     }));
 
+
+    console.log(updatedRecords)
     this.registros = [...this.registros, ...updatedRecords];
     this.sortRegistros();
     this.calculateTotalPages();

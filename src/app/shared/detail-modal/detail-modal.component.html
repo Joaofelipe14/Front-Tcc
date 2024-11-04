@@ -9,7 +9,7 @@
 
 <ion-content>
   <div *ngIf="registro">
-    <p><strong>{{ registro.type === 'pesca' ? 'Registro de Pesca' : 'Registro de Venda' }}</strong></p>
+    <!-- <p><strong>{{ registro.type === 'pesca' ? 'Registro de Pesca' : 'Registro de Venda' }}</strong></p> -->
     
     <div *ngIf="registro.user">
       <ion-item>
@@ -18,7 +18,7 @@
         </ion-avatar>
         <ion-label>
           <h2>{{ registro.user.name }}</h2>
-          <h3>{{ registro.user.contato }}</h3>
+          <h3>{{ registro.user.cpf }}</h3>
         </ion-label>
       </ion-item>
     </div>
