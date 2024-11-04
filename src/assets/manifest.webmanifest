@@ -1,10 +1,10 @@
 {
-  "name": "Araioses App",
-  "short_name": "Araioses",
+  "name": "Pesca app",
+  "short_name": "Pesca",
   "start_url": "/login",
   "display": "standalone",
-  "background_color": "#ffffff",
-  "theme_color": "#f6faff",
+  "background_color": "#F6FAFF",
+  "theme_color": "#F6FAFF",
   "description": "Aplicativo para otimizar e gerenciar a pesca em Araioses-MA.",
   "icons": [
     {
