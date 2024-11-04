@@ -23,9 +23,9 @@
   </ion-item>
 </ion-list>
 
-<ion-modal [isOpen]="isModalOpenLocalizacao" class="modal-localizacao-custom"
+<ion-modal  [isOpen]="isModalOpenLocalizacao"
   (ionModalDidDismiss)="closeModalLocalizacao()">
-  <ng-template>
+  <ng-template  class="custom-ion-localizacao">
     <ion-header>
       <ion-toolbar>
         <ion-title class="title-card" >Cadastrar Ponto Geográfico</ion-title>
@@ -37,7 +37,7 @@
       </ion-toolbar>
     </ion-header>
 
-    <ion-content #modalContent class="custom-ion-localizacao" [scrollEvents]="true" >
+    <ion-content  #modalContent  [scrollEvents]="true" >
       <ion-item>
         <ion-label position="floating">Descrição</ion-label>
         <ion-input [(ngModel)]="newLocalizacao.descricao"></ion-input>

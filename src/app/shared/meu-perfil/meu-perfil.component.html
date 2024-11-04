@@ -1,98 +1,91 @@
 <app-header title="Meu perfil"></app-header>
 <app-menu></app-menu>
 <div class="container-principal">
-    <ion-content class="teste">
+  <ion-content>
+    <ion-row >
+      <ion-col size="12" size-md="8"  size-lg="9"  offset-md="4" offset-lg="3" offset-xl="2" >
         <ion-card>
-            <ion-card-header class="card-header-cadastro">
-                <ion-card-title class="title-card">Dados pessoais</ion-card-title>
-            </ion-card-header>
+          <ion-card-header class="card-header-cadastro">
+            <ion-card-title class="title-card">Dados pessoais</ion-card-title>
+          </ion-card-header>
 
-            <ion-card-content>
-                <form [formGroup]="meuPerfilForm" class="content-card" (ngSubmit)="onSubmit()">
-                    <div class="profile-item">
-                        <div class="profile-container" (click)="fileInput.click()">
-                            <input type="file" accept="image/*" (change)="onFileSelected($event)" hidden #fileInput />
-                            <div class="profile-image-container">
-                                <img *ngIf="selectedImage; else placeholderImage" [src]="selectedImage"
-                                    alt="Foto de Perfil" class="profile-image" />
-                                <ng-template #placeholderImage>
-                                    <img src="./../../../assets/logo.svg" alt="Logo" class="profile-image logo" />
-                                </ng-template>
-                                <div *ngIf="!selectedImage" class="edit-text">Toque para editar</div>
-                                <ion-icon *ngIf="selectedImage" name="close-circle" class="remove-image"
-                                    (click)="removeImage($event)">
-                                </ion-icon>
-                            </div>
-                        </div>
-                    </div>
+          <ion-card-content>
+            <form [formGroup]="meuPerfilForm" class="content-card" (ngSubmit)="onSubmit()">
+              <div class="profile-item">
+                <div class="profile-container" (click)="fileInput.click()">
+                  <input type="file" accept="image/*" (change)="onFileSelected($event)" hidden #fileInput />
+                  <div class="profile-image-container">
+                    <img *ngIf="selectedImage; else placeholderImage" [src]="selectedImage" alt="Foto de Perfil" class="profile-image" />
+                    <ng-template #placeholderImage>
+                      <img src="./../../../assets/logo.svg" alt="Logo" class="profile-image logo" />
+                    </ng-template>
+                    <div *ngIf="!selectedImage" class="edit-text">Toque para editar</div>
+                    <ion-icon *ngIf="selectedImage" name="close-circle" class="remove-image" (click)="removeImage($event)"></ion-icon>
+                  </div>
+                </div>
+              </div>
 
-                    <!-- Nome -->
-                    <div class="form-field" (click)="openModal('nome')">
-                        <div class="label-card-cadastro">Nome:</div>
-                        <ion-input placeholder="Digite seu nome" class="card-input" formControlName="nome" type="text"
-                            required></ion-input>
-                        <ion-icon name="chevron-forward" class="edit-icon"></ion-icon>
-                    </div>
+              <!-- Nome -->
+              <div class="form-field" (click)="openModal('nome')">
+                <div class="label-card-cadastro">Nome:</div>
+                <ion-input placeholder="Digite seu nome" class="card-input" formControlName="nome" type="text" required></ion-input>
+                <ion-icon name="chevron-forward" class="edit-icon"></ion-icon>
+              </div>
 
-                    <!-- CAP -->
-                    <div class="form-field" (click)="openModal('cap')">
-                        <div class="label-card-cadastro">CAP:</div>
-                        <ion-input placeholder="CAP" class="card-input" formControlName="cap" type="text"
-                            required></ion-input>
-                        <ion-icon name="chevron-forward" class="edit-icon"></ion-icon>
-                    </div>
+              <!-- CAP -->
+              <div class="form-field" (click)="openModal('cap')">
+                <div class="label-card-cadastro">CAP:</div>
+                <ion-input placeholder="CAP" class="card-input" formControlName="cap" type="text" required></ion-input>
+                <ion-icon name="chevron-forward" class="edit-icon"></ion-icon>
+              </div>
 
-                    <!-- Contato -->
-                    <div class="form-field" (click)="openModal('contato')">
-                        <div class="label-card-cadastro">Contato:</div>
-                        <ion-input (input)="maskContato($event)" placeholder="Contato" class="card-input"
-                            formControlName="contato" type="text" pattern="[\d\-\(\)\s]*" required></ion-input>
-                        <ion-icon name="chevron-forward" class="edit-icon"></ion-icon>
-                    </div>
+              <!-- Contato -->
+              <div class="form-field" (click)="openModal('contato')">
+                <div class="label-card-cadastro">Contato:</div>
+                <ion-input (input)="maskContato($event)" placeholder="Contato" class="card-input" formControlName="contato" type="text" pattern="[\d\-\(\)\s]*" required></ion-input>
+                <ion-icon name="chevron-forward" class="edit-icon"></ion-icon>
+              </div>
 
-                    <!-- CPF -->
-                    <div class="form-field">
-                        <div class="label-card-cadastro">CPF:</div>
-                        <ion-input [disabled]="true" placeholder="cpf" class="card-input" formControlName="cpf"
-                            type="text" required></ion-input>
-                    </div>
+              <!-- CPF -->
+              <div class="form-field">
+                <div class="label-card-cadastro">CPF:</div>
+                <ion-input [disabled]="true" placeholder="cpf" class="card-input" formControlName="cpf" type="text" required></ion-input>
+              </div>
 
-                    <div class="form-field">
-                        <div class="label-card-cadastro">Tipo de Usuário:</div>
-                        <ion-select formControlName="tipoUsuario" placeholder="Tipo de Usuário" [disabled]="true">
-                            <ion-select-option value="admin">Admin</ion-select-option>
-                            <ion-select-option value="colaborador">Colaborador</ion-select-option>
-                        </ion-select>
-                    </div>
-                </form>
-            </ion-card-content>
+              <div class="form-field">
+                <div class="label-card-cadastro">Tipo de Usuário:</div>
+                <ion-select formControlName="tipoUsuario" placeholder="Tipo de Usuário" [disabled]="true">
+                  <ion-select-option value="admin">Admin</ion-select-option>
+                  <ion-select-option value="colaborador">Colaborador</ion-select-option>
+                </ion-select>
+              </div>
+            </form>
+          </ion-card-content>
         </ion-card>
-    </ion-content>
+      </ion-col>
+    </ion-row>
+  </ion-content>
 </div>
 
 <ion-modal [isOpen]="isModalOpen" (ionModalDidDismiss)="dismissModal()">
-    <ng-template>
-        <ion-header>
-            <ion-toolbar>
-                <ion-title class="title-card">{{ campoEditado | titlecase }} - Atualizando</ion-title>
-                <ion-buttons slot="end">
-                    <ion-button class="title-card" (click)="dismissModal()">Fechar</ion-button>
-                </ion-buttons>
-            </ion-toolbar>
-        </ion-header>
+  <ng-template>
+    <ion-header>
+      <ion-toolbar>
+        <ion-title class="title-card">{{ campoEditado | titlecase }} - Atualizando</ion-title>
+        <ion-buttons slot="end">
+          <ion-button class="title-card" (click)="dismissModal()">Fechar</ion-button>
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-header>
 
-        <ion-content class="ion-modal-content">
-            <div class="modal-content">
-                <ion-label>{{ campoEditado | titlecase }}:</ion-label>
-                <ion-input [value]="campoValor" class='card-input' (ionInput)="onInputChange($event)"
-                    placeholder="Novo valor"></ion-input>
-                <div class="button-container" style="margin-top: 10px;">
-                    <ion-button class="btn-primario" (click)="updateField()">Atualizar</ion-button>
-
-                </div>
-
-            </div>
-        </ion-content>
-    </ng-template>
-
+    <ion-content class="ion-modal-content">
+      <div class="modal-content">
+        <ion-label>{{ campoEditado | titlecase }}:</ion-label>
+        <ion-input [value]="campoValor" class='card-input' (ionInput)="onInputChange($event)" placeholder="Novo valor"></ion-input>
+        <div class="button-container" style="margin-top: 10px;">
+          <ion-button class="btn-primario" (click)="updateField()">Atualizar</ion-button>
+        </div>
+      </div>
+    </ion-content>
+  </ng-template>
 </ion-modal>

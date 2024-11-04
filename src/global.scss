@@ -14,15 +14,18 @@
 @import "@ionic/angular/css/flex-utils.css";
 
 .custom-datetime-modal {
-  --background: rgba(0, 0, 0, 0.5); /* Define o fundo do modal */
+  --background: rgba(0, 0, 0, 0.5);
+  /* Define o fundo do modal */
 }
 
 .custom-datetime-modal .modal-wrapper {
-  backdrop-filter: blur(5px); /* Para um efeito de desfoque, se desejado */
+  backdrop-filter: blur(5px);
+  /* Para um efeito de desfoque, se desejado */
 }
 
 .custom-backdrop {
-  background-color: rgba(0, 0, 0, 0.5) !important; /* Fundo cinza com opacidade */
+  background-color: rgba(0, 0, 0, 0.5) !important;
+  /* Fundo cinza com opacidade */
 }
 
 
@@ -50,7 +53,7 @@
 
 ion-modal {
 
-  background-color: rgba(0, 0, 0, 0.5); 
+  background-color: rgba(0, 0, 0, 0.5);
 }
 
 
@@ -154,7 +157,7 @@ ion-card {
 
 .button-container {
   display: flex;
-  justify-content: center; 
+  justify-content: center;
 }
 
 .btn-primario:active {
@@ -196,7 +199,7 @@ ion-item:hover {
   --background: rgba(0, 0, 0, var(--background-hover-opacity));
 }
 
-.container-novo{
+.container-novo {
   display: flex;
   gap: 5px;
   align-items: center;
@@ -205,26 +208,41 @@ ion-item:hover {
 }
 
 .container-novo:hover {
-  color: var(--cor-hover, gray); 
+  color: var(--cor-hover, gray);
   // background-color: rgba(0, 123, 255, 0.1); 
-  transform: scale(1.05); 
-  transition: all 0.3s ease; 
+  transform: scale(1.05);
+  transition: all 0.3s ease;
 }
 
-.margin-titulo-header{
+.margin-titulo-header {
   margin-top: 70px;
 }
 
+
+ion-col {
+  padding: 0px
+}
+
+.segmentacao {
+  margin-top: 60px;
+}
+
+
 @media (min-width: 736px) {
 
-  /* card  registro */
   .card-cadastro {
     width: 500px;
     min-width: unset;
 
   }
 
-  .margin-titulo-header{
+  .margin-titulo-header {
     margin-top: 80px;
   }
+
+  ion-modal {
+
+    --border-radius: 16px;
+  }
+
 }

@@ -1,72 +1,79 @@
 <ion-content>
-  <app-header title="Meus Registros"></app-header>
 
-  <ion-segment [(ngModel)]="segment" (ionChange)="segmentChanged($event)">
-    <ion-segment-button value="pesca">
-      Pesca
-    </ion-segment-button>
-    <ion-segment-button value="venda">
-      Venda
-    </ion-segment-button>
-  </ion-segment>
+  <ion-row>
+    <ion-col size="12" size-md="8" size-lg="9" offset-md="4" offset-lg="3" offset-xl="2">
+      <app-header title="Meus Registros"></app-header>
 
-  <ion-searchbar [(ngModel)]="searchTerm" (ionInput)="filterRecords()" placeholder="Buscar por nome..."></ion-searchbar>
+      <ion-segment class="segmentacao" [(ngModel)]="segment" (ionChange)="segmentChanged($event)">
+        <ion-segment-button value="pesca">
+          Pesca
+        </ion-segment-button>
+        <ion-segment-button value="venda">
+          Venda
+        </ion-segment-button>
+      </ion-segment>
 
-  <ion-select [(ngModel)]="selectedLocalizacao" (ionChange)="filterRecords()" placeholder="Filtrar por localização">
-    <ion-select-option disabled>Selecione uma localização</ion-select-option>
-    <ion-select-option value="">Todos</ion-select-option>
-    <ion-select-option *ngFor="let localizacao of localizacoes" [value]="localizacao.id">{{
-      localizacao.descricao_amigavel }}</ion-select-option>
-  </ion-select>
+      <ion-searchbar [(ngModel)]="searchTerm" (ionInput)="filterRecords()"
+        placeholder="Buscar por nome..."></ion-searchbar>
 
-  <div *ngIf="segment === 'pesca'">
-    <ion-list>
-      <ion-item *ngFor="let registro of paginatedPesca" (click)="openModal(registro)">
-        <ion-avatar slot="start">
-          <img [src]="registro.user.url_perfil" alt="{{ registro.user.name }}">
-        </ion-avatar>
-        <ion-label>
-          <h2>{{ registro.user.name }}</h2>
-          <h3>Pescado: {{ registro.pescado }}</h3>
-          <p>Quantidade: {{ registro.quantidade }}</p>
-        </ion-label>
-      </ion-item>
-    </ion-list>
-    <ion-toolbar>
-      <ion-buttons slot="start">
-        <ion-button (click)="previousPagePesca()" [disabled]="currentPagePesca === 1">Anterior</ion-button>
-      </ion-buttons>
-      <p style="text-align: center;">Pag. {{ currentPagePesca }} de {{ totalPagesPesca }}</p>
-      <ion-buttons slot="end">
-        <ion-button (click)="nextPagePesca()" [disabled]="currentPagePesca === totalPagesPesca">Próximo</ion-button>
-      </ion-buttons>
-    </ion-toolbar>
-  </div>
+      <ion-select [(ngModel)]="selectedLocalizacao" (ionChange)="filterRecords()" placeholder="Filtrar por localização">
+        <ion-select-option disabled>Selecione uma localização</ion-select-option>
+        <ion-select-option value="">Todos</ion-select-option>
+        <ion-select-option *ngFor="let localizacao of localizacoes" [value]="localizacao.id">{{
+          localizacao.descricao_amigavel }}</ion-select-option>
+      </ion-select>
 
-  <div *ngIf="segment === 'venda'">
-    <ion-list>
-      <ion-item *ngFor="let registro of paginatedVenda" (click)="openModal(registro)">
-        <ion-avatar slot="start">
-          <img [src]="registro.user.url_perfil" alt="{{ registro.user.name }}">
-        </ion-avatar>
-        <ion-label>
-          <h2>{{ registro.user.name }}</h2>
-          <h3>Quantidade: {{ registro.quantidade }}</h3>
-          <p>Valor: R$ {{ registro.valor }}</p>
-        </ion-label>
-      </ion-item>
-    </ion-list>
-    <ion-toolbar>
-      <ion-buttons slot="start">
-        <ion-button (click)="previousPageVenda()" [disabled]="currentPageVenda === 1">Anterior</ion-button>
-      </ion-buttons>
-      <p style="text-align: center;">Pag. {{ currentPageVenda }} de {{ totalPagesVenda }}</p>
-      <ion-buttons slot="end">
-        <ion-button (click)="nextPageVenda()" [disabled]="currentPageVenda === totalPagesVenda">Próximo</ion-button>
-      </ion-buttons>
-    </ion-toolbar>
-  </div>
+      <div *ngIf="segment === 'pesca'">
+        <ion-list>
+          <ion-item *ngFor="let registro of paginatedPesca" (click)="openModal(registro)">
+            <ion-avatar slot="start">
+              <img [src]="registro.user.url_perfil" alt="{{ registro.user.name }}">
+            </ion-avatar>
+            <ion-label>
+              <h2>{{ registro.user.name }}</h2>
+              <h3>Pescado: {{ registro.pescado }}</h3>
+              <p>Quantidade: {{ registro.quantidade }}</p>
+            </ion-label>
+          </ion-item>
+        </ion-list>
+        <ion-toolbar>
+          <ion-buttons slot="start">
+            <ion-button (click)="previousPagePesca()" [disabled]="currentPagePesca === 1">Anterior</ion-button>
+          </ion-buttons>
+          <p style="text-align: center;">Pag. {{ currentPagePesca }} de {{ totalPagesPesca }}</p>
+          <ion-buttons slot="end">
+            <ion-button (click)="nextPagePesca()" [disabled]="currentPagePesca === totalPagesPesca">Próximo</ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </div>
 
+      <div *ngIf="segment === 'venda'">
+        <ion-list>
+          <ion-item *ngFor="let registro of paginatedVenda" (click)="openModal(registro)">
+            <ion-avatar slot="start">
+              <img [src]="registro.user.url_perfil" alt="{{ registro.user.name }}">
+            </ion-avatar>
+            <ion-label>
+              <h2>{{ registro.user.name }}</h2>
+              <h3>Quantidade: {{ registro.quantidade }}</h3>
+              <p>Valor: R$ {{ registro.valor }}</p>
+            </ion-label>
+          </ion-item>
+        </ion-list>
+        <ion-toolbar>
+          <ion-buttons slot="start">
+            <ion-button (click)="previousPageVenda()" [disabled]="currentPageVenda === 1">Anterior</ion-button>
+          </ion-buttons>
+          <p style="text-align: center;">Pag. {{ currentPageVenda }} de {{ totalPagesVenda }}</p>
+          <ion-buttons slot="end">
+            <ion-button (click)="nextPageVenda()" [disabled]="currentPageVenda === totalPagesVenda">Próximo</ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </div>
+
+
+    </ion-col>
+  </ion-row>
 
   <app-menu></app-menu>
 </ion-content>
