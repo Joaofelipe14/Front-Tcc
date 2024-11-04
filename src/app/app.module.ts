@@ -31,6 +31,8 @@ import { ToastrModule } from 'ngx-toastr';
 import { ModalCadastrarPescaComponent } from './pages/colaborador/cadastrar-pesca/modal-cadastrar-pesca/modal-cadastrar-pesca.component';
 import { ModalCadastrarVendaComponent } from './pages/colaborador/modal-cadastrar-venda/modal-cadastrar-venda.component';
 import { CadastrarFinanceiroComponent } from './pages/admin/financeiro/cadastrar-financeiro/cadastrar-financeiro.component';
+import { AuditoriaComponent } from './pages/admin/configuracoes/auditoria/auditoria.component';
+import { LocalizacaoComponent } from './pages/admin/configuracoes/localizacao/localizacao.component';
 
 
 @NgModule({
@@ -52,7 +54,9 @@ import { CadastrarFinanceiroComponent } from './pages/admin/financeiro/cadastrar
     DetailModalComponent,
     ModalCadastrarPescaComponent,
     ModalCadastrarVendaComponent,
-    CadastrarFinanceiroComponent
+    CadastrarFinanceiroComponent,
+    AuditoriaComponent,
+    LocalizacaoComponent
 
   ],
   imports: [

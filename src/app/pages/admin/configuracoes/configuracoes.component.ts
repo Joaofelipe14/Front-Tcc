@@ -19,77 +19,19 @@ export class ConfiguracoesComponent implements OnInit {
   selectedTipoUsuario: string = '';
   selectedSegment: string = 'usuarios';
   Utils = Utils
-
-  searchTerm: string = '';
-  newLocalizacao: any = {
-    descricao: '',
-    descricao_amigavel: '',
-    latitude: null,
-    longitude: null,
-  };
-  localizacoes: any[] = [];
-  filteredLocalizacoes: any[] = [];
-  isModalOpenLocalizacao: boolean = false;
-  editingLocalizacao: any = null;
   isLoadingBtn = false;
 
 
-  @ViewChild('modalContent') modalContent!: IonContent;
-  isAtTop: boolean = true;
-  isAtBottom: boolean = false;
-
-  onScroll(event: any) {
-    console.log(event)
-    const scrollTop = event.detail.scrollTop;
-    const scrollHeight = event.detail.scrollHeight;
-    const offsetHeight = event.detail.offsetHeight;
-
-    this.isAtTop = scrollTop === 0;
-
-    // Verifica se o conteúdo está no fundo
-    this.isAtBottom = scrollTop + offsetHeight >= scrollHeight;
-
-    console.log(this.isAtBottom)
-  }
-
-  handleScrollStart() {
-    console.log('scroll start');
-  }
-
-  handleScroll(ev: CustomEvent<ScrollDetail>) {
-    console.log('scroll', JSON.stringify(ev.detail));
-  }
-
-  handleScrollEnd() {
-    console.log('scroll end');
-  }
-  scrollToTop() {
-    this.isAtBottom = false
-    this.isAtTop = true;
-    this.modalContent.scrollToTop(300).then(() => {
-    });
-  }
-
-  // Scroll para o fundo
-  scrollToBottom() {
-    this.isAtBottom = true
-    this.isAtTop = false;
-    this.modalContent.scrollToBottom(300).then(() => {
-    });
-  }
-  constructor(private authService: AuthService,
+  constructor(
+    private authService: AuthService,
     private loadingController: LoadingController,
     private alertController: AlertController,
-    private localizacaoService: LocalizacaoService,
     private cdr: ChangeDetectorRef,
     private toast: ToastrService,
-
-
   ) { }
 
   ngOnInit() {
     this.loadUsuarios();
-    this.loadLocalizacoes();
 
   }
 
@@ -112,7 +54,7 @@ export class ConfiguracoesComponent implements OnInit {
   totalPagesUsers: number = 1;
   itemsPerPage: number = 15;
   totalPagesUser: number = 0;
-  paginatedUsuarios: any[] = []; 
+  paginatedUsuarios: any[] = [];
 
   filterUsuarios() {
     this.filteredUsuarios = this.usuarios.filter(usuario =>
@@ -123,24 +65,24 @@ export class ConfiguracoesComponent implements OnInit {
 
   }
 
-    updatePagination() {
-      this.totalPagesUser = Math.ceil(this.filteredUsuarios.length / this.itemsPerPage);
-      this.paginatedUsuarios = this.filteredUsuarios.slice((this.totalPagesUsers - 1) * this.itemsPerPage, this.totalPagesUsers * this.itemsPerPage);
+  updatePagination() {
+    this.totalPagesUser = Math.ceil(this.filteredUsuarios.length / this.itemsPerPage);
+    this.paginatedUsuarios = this.filteredUsuarios.slice((this.totalPagesUsers - 1) * this.itemsPerPage, this.totalPagesUsers * this.itemsPerPage);
+  }
+
+  prevPage() {
+    if (this.totalPagesUsers > 1) {
+      this.totalPagesUsers--;
+      this.updatePagination();
     }
-  
-    prevPage() {
-      if (this.totalPagesUsers > 1) {
-        this.totalPagesUsers--;
-        this.updatePagination();
-      }
+  }
+
+  nextPage() {
+    if (this.totalPagesUsers < this.totalPagesUser) {
+      this.totalPagesUsers++;
+      this.updatePagination();
     }
-  
-    nextPage() {
-      if (this.totalPagesUsers < this.totalPagesUser) {
-        this.totalPagesUsers++;
-        this.updatePagination();
-      }
-    }
+  }
   openUsuarioDetails(usuario: any) {
     console.log(usuario)
     this.selectedUsuario = usuario;
@@ -165,7 +107,6 @@ export class ConfiguracoesComponent implements OnInit {
 
     try {
       const response = await this.authService.atualizar(payload, this.selectedUsuario.id).toPromise();
-      // Lidar com a resposta do servidor
       if (response.sucesso) {
         this.toast.success('Grupo do usuario atualizado.', 'Sucesso');
 
@@ -251,102 +192,5 @@ export class ConfiguracoesComponent implements OnInit {
   }
 
 
-  loadLocalizacoes() {
 
-    this.localizacaoService.getLocalizacoes().subscribe(data => {
-      this.localizacoes = data.dados.registros;
-      this.filteredLocalizacoes = this.localizacoes;
-    });
-  }
-
-  openCadastroModalLocalizacao() {
-    this.isModalOpenLocalizacao = true;
-  }
-
-  openEditModal(localizacao: any) {
-
-    this.newLocalizacao = {
-      descricao: localizacao.descricao,
-      descricao_amigavel: localizacao.descricao_amigavel,
-      latitude: localizacao.latitude,
-      longitude: localizacao.longitude
-    };
-
-    // Abrir o modal
-    this.isModalOpenLocalizacao = true;
-    this.editingLocalizacao = true;
-  }
-
-
-  closeModalLocalizacao() {
-    this.isModalOpenLocalizacao = false;
-    this.editingLocalizacao = false;
-    this.resetNewLocalizacao();
-  }
-
-  async cadastrarLocalizacao() {
-    const loading = await this.loadingController.create({
-      message: this.editingLocalizacao ? 'Atualizando localização...' : 'Salvando localização...',
-    });
-    await loading.present();
-
-    if (this.editingLocalizacao) {
-
-      this.localizacaoService.updateLocalizacao(this.newLocalizacao, this.editingLocalizacao.id).subscribe(
-        async response => {
-          this.toast.success('Localização atualizada.', 'Sucesso');
-
-          this.loadLocalizacoes();
-          this.closeModalLocalizacao();
-          loading.dismiss();
-          this.editingLocalizacao = false;
-
-        },
-        error => {
-          alert('Erro ao atualizar localização');
-          console.error(error);
-          this.toast.error('Erro ao atualizar localização', 'Error');
-
-          loading.dismiss();
-        }
-      );
-    } else {
-
-      this.localizacaoService.createLocalizacao(this.newLocalizacao).subscribe(
-        async response => {
-          this.toast.success('Nova localização cadastrada.', 'Sucesso');
-
-          this.loadLocalizacoes();
-          this.closeModalLocalizacao();
-          loading.dismiss();
-        },
-        error => {
-          this.toast.error('Erro ao cadastrar localização.', 'Sucesso');
-          console.error('Erro ao cadastrar localização:', error);
-          loading.dismiss();
-        }
-      );
-    }
-  }
-
-  filterLocalizacoes() {
-    if (this.searchTerm) {
-      this.filteredLocalizacoes = this.localizacoes.filter(localizacao =>
-        localizacao.descricao.toLowerCase().includes(this.searchTerm.toLowerCase())
-      );
-    } else {
-      this.filteredLocalizacoes = this.localizacoes;
-    }
-  }
-
-  resetNewLocalizacao() {
-    this.newLocalizacao = { descricao: '', descricao_amigavel: '', latitude: null, longitude: null };
-  }
-
-  handlePlaceSelected(coordinates: { lat: number, lng: number, name: string, address: string }) {
-    this.newLocalizacao.descricao = coordinates.address;
-    this.newLocalizacao.latitude = coordinates.lat;
-    this.newLocalizacao.longitude = coordinates.lng;
-    this.cdr.detectChanges();
-  }
 }

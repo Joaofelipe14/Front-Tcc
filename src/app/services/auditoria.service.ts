@@ -8,7 +8,7 @@ import { environment } from 'src/environments/environment';
 @Injectable({
   providedIn: 'root'
 })
-export class FinancerioService {
+export class AuditoriaService {
   private baseUrl = environment.apiUrl;
 
   constructor(
@@ -23,19 +23,9 @@ export class FinancerioService {
       .set('ngrok-skip-browser-warning', 'teste');
   }
 
-  createRegistroFinanceiro(payload: any): Observable<any> {
-    return this.http.post<any>(this.baseUrl + 'financeiros', payload, { headers: this.getHeaders() });
-  }
 
-  getRelatorioFinanceiro(data: { ids: number[] }): Observable<Blob> {
-    return this.http.post<Blob>(`${this.baseUrl}financeiros/relatorio`, data, {
-      headers: this.getHeaders(),
-      responseType: 'blob' as 'json'
-    });
-  }
-
-  getRegistrosFinancerios(): Observable<any> {
-    return this.http.get<any>(`${this.baseUrl}financeiros`, { headers: this.getHeaders() });
+  getAuditoria(): Observable<any> {
+    return this.http.get<any>(`${this.baseUrl}busca-auditoria`, { headers: this.getHeaders() });
   }
 
 

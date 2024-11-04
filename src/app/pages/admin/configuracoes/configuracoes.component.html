@@ -119,85 +119,12 @@
   </div>
 
   <div *ngIf="selectedSegment === 'auditoria'">
-    <p>Conteúdo da Auditoria</p>
-    <!-- Adicione seu conteúdo da seção de auditoria aqui -->
+
+    <app-auditoria></app-auditoria>
   </div>
 
   <div *ngIf="selectedSegment === 'pontos-geograficos'">
-    <ion-header>
-      <ion-toolbar>
-        <ion-title>Pontos Geográficos</ion-title>
-        <ion-buttons slot="end">
-          <ion-button (click)="openCadastroModalLocalizacao()">Novo</ion-button>
-        </ion-buttons>
-      </ion-toolbar>
-    </ion-header>
-
-    <ion-searchbar [(ngModel)]="searchTerm" (ionInput)="filterLocalizacoes()"
-      placeholder="Buscar por região"></ion-searchbar>
-
-    <ion-list>
-      <ion-item *ngFor="let localizacao of filteredLocalizacoes" (click)="openEditModal(localizacao)">
-        <ion-label>
-          <h2>{{ localizacao.descricao }}</h2>
-          <p>Lat: {{ localizacao.latitude }}, Lng: {{ localizacao.longitude }}</p>
-        </ion-label>
-
-        <ion-icon name="pencil-outline" slot="end" (click)="openEditModal(localizacao)">
-        </ion-icon>
-
-      </ion-item>
-    </ion-list>
-
-    <ion-modal [isOpen]="isModalOpenLocalizacao" class="modal-localizacao-custom"
-      (ionModalDidDismiss)="closeModalLocalizacao()">
-      <ng-template>
-        <ion-header>
-          <ion-toolbar>
-            <ion-title>Cadastrar Ponto Geográfico</ion-title>
-            <ion-buttons slot="end">
-              <ion-button (click)="closeModalLocalizacao()">
-                <ion-icon name="close"></ion-icon>
-              </ion-button>
-            </ion-buttons>
-          </ion-toolbar>
-        </ion-header>
-
-        <ion-content #modalContent class="custom-ion-localizacao" [scrollEvents]="true" (ionScroll)="onScroll($event)">
-          <ion-item>
-            <ion-label position="floating">Descrição</ion-label>
-            <ion-input [(ngModel)]="newLocalizacao.descricao"></ion-input>
-          </ion-item>
-
-          <ion-item>
-            <ion-label position="floating">Descrição Amigável</ion-label>
-            <ion-input [(ngModel)]="newLocalizacao.descricao_amigavel"></ion-input>
-          </ion-item>
-
-          <ion-item>
-            <ion-label>Selecione no mapa o local desejavel.</ion-label>
-          </ion-item>
-
-          <app-google-map *ngIf="!editingLocalizacao" [isAdmin]="true"
-            (placeSelected)="handlePlaceSelected($event)"></app-google-map>
-
-          <app-google-map *ngIf="editingLocalizacao" [isAdmin]="true"
-            [defaultLocation]="{ lat: newLocalizacao.latitude, lng: newLocalizacao.longitude }"
-            (placeSelected)="handlePlaceSelected($event)">
-          </app-google-map>
-
-          <ion-icon *ngIf="!isAtTop" (click)="scrollToTop()" name="arrow-up-circle"
-            class="scroll-bottom-icon"></ion-icon>
-          <ion-icon *ngIf="!isAtBottom" (click)="scrollToBottom()" name="arrow-down-circle"
-            class="scroll-top-icon"></ion-icon>
-
-          <div class="button-container">
-            <ion-button class="btn-primario" (click)="cadastrarLocalizacao()">Salvar</ion-button>
-          </div>
-
-        </ion-content>
-      </ng-template>
-    </ion-modal>
+    <app-localizacao></app-localizacao>
 
   </div>
 

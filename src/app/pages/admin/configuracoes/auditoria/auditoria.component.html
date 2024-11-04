@@ -1,0 +1,95 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Auditoria</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<!-- Filtros -->
+<ion-item>
+  <ion-label>Filtrar por tabela</ion-label>
+  <ion-select [(ngModel)]="filter.tabela">
+    <ion-select-option value="">Todas</ion-select-option>
+    <ion-select-option value="login">Login</ion-select-option>
+    <ion-select-option value="user">User</ion-select-option>
+    <!-- Adicione mais opções conforme necessário -->
+  </ion-select>
+</ion-item>
+
+<!-- Botão para expandir o filtro de data -->
+<ion-item (click)="isDateFilterOpen = !isDateFilterOpen">
+  <ion-label>Filtrar por data</ion-label>
+  <ion-icon slot="end" name="{{ isDateFilterOpen ? 'chevron-up' : 'chevron-down' }}"></ion-icon>
+</ion-item>
+
+<ion-item *ngIf="isDateFilterOpen">
+  <ion-label position="floating">Data Inicial</ion-label>
+  <ion-datetime [(ngModel)]="filter.dataInicial"></ion-datetime>
+</ion-item>
+
+<ion-item *ngIf="isDateFilterOpen">
+  <ion-label position="floating">Data Final</ion-label>
+  <ion-datetime [(ngModel)]="filter.dataFinal"></ion-datetime>
+</ion-item>
+
+<div class="button-container">
+  <ion-button class="btn-primario" (click)="applyFilters()">Filtrar</ion-button>
+</div>
+<!-- Tabela de Auditoria -->
+<ion-list>
+  <ion-item *ngFor="let item of paginatedData">
+    <ion-label (click)="openModal(item)">
+      <h2># {{ item.id }}</h2>
+      <h3>Ação: {{ item.acao }}</h3>
+      <p>Usuario: {{ item.user.name }}</p>
+      <p>Data: {{ item.created_at | date }}</p>
+    </ion-label>
+    <ion-icon slot="end" name="eye" style="cursor: pointer;">
+    </ion-icon>
+  </ion-item>
+</ion-list>
+
+<!-- Paginação -->
+<ion-footer>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="prevPage()" [disabled]="currentPage === 1">Anterior</ion-button>
+    </ion-buttons>
+    <ion-buttons slot="end">
+      <ion-button (click)="nextPage()" [disabled]="currentPage === totalPages">Próximo</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-footer>
+
+<!-- Modal -->
+<ion-modal [isOpen]="showModal" (ionModalDidDismiss)="closeModal()">
+  <ng-template>
+    <ion-header>
+      <ion-toolbar>
+        <ion-title class="title-card"> Detalhes da Auditoria</ion-title>
+        <ion-buttons slot="end">
+          <ion-button class="title-card" (click)="closeModal()">Fechar</ion-button>
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-header>
+    <ion-content>
+      <ion-item>
+        <ion-label>ID: {{ selectedItem.id }}</ion-label>
+      </ion-item>
+      <ion-item>
+        <ion-label>Ação: {{ selectedItem.acao }}</ion-label>
+      </ion-item>
+      <ion-item>
+        <ion-label>Usuario: {{ selectedItem.user.name }}</ion-label>
+      </ion-item>
+      <ion-item>
+        <ion-label>Tabela: {{ selectedItem.tabela }}</ion-label>
+      </ion-item>
+      <ion-item>
+        <ion-label>Histórico: {{ selectedItem.historico }}</ion-label>
+      </ion-item>
+      <ion-item>
+        <ion-label>Data: {{ selectedItem.created_at | date }}</ion-label>
+      </ion-item>
+    </ion-content>
+  </ng-template>
+</ion-modal>
