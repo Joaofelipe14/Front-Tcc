@@ -12,12 +12,11 @@ import { Utils } from 'src/app/utils/utils';
   styleUrls: ['./meu-perfil.component.scss'],
 })
 export class MeuPerfilComponent implements OnInit {
+  
   meuPerfilForm: FormGroup;
   selectedImage: string | ArrayBuffer | null = null;
   selectedFile: File | null = null;
   userId!: number
-
-
   isModalOpen: boolean = false;
   campoEditado: string = '';
   campoValor: string = '';
@@ -78,7 +77,6 @@ export class MeuPerfilComponent implements OnInit {
 
   async onSubmit() {
     if (this.meuPerfilForm.valid) {
-
       const novoformData = new FormData();
       novoformData.append('name', this.meuPerfilForm.get('nome')?.value);
       novoformData.append('cap', this.meuPerfilForm.get('cap')?.value);
@@ -108,8 +106,6 @@ export class MeuPerfilComponent implements OnInit {
       }
     }
   }
-
-
 
   async onFileSelected(event: Event) {
     const alert = await this.alertController.create({
@@ -147,7 +143,6 @@ export class MeuPerfilComponent implements OnInit {
     await alert.present();
   }
 
-
   removeImage(event: Event) {
     event.stopPropagation();
     this.selectedImage = null;
@@ -181,9 +176,5 @@ export class MeuPerfilComponent implements OnInit {
   onInputChange(event: any) {
     this.campoValor = event.detail.value;
   }
-
-
-
-
 
 }

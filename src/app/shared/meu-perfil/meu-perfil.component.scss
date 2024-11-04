@@ -4,10 +4,10 @@ ion-content {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 100%;
+  height: auto;
   overflow: hidden;
   --padding-bottom: 75px;
-  --padding-top: 70px;
+  --padding-top: 55px;
   --background: background-color: var(--fundo-interno);
 }
 
@@ -110,3 +110,12 @@ ion-button {
   margin-top: 10px;
 }
 
+@media (max-height: 750px) {
+  .card-meu-perfil {
+    overflow-y: auto; 
+    height: 500px;
+
+    padding-top: 10px;
+    padding-bottom: 40px;
+  }
+}
