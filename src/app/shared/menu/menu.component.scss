@@ -55,6 +55,9 @@
   display: none;
 }
 
+.logo{
+  display: none;
+}
 
 @media (min-width: 756px) {
   .custom-nav {
@@ -67,13 +70,18 @@
     border-radius: 0;
     box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);
     z-index: 999;
-    padding-top: 150px;
+    // padding-top: 150px;
   }
 
   .custom-nav .nav-item {
     transition: transform 0.3s ease, padding 0.3s ease, background-color 0.3s ease;
   }
 
+  .logo{
+    display: block;
+    width: 150px;
+    height: 150px;
+  }
   .custom-nav .nav-item:hover {
     scale: 1.1;
     padding: 5px;

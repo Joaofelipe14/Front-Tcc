@@ -25,8 +25,6 @@ export class AuthService {
       .set('ngrok-skip-browser-warning', 'teste');
   }
 
-
-
   // {headers: getHeaders}
   constructor(private http: HttpClient, private tokenService: TokenService) { }
 

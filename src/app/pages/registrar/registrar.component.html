@@ -12,25 +12,16 @@
           <ion-item class="profile-item">
             <div class="profile-container" (click)="fileInput.click()">
               <!-- Oculta o campo de input file -->
-              <input 
-                type="file" 
-                accept="image/*" 
-                (change)="onFileSelected($event)" 
-                hidden 
-                #fileInput
-              />
+              <input type="file" accept="image/*" (change)="onFileSelected($event)" hidden #fileInput />
               <!-- Imagem de perfil -->
               <div class="profile-image-container">
-                <img *ngIf="selectedImage; else placeholderImage" [src]="selectedImage" alt="Foto de Perfil" class="profile-image"/>
+                <img *ngIf="selectedImage; else placeholderImage" [src]="selectedImage" alt="Foto de Perfil"
+                  class="profile-image" />
                 <ng-template #placeholderImage>
-                  <img src="./../../../assets/logo.svg" alt="Logo" class="profile-image logo"/>
+                  <img src="./../../../assets/logo.svg" alt="Logo" class="profile-image logo" />
                 </ng-template>
                 <div *ngIf="!selectedImage" class="edit-text">Toque para editar</div>
-                <ion-icon 
-                  *ngIf="selectedImage" 
-                  name="close-circle" 
-                  class="remove-image" 
-                  (click)="removeImage($event)">
+                <ion-icon *ngIf="selectedImage" name="close-circle" class="remove-image" (click)="removeImage($event)">
                 </ion-icon>
               </div>
             </div>
@@ -41,45 +32,45 @@
             <ion-input placeholder="Digite seu nome" formControlName="nome" type="text" required></ion-input>
           </ion-item>
           <ion-item>
-            <ion-input
-              placeholder="Digite seu CPF"
-              formControlName="cpf"
-              maxlength="14"
-              [value]="formattedCpf"
-              (ionInput)="onCpfInput($event)"
-              type="text"
-              required
-            ></ion-input>
+            <ion-input placeholder="Digite seu CPF" formControlName="cpf" maxlength="14" [value]="formattedCpf"
+              (ionInput)="onCpfInput($event)" type="text" required></ion-input>
           </ion-item>
 
-          <ion-text class="error" color="danger" *ngIf="loginForm.get('cpf')?.hasError('required') && loginForm.get('cpf')?.touched">
+          <ion-text class="error" color="danger"
+            *ngIf="loginForm.get('cpf')?.hasError('required') && loginForm.get('cpf')?.touched">
             <p>CPF é obrigatório.</p>
           </ion-text>
-          <ion-text class="error" color="danger" *ngIf="loginForm.get('cpf')?.hasError('minlength') && loginForm.get('cpf')?.touched">
+          <ion-text class="error" color="danger"
+            *ngIf="loginForm.get('cpf')?.hasError('minlength') && loginForm.get('cpf')?.touched">
             <p>CPF deve ter 11 dígitos.</p>
           </ion-text>
-          <ion-text class="error" color="danger" *ngIf="loginForm.get('cpf')?.hasError('invalidCpf') && loginForm.get('cpf')?.touched">
+          <ion-text class="error" color="danger"
+            *ngIf="loginForm.get('cpf')?.hasError('invalidCpf') && loginForm.get('cpf')?.touched">
             <p>CPF inválido.</p>
           </ion-text>
-          
+
           <ion-item>
-            <ion-input placeholder="CAF" formControlName="cap" type="text"  required></ion-input>
+            <ion-input placeholder="CAF" formControlName="cap" type="text" required></ion-input>
           </ion-item>
-          <ion-text class="error" color="danger" *ngIf="loginForm.get('cap')?.hasError('minlength') && loginForm.get('cap')?.touched">
+          <ion-text class="error" color="danger"
+            *ngIf="loginForm.get('cap')?.hasError('minlength') && loginForm.get('cap')?.touched">
             <p>O comprimento mínimo é 6 caracteres.</p>
           </ion-text>
           <ion-item>
-            <ion-input placeholder="Contato" formControlName="contato" type="text" (input)="applyPhoneMask($event)" required></ion-input>
+            <ion-input placeholder="Contato" formControlName="contato" type="text" (input)="applyPhoneMask($event)"
+              required></ion-input>
           </ion-item>
-     
 
-          <ion-button type="submit" class="btn-primario" [disabled]="loginForm.invalid || isLoading"
-          (click)="onSubmit()">
-          <ng-container *ngIf="isLoading; else loginText">
-            <ion-spinner size="small"></ion-spinner>
-          </ng-container>
-          <ng-template #loginText>Cadastrar</ng-template>
-        </ion-button>
+
+          <div class="button-container">
+            <ion-button type="submit" class="btn-primario" [disabled]="loginForm.invalid || isLoading"
+              (click)="onSubmit()">
+              <ng-container *ngIf="isLoading; else loginText">
+                <ion-spinner size="small"></ion-spinner>
+              </ng-container>
+              <ng-template #loginText>Cadastrar</ng-template>
+            </ion-button>
+          </div>
         </form>
       </ion-card-content>
     </ion-card>
@@ -89,4 +80,3 @@
     </div>
   </div>
 </ion-content>
-

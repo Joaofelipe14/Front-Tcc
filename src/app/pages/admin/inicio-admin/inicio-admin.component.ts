@@ -63,6 +63,7 @@ export class InicioAdminComponent implements OnInit {
     };
 
     console.log(params)
+    console.log(this.currentPageVenda)
     this.cadastroPescaService.getRegistrosAll(params).subscribe((response) => {
       if (response.status) {
 
@@ -72,22 +73,14 @@ export class InicioAdminComponent implements OnInit {
           type: 'pesca'
         }));
         console.log(this.filteredPesca.length)
-        this.maxItensPagePesca = this.filteredPesca.length;
+        // this.maxItensPagePesca = this.filteredPesca.length;
         this.totalPagesPesca = response.dados.registros.last_page
-        this.currentPagePesca = response.dados.registros.current_page
-
       }
     },
       (error) => {
         console.error('Erro ao carregar registros de pesca', error);
       }
     );
-
-
-  }
-
-  onSearchTermChange() {
-    this.searchTermChanged.next(this.searchTerm);
   }
 
   loadVendasAll(): void {
@@ -106,7 +99,6 @@ export class InicioAdminComponent implements OnInit {
             ...registro,
             type: 'venda'
           }));
-          this.registrosVenda;
           // this.maxItensPageVenda = this.filteredVenda.length;
           this.totalPagesVenda = response.dados.registros.last_page
           this.currentPageVenda = response.dados.registros.current_page
@@ -119,11 +111,14 @@ export class InicioAdminComponent implements OnInit {
     );
   }
 
+  onSearchTermChange() {
+    this.searchTermChanged.next(this.searchTerm);
+  }
+
   loadLocalizacoes(): void {
     this.localizacaoService.getLocalizacoes().subscribe(
       (data) => {
         this.localizacoes = data.dados.registros;
-        console.log('Localizações carregadas:', this.localizacoes);
       },
       (error) => {
         console.error('Erro ao carregar localizações', error);
@@ -146,20 +141,16 @@ export class InicioAdminComponent implements OnInit {
   }
 
 
-
-  get paginatedPesca() {
-    const start = (this.currentPagePesca - 1) * this.itemsPerPage;
-    return this.filteredPesca.slice(start, start + this.itemsPerPage);
-  }
-
   previousPagePesca(): void {
     if (this.currentPagePesca > 1) {
+      this.currentPagePesca--;
       this.loadPescaAll();
     }
   }
 
   nextPagePesca(): void {
     if (this.currentPagePesca < this.totalPagesPesca) {
+      this.currentPagePesca++;
       this.loadPescaAll();
     }
   }

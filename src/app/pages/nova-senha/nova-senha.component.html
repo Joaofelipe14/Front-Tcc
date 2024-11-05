@@ -3,7 +3,7 @@
   <div class="login-container">
     <ion-card>
       <ion-card-header class="header-card">
-        <img class="logo" src="./../../../assets/logo.svg" alt="">
+        <img class="logo" src="./../../../assets/logoPrincipal.png" alt="">
 
         <ion-card-title>Atualize sua senha</ion-card-title>
       </ion-card-header>
@@ -22,22 +22,28 @@
               type="password" required>
             </ion-input>
           </ion-item>
+
           <ion-text class="error" color="danger"
             *ngIf="novaSenha.get('password')?.hasError('minlength') && novaSenha.get('password')?.touched">
             <p>O comprimento mínimo é 8 caracteres.</p>
           </ion-text>
-          <ion-button type="submit" class="btn-primario" [disabled]="!passwordsMatch || isLoading || novaSenha.invalid"
-            (click)="onSubmit()">
-            <ng-container *ngIf="isLoading; else loginText">
-              <ion-spinner size="small"></ion-spinner>
-            </ng-container>
-            <ng-template #loginText>Login</ng-template>
-          </ion-button>
 
-          <ion-button href="/login" type="button" class="btn-secundario">
+          <div class="button-container">
+            <ion-button type="submit" class="btn-primario"
+              [disabled]="!passwordsMatch || isLoading || novaSenha.invalid" (click)="onSubmit()">
+              <ng-container *ngIf="isLoading; else loginText">
+                <ion-spinner size="small"></ion-spinner>
+              </ng-container>
+              <ng-template #loginText>Login</ng-template>
+            </ion-button>
+          </div>
 
-            Voltar
-          </ion-button>
+          <div class="button-container">
+            <ion-button href="/login" type="button" class="btn-secundario">
+              Voltar
+            </ion-button>
+          </div>
+
         </form>
       </ion-card-content>
     </ion-card>

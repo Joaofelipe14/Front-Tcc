@@ -29,6 +29,10 @@
 
     <!-- Lista de menu para administrador -->
     <ng-container *ngIf="tipoMenu === 'admin'">
+
+      <img style="padding: 10px; margin-bottom: 40px;" class="logo" src="./../../../assets/logoPrincipal.png" alt="">
+
+      
       <li>
         <a routerLink="/admin/inicio" class="nav-item" [ngClass]="{'active': isActive('/admin/inicio')}">
           <ion-icon name="home" class="nav-icon"></ion-icon> Inicio
