@@ -4,6 +4,7 @@
     <ion-col size="12" size-md="8" size-lg="9" offset-md="4" offset-lg="3" offset-xl="2">
       <app-header title="Meus Registros"></app-header>
 
+
       <ion-segment class="segmentacao" [(ngModel)]="segment" (ionChange)="segmentChanged($event)">
         <ion-segment-button value="pesca">
           Pesca
@@ -13,7 +14,15 @@
         </ion-segment-button>
       </ion-segment>
 
-      <ion-searchbar [(ngModel)]="searchTerm" (ionInput)="filterRecords()"
+
+      <ng-template #notaData>
+        <p>
+          Nenhum resultado encontrado.
+        </p>
+      </ng-template>
+
+
+      <ion-searchbar [(ngModel)]="searchTerm" (ionInput)="onSearchTermChange()"
         placeholder="Buscar por nome..."></ion-searchbar>
 
       <ion-select [(ngModel)]="selectedLocalizacao" (ionChange)="filterRecords()" placeholder="Filtrar por localização">
@@ -24,8 +33,9 @@
       </ion-select>
 
       <div *ngIf="segment === 'pesca'">
-        <ion-list>
-          <ion-item *ngFor="let registro of paginatedPesca" (click)="openModal(registro)">
+
+        <ion-list *ngIf="registrosPesca.length>0; else notaData">
+          <ion-item *ngFor="let registro of registrosPesca" (click)="openModal(registro)">
             <ion-avatar slot="start">
               <img [src]="registro.user.url_perfil" alt="{{ registro.user.name }}">
             </ion-avatar>
@@ -36,7 +46,19 @@
             </ion-label>
           </ion-item>
         </ion-list>
-        <ion-toolbar>
+
+        <!-- <ion-item *ngIf="registrosPesca.length>0" >
+          <ion-label>Itens por página</ion-label>
+          <ion-select [(ngModel)]="itemsPerPage" (ionChange)="filterRecords()" [value]="itemsPerPage">
+            <ion-select-option value="5">5</ion-select-option>
+            <ion-select-option value="10">10</ion-select-option>
+            <ion-select-option value="15">15</ion-select-option>
+            <ion-select-option value="20">20</ion-select-option>
+            <ion-select-option [value]="maxItensPagePesca">Tudo</ion-select-option>
+          </ion-select>
+        </ion-item> -->
+
+        <ion-toolbar *ngIf="registrosPesca.length>0">
           <ion-buttons slot="start">
             <ion-button (click)="previousPagePesca()" [disabled]="currentPagePesca === 1">Anterior</ion-button>
           </ion-buttons>
@@ -48,8 +70,8 @@
       </div>
 
       <div *ngIf="segment === 'venda'">
-        <ion-list>
-          <ion-item *ngFor="let registro of paginatedVenda" (click)="openModal(registro)">
+        <ion-list *ngIf="registrosVenda.length>0; else notaData">
+          <ion-item *ngFor="let registro of registrosVenda" (click)="openModal(registro)">
             <ion-avatar slot="start">
               <img [src]="registro.user.url_perfil" alt="{{ registro.user.name }}">
             </ion-avatar>
@@ -60,7 +82,19 @@
             </ion-label>
           </ion-item>
         </ion-list>
-        <ion-toolbar>
+
+        <!-- <ion-item>
+          <ion-label>Itens por página</ion-label>
+          <ion-select [(ngModel)]="itemsPerPageVenda" (ionChange)="filterRecords()" [value]="itemsPerPageVenda">
+            <ion-select-option value="5">5</ion-select-option>
+            <ion-select-option value="10">10</ion-select-option>
+            <ion-select-option value="15">15</ion-select-option>
+            <ion-select-option value="20">20</ion-select-option>
+            <ion-select-option [value]="maxItensPageVenda">Tudo</ion-select-option>
+          </ion-select>
+        </ion-item> -->
+
+        <ion-toolbar *ngIf="registrosVenda.length>0">
           <ion-buttons slot="start">
             <ion-button (click)="previousPageVenda()" [disabled]="currentPageVenda === 1">Anterior</ion-button>
           </ion-buttons>

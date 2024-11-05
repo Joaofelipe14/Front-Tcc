@@ -3,8 +3,9 @@ import { ModalController } from '@ionic/angular';
 import { CadastroPescaService } from 'src/app/services/cadastro-pesca.service';
 import { CadastroVendaService } from 'src/app/services/cadastro-venda.service';
 import { DetailModalComponent } from 'src/app/shared/detail-modal/detail-modal.component';
-import { LocalizacaoService } from 'src/app/services/localizacao.service'; 
-import { ToastrService } from 'ngx-toastr';
+import { LocalizacaoService } from 'src/app/services/localizacao.service';
+import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-inicio-admin',
@@ -15,9 +16,9 @@ export class InicioAdminComponent implements OnInit {
   segment: string = 'pesca';
   registrosPesca: any[] = [];
   registrosVenda: any[] = [];
-  searchTerm: string = ''; 
-  selectedLocalizacao: string = ''; 
-  localizacoes: any[] = []; 
+  searchTerm: string = '';
+  selectedLocalizacao: string = '';
+  localizacoes: any[] = [];
   // Registros filtrados
   filteredPesca: any[] = [];
   filteredVenda: any[] = [];
@@ -25,50 +26,91 @@ export class InicioAdminComponent implements OnInit {
   currentPagePesca: number = 1;
   currentPageVenda: number = 1;
   itemsPerPage: number = 5;
+  maxItensPagePesca: number = 0;
+  maxItensPageVenda: number = 0;
+  itemsPerPageVenda: number = 5;
   totalPagesPesca: number = 0;
   totalPagesVenda: number = 0;
+
+  searchTermChanged: Subject<string> = new Subject();
 
   constructor(
     private cadastroPescaService: CadastroPescaService,
     private cadastroVendaService: CadastroVendaService,
     private modalController: ModalController,
-    private localizacaoService: LocalizacaoService ,
-  ) {}
+    private localizacaoService: LocalizacaoService,
+  ) { }
 
   ngOnInit() {
     this.loadPescaAll();
     this.loadVendasAll();
-    this.loadLocalizacoes(); 
+    this.loadLocalizacoes();
+
+    this.searchTermChanged.pipe(
+      debounceTime(500),
+      distinctUntilChanged()
+    ).subscribe(() => {
+      this.filterRecords();
+    });
   }
 
   loadPescaAll(): void {
-    this.cadastroPescaService.getRegistrosAll().subscribe(
-      (response) => {
-        if (response.status) {
-          this.registrosPesca = response.dados.registros.map((registro: any) => ({
-            ...registro,
-            type: 'pesca'
-          }));
-          this.filteredPesca = this.registrosPesca;
-          this.totalPagesPesca = Math.ceil(this.filteredPesca.length / this.itemsPerPage);
-        }
-      },
+    const params = {
+      page: this.currentPagePesca,
+      // limit: this.itemsPerPage,
+      searchTerm: this.searchTerm,
+      selectedLocalizacao: this.selectedLocalizacao
+    };
+
+    console.log(params)
+    this.cadastroPescaService.getRegistrosAll(params).subscribe((response) => {
+      if (response.status) {
+
+        console.log(response.dados.registros)
+        this.registrosPesca = response.dados.registros.data.map((registro: any) => ({
+          ...registro,
+          type: 'pesca'
+        }));
+        console.log(this.filteredPesca.length)
+        this.maxItensPagePesca = this.filteredPesca.length;
+        this.totalPagesPesca = response.dados.registros.last_page
+        this.currentPagePesca = response.dados.registros.current_page
+
+      }
+    },
       (error) => {
         console.error('Erro ao carregar registros de pesca', error);
       }
     );
+
+
+  }
+
+  onSearchTermChange() {
+    this.searchTermChanged.next(this.searchTerm);
   }
 
   loadVendasAll(): void {
-    this.cadastroVendaService.getRegistrosAll().subscribe(
+    const params = {
+      page: this.currentPageVenda,
+      // limit: this.itemsPerPage,
+      searchTerm: this.searchTerm,
+      selectedLocalizacao: this.selectedLocalizacao
+    };
+
+    console.log(params)
+    this.cadastroVendaService.getRegistrosAll(params).subscribe(
       (response) => {
         if (response.status) {
-          this.registrosVenda = response.dados.registros.map((registro: any) => ({
+          this.registrosVenda = response.dados.registros.data.map((registro: any) => ({
             ...registro,
             type: 'venda'
           }));
-          this.filteredVenda = this.registrosVenda;
-          this.totalPagesVenda = Math.ceil(this.filteredVenda.length / this.itemsPerPage);
+          this.registrosVenda;
+          // this.maxItensPageVenda = this.filteredVenda.length;
+          this.totalPagesVenda = response.dados.registros.last_page
+          this.currentPageVenda = response.dados.registros.current_page
+
         }
       },
       (error) => {
@@ -80,7 +122,7 @@ export class InicioAdminComponent implements OnInit {
   loadLocalizacoes(): void {
     this.localizacaoService.getLocalizacoes().subscribe(
       (data) => {
-        this.localizacoes = data.dados.registros; 
+        this.localizacoes = data.dados.registros;
         console.log('Localizações carregadas:', this.localizacoes);
       },
       (error) => {
@@ -95,53 +137,47 @@ export class InicioAdminComponent implements OnInit {
 
   filterRecords() {
     if (this.segment === 'pesca') {
-      this.filteredPesca = this.registrosPesca.filter(registro =>
-        registro.user.name.toLowerCase().includes(this.searchTerm.toLowerCase()) &&
-        (this.selectedLocalizacao ? registro.local === this.selectedLocalizacao : true) 
-      );
-      this.currentPagePesca = 1;
-      this.totalPagesPesca = Math.ceil(this.filteredPesca.length / this.itemsPerPage);
+
+      this.loadPescaAll();
     } else {
-      this.filteredVenda = this.registrosVenda.filter(registro =>
-        registro.user.name.toLowerCase().includes(this.searchTerm.toLowerCase()) &&
-        (this.selectedLocalizacao ? registro.ponto_venda === this.selectedLocalizacao : true) 
-      );
-      this.currentPageVenda = 1;
-      this.totalPagesVenda = Math.ceil(this.filteredVenda.length / this.itemsPerPage);
+
+      this.loadVendasAll()
     }
   }
+
+
 
   get paginatedPesca() {
     const start = (this.currentPagePesca - 1) * this.itemsPerPage;
     return this.filteredPesca.slice(start, start + this.itemsPerPage);
   }
 
-  get paginatedVenda() {
-    const start = (this.currentPageVenda - 1) * this.itemsPerPage;
-    return this.filteredVenda.slice(start, start + this.itemsPerPage);
-  }
-
   previousPagePesca(): void {
     if (this.currentPagePesca > 1) {
-      this.currentPagePesca--;
+      this.loadPescaAll();
     }
   }
 
   nextPagePesca(): void {
     if (this.currentPagePesca < this.totalPagesPesca) {
-      this.currentPagePesca++;
+      this.loadPescaAll();
     }
   }
+
 
   previousPageVenda(): void {
     if (this.currentPageVenda > 1) {
       this.currentPageVenda--;
+      this.loadVendasAll()
+
     }
   }
 
   nextPageVenda(): void {
     if (this.currentPageVenda < this.totalPagesVenda) {
       this.currentPageVenda++;
+      this.loadVendasAll()
+
     }
   }
 

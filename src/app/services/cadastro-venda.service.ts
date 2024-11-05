@@ -36,10 +36,14 @@ export class CadastroVendaService {
     return this.http.get<any>(`${this.baseUrl}/meus`, { headers: this.getHeaders() });
   }
 
-  getRegistrosAll(): Observable<any> {
-    return this.http.get<any>(`${this.baseUrl}`, { headers: this.getHeaders() });
+  getRegistrosAll(params:any): Observable<any> {
+    const url = `${this.baseUrl}`;
+    const options = {
+      headers: this.getHeaders(),
+       params: params
+  };
+    return this.http.get<any>(url, options );
   }
-
     /*LOgica para avisar a compontente inicial que houve uma atualizacao*/
     setvendas(vendas: any[]) {
       this.vendasSubject.next(vendas); 
