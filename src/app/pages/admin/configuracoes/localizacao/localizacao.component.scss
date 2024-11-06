@@ -1,5 +1,6 @@
-.scroll-top-icon, .scroll-bottom-icon {
-  font-size: 32px; 
+.scroll-top-icon,
+.scroll-bottom-icon {
+  font-size: 32px;
   margin: 5px;
   cursor: pointer;
   color: var(--btn-secundario);
@@ -9,17 +10,23 @@
   position: absolute;
   top: 10px;
   right: 10px;
-  z-index: 1000; 
+  z-index: 1000;
 }
 
 .scroll-bottom-icon {
   position: absolute;
   bottom: 10px;
   right: 10px;
-  z-index: 1000; 
+  z-index: 1000;
 }
 
-ion-modal {
-  --height: 80%;
-  --width: 80%;
+
+@media (min-width: 736px) {
+
+
+  ion-modal {
+    --height: 80%;
+    --width: 80%;
+  }
+
 }
