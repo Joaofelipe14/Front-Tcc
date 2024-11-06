@@ -68,3 +68,14 @@ ion-card-title {
   justify-content: center;
 }
 
+.version{
+  position: absolute;
+    top: 0;
+    right: 0;
+    padding: 5px;
+    font-size: small;
+    font-weight: lighter;
+    text-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+    opacity: 0.2;
+    pointer-events: none;
+}

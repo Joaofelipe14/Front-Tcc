@@ -7,6 +7,7 @@ import { ToastrService } from 'ngx-toastr';
 import { AuthService } from 'src/app/services/auth.service';
 import { TokenService } from 'src/app/services/token.service';
 import { Utils } from 'src/app/utils/utils';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-login',
@@ -18,6 +19,7 @@ export class LoginComponent implements OnInit {
   formattedCpf: string = '';
   isLoading: boolean = false;
 
+  versao = environment.appVersion
 
   constructor(
     private fb: FormBuilder,
