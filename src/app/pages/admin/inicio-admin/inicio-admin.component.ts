@@ -33,6 +33,7 @@ export class InicioAdminComponent implements OnInit {
   totalPagesVenda: number = 0;
 
   searchTermChanged: Subject<string> = new Subject();
+  isLoading = false;
 
   constructor(
     private cadastroPescaService: CadastroPescaService,
@@ -62,8 +63,8 @@ export class InicioAdminComponent implements OnInit {
       selectedLocalizacao: this.selectedLocalizacao
     };
 
-    console.log(params)
-    console.log(this.currentPageVenda)
+    this.isLoading = true;
+
     this.cadastroPescaService.getRegistrosAll(params).subscribe((response) => {
       if (response.status) {
 
@@ -72,12 +73,13 @@ export class InicioAdminComponent implements OnInit {
           ...registro,
           type: 'pesca'
         }));
-        console.log(this.filteredPesca.length)
-        // this.maxItensPagePesca = this.filteredPesca.length;
+        this.isLoading = false;
         this.totalPagesPesca = response.dados.registros.last_page
       }
     },
       (error) => {
+        this.isLoading = false;
+
         console.error('Erro ao carregar registros de pesca', error);
       }
     );
@@ -91,7 +93,7 @@ export class InicioAdminComponent implements OnInit {
       selectedLocalizacao: this.selectedLocalizacao
     };
 
-    console.log(params)
+    this.isLoading = true;
     this.cadastroVendaService.getRegistrosAll(params).subscribe(
       (response) => {
         if (response.status) {
@@ -102,10 +104,13 @@ export class InicioAdminComponent implements OnInit {
           // this.maxItensPageVenda = this.filteredVenda.length;
           this.totalPagesVenda = response.dados.registros.last_page
           this.currentPageVenda = response.dados.registros.current_page
+          this.isLoading = false;
 
         }
       },
       (error) => {
+        this.isLoading = false;
+
         console.error('Erro ao carregar registros de vendas', error);
       }
     );

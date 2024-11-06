@@ -29,7 +29,7 @@ export class AppComponent implements OnInit {
     if (currentAppVersion !== storedVersion) {
       console.log('Nova versão detectada!');
 
-      const toast = this.toastr.info('Uma nova versão está disponível.Clique para atualizar.', 'Nova versão', {
+      const toast = this.toastr.info('Uma nova versão está disponível. Clique para atualizar.', 'Nova versão', {
         timeOut: 0, 
         progressBar: true,
         closeButton: true,

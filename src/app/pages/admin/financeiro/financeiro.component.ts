@@ -33,14 +33,14 @@ export class FinanceiroComponent implements OnInit {
     const modal = await this.modalController.create({
       component: CadastrarFinanceiroComponent,
     });
-  
+
     modal.onDidDismiss().then(() => {
       this.loadFinancerio();
     });
-  
+
     return await modal.present();
   }
-  
+
 
 
   toggleFiltro() {
@@ -70,13 +70,13 @@ export class FinanceiroComponent implements OnInit {
       const url = window.URL.createObjectURL(blob);
 
       loading.dismiss();
+      const today = new Date();
+      const formattedDate = today.toISOString().replace(/T/, '_').replace(/\..+/, '');
+      const fileName = `registro_financeiro_${formattedDate}.pdf`;
 
       const a = document.createElement('a');
       a.href = url;
-
-      const today = new Date();
-      const formattedDate = today.toISOString().split('T')[0];
-      a.download = 'registros_financeiros_' + formattedDate + '.pdf';
+      a.download = fileName;
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
@@ -107,18 +107,19 @@ export class FinanceiroComponent implements OnInit {
 
       loading.dismiss();
 
+      const today = new Date();
+      const formattedDate = today.toISOString().replace(/T/, '_').replace(/\..+/, ''); 
+
+      const fileName = `registro_financeiro_${formattedDate}.pdf`;
+
       const a = document.createElement('a');
       a.href = url;
-
-      const today = new Date();
-      const formattedDate = today.toISOString().split('T')[0];
-      a.download = 'registros_financeiros_' + formattedDate + '.pdf';
+      a.download = fileName;  
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
       window.URL.revokeObjectURL(url);
     }, error => {
-      // Trate o erro conforme necessário
       alert('Erro ao imprimir o pdf')
       loading.dismiss();
       console.error('Erro ao baixar o PDF', error);
