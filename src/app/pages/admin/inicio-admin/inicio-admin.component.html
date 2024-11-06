@@ -23,6 +23,7 @@
           Nenhum resultado encontrado.
         </p>
       </ng-template>
+      <ion-button expand="full" (click)="openFiltroModal()">Gerar Relatório</ion-button>
 
 
       <ion-searchbar [(ngModel)]="searchTerm" (ionInput)="onSearchTermChange()"
@@ -42,7 +43,10 @@
         <ion-list *ngIf="registrosPesca.length>0; else notaData">
           <ion-item *ngFor="let registro of registrosPesca" (click)="openModal(registro)">
             <ion-avatar slot="start">
-              <img [src]="registro.user.url_perfil" alt="{{ registro.user.name }}">
+              <img 
+              [src]="registro.user?.url_perfil ? registro.user.url_perfil : 'https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png'"
+
+              alt="{{ registro.user.name }}">
             </ion-avatar>
             <ion-label>
               <h2>{{ registro.user.name }}</h2>

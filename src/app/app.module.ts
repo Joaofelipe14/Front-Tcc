@@ -33,6 +33,7 @@ import { ModalCadastrarVendaComponent } from './pages/colaborador/modal-cadastra
 import { CadastrarFinanceiroComponent } from './pages/admin/financeiro/cadastrar-financeiro/cadastrar-financeiro.component';
 import { AuditoriaComponent } from './pages/admin/configuracoes/auditoria/auditoria.component';
 import { LocalizacaoComponent } from './pages/admin/configuracoes/localizacao/localizacao.component';
+import { RelatorioFiltroComponent } from './pages/admin/inicio-admin/relatorio-filtro/relatorio-filtro.component';
 
 
 @NgModule({
@@ -56,7 +57,8 @@ import { LocalizacaoComponent } from './pages/admin/configuracoes/localizacao/lo
     ModalCadastrarVendaComponent,
     CadastrarFinanceiroComponent,
     AuditoriaComponent,
-    LocalizacaoComponent
+    LocalizacaoComponent,
+    RelatorioFiltroComponent
 
   ],
   imports: [

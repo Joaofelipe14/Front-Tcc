@@ -43,15 +43,19 @@ export class CadastroPescaService {
     const url = `${this.baseUrl}`;
     const options = {
       headers: this.getHeaders(),
-       params: params
-  };
-    return this.http.get<any>(url, options );
+      params: params
+    };
+    return this.http.get<any>(url, options);
   }
 
+  gerarRelatorio(filters: any): Observable<Blob> {
+    return this.http.post<Blob>(`${this.baseUrl}/relatorio-pesca`, filters, {
+      headers: this.getHeaders(), responseType: 'blob' as 'json'
+    });
+  }
 
-
-/*LOgica para avisar a compontente inicial que houve uma atualizacao*/
-setPescas(pescas: any[]) {
-  this.pescasSubject.next(pescas);
-}
+  /*LOgica para avisar a compontente inicial que houve uma atualizacao*/
+  setPescas(pescas: any[]) {
+    this.pescasSubject.next(pescas);
+  }
 }

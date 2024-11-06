@@ -13,7 +13,7 @@ export class AppComponent implements OnInit {
   constructor(private swUpdate: SwUpdate, private toastr: ToastrService) { }
 
   ngOnInit(): void {
-    if (this.swUpdate.isEnabled) {
+    if (this.swUpdate.isEnabled && environment.production) {
       this.checkVersion();
     } else {
       console.log('Service Worker não está habilitado!');

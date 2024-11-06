@@ -1,0 +1,76 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Filtrar Relatório</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="close()">Fechar</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-loading
+[isOpen]="isLoading"
+message="Carregando..."
+></ion-loading>
+
+<ion-content>
+ 
+  <ion-item>
+    <ion-label>Data Inicial</ion-label>
+    <ion-datetime-button (click)="currentField='data_inicial'" datetime="data_inicial"></ion-datetime-button>
+    <ion-modal [keepContentsMounted]="true">
+      <ng-template>
+        <ion-datetime id="data_inicial" (ionChange)="onDateChange($event)" displayFormat="MMM DD, YYYY"
+          pickerFormat="MMM DD, YYYY"></ion-datetime>
+      </ng-template>
+    </ion-modal>
+  </ion-item>
+
+  <ion-item>
+    <ion-label>Data Final</ion-label>
+    <ion-datetime-button (click)="currentField='data_final'" datetime="data_final"></ion-datetime-button>
+    <ion-modal [keepContentsMounted]="true">
+      <ng-template>
+        <ion-datetime id="data_final" (ionChange)="onDateChange($event)" displayFormat="MMM DD, YYYY"
+          pickerFormat="MMM DD, YYYY"></ion-datetime>
+      </ng-template>
+    </ion-modal>
+  </ion-item>
+
+
+  <ion-item>
+    <ion-label>Localização</ion-label>
+    <ion-select [(ngModel)]="location">
+      <ion-select-option value="todos">Todos</ion-select-option>
+      <ion-select-option *ngFor="let local of localizacoes" [value]="local.id">
+        {{ local.descricao_amigavel }}
+      </ion-select-option>
+    </ion-select>
+  </ion-item>
+  
+  <ion-item>
+    <ion-label>Usuário</ion-label>
+    <ion-searchbar 
+      [(ngModel)]="searchTerm"
+      debounce="500"
+      (ionInput)="filterUsers()"
+      placeholder="Digite o nome do usuário"
+      showClearButton="focus">
+    </ion-searchbar>
+  </ion-item>
+
+  <ion-list *ngIf="filteredUsuarios.length > 0">
+    <ion-item *ngFor="let usuario of filteredUsuarios" (click)="selectUser(usuario)">
+      <ion-label>{{ usuario.name }}</ion-label>
+    </ion-item>
+  </ion-list>
+
+  <ion-item *ngIf="selectedUsers.length > 0">
+    <ion-label>Usuários Selecionados</ion-label>
+    <ion-chip *ngFor="let user of selectedUsers">
+      <ion-label>{{ user.name }}</ion-label>
+      <ion-icon name="close-circle" (click)="removeUser(user)"></ion-icon>
+    </ion-chip>
+  </ion-item>
+
+  <ion-button expand="full" (click)="applyFilters()">Aplicar Filtros</ion-button>
+</ion-content>

@@ -6,6 +6,7 @@ import { DetailModalComponent } from 'src/app/shared/detail-modal/detail-modal.c
 import { LocalizacaoService } from 'src/app/services/localizacao.service';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { Subject } from 'rxjs';
+import { RelatorioFiltroComponent } from './relatorio-filtro/relatorio-filtro.component';
 
 @Component({
   selector: 'app-inicio-admin',
@@ -186,6 +187,14 @@ export class InicioAdminComponent implements OnInit {
     return await modal.present();
   }
 
+
+  async openFiltroModal() {
+    const modal = await this.modalController.create({
+      component: RelatorioFiltroComponent
+    });
+
+    return await modal.present();
+  }
   formatDateTime(dateTime: string): string {
     const date = new Date(dateTime);
     return `${date.getDate().toString().padStart(2, '0')}/${(date.getMonth() + 1).toString().padStart(2, '0')}/${date.getFullYear()} ${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}`;

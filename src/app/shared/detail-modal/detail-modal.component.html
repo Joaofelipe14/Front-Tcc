@@ -8,13 +8,13 @@
 </ion-header>
 
 <ion-content>
-  <div *ngIf="registro">
-    <!-- <p><strong>{{ registro.type === 'pesca' ? 'Registro de Pesca' : 'Registro de Venda' }}</strong></p> -->
-    
+  <div *ngIf="registro">    
     <div *ngIf="registro.user">
       <ion-item>
         <ion-avatar slot="start">
-          <img [src]="registro.user.url_perfil" alt="Foto de Perfil">
+          <img 
+          [src]="registro.user?.url_perfil ? registro.user.url_perfil : 'https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png'"
+          alt="{{ registro.user.name }}">
         </ion-avatar>
         <ion-label>
           <h2>{{ registro.user.name }}</h2>
