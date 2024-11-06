@@ -102,6 +102,8 @@ export class CadastrarVendaComponent implements OnInit {
     const modal = await this.modalController.create({
       component: DetailModalComponent,
       componentProps: { registro: registro },
+      cssClass: 'custom-modal-class',
+
     });
     return await modal.present();
   }

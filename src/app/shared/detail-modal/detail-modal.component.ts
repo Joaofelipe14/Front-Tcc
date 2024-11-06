@@ -1,5 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { ModalController } from '@ionic/angular';
+import { Utils } from 'src/app/utils/utils';
 
 @Component({
   selector: 'app-detail-modal',
@@ -9,10 +10,13 @@ import { ModalController } from '@ionic/angular';
 export class DetailModalComponent {
   @Input() registro: any;
 
+  Utils = Utils
   constructor(private modalController: ModalController) {}
 
+  
   dismiss() {
     this.modalController.dismiss();
+    this.registro = null
   }
 
   formatDateTime(dateTime: number): string {

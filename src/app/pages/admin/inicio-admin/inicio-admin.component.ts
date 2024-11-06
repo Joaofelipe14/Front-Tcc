@@ -182,7 +182,9 @@ export class InicioAdminComponent implements OnInit {
     console.log(registro);
     const modal = await this.modalController.create({
       component: DetailModalComponent,
-      componentProps: { registro }
+      componentProps: { registro },
+      cssClass: 'custom-modal-class',
+
     });
     return await modal.present();
   }

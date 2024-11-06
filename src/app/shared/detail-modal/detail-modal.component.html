@@ -1,40 +1,71 @@
-<ion-header>
+<ion-header class="custom-modal">
   <ion-toolbar>
-    <ion-title  class="title-card">Detalhes da {{ registro.type === 'pesca' ? 'pesca' : ' venda' }} </ion-title>
-    <ion-buttons slot="end">
-      <ion-button  class="title-card" (click)="dismiss()">Fechar</ion-button>
+    <ion-title>Detalhes da {{ registro?.type === 'pesca' ? 'pesca' : ' venda' }} </ion-title>
+    <ion-buttons   (click)="dismiss()" slot="end">
+      <ion-icon style="color: white;" name="close"></ion-icon>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
-  <div *ngIf="registro">    
+<div class="modal-content">
+  <div *ngIf="registro">
     <div *ngIf="registro.user">
-      <ion-item>
+      <ion-item style="--background:var(--fundo-interno); margin-bottom: 15px;">
         <ion-avatar slot="start">
-          <img 
-          [src]="registro.user?.url_perfil ? registro.user.url_perfil : 'https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png'"
-          alt="{{ registro.user.name }}">
+          <img
+            [src]="registro.user?.url_perfil ? registro.user.url_perfil : 'https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png'"
+            alt="{{ registro.user.name }}">
         </ion-avatar>
         <ion-label>
           <h2>{{ registro.user.name }}</h2>
-          <h3>{{ registro.user.cpf }}</h3>
+          <h3>{{  Utils.formatCpf(registro.user.cpf) }}</h3>
         </ion-label>
       </ion-item>
     </div>
+
+    <div *ngIf="registro?.type === 'pesca'">
+      <div class="info-row">
+        <span><strong>Área</strong></span>
+        <span>{{ registro.localizacao.descricao_amigavel }}</span>
+      </div>
     
-    <div *ngIf="registro.type === 'pesca'">
-      <p><strong>Área:</strong> {{ registro.localizacao.descricao_amigavel }}</p>
-      <p><strong>Pescado:</strong> {{ registro.pescado }}</p>
-      <p><strong>Data e Horário:</strong> {{ formatDateTime(registro.data_com_hora) }}</p>
-      <p><strong>Quantidade:</strong> {{ registro.quantidade }}</p>
-      <p><strong>Código:</strong> {{ registro.codigo }}</p>
+      <div class="info-row">
+        <span><strong>Pescado</strong></span>
+        <span>{{ registro.pescado }}</span>
+      </div>
+    
+      <div class="info-row">
+        <span><strong>Data e Horário</strong></span>
+        <span>{{ formatDateTime(registro.data_com_hora) }}</span>
+      </div>
+    
+      <div class="info-row">
+        <span><strong>Quantidade</strong></span>
+        <span>{{ registro.quantidade }}</span>
+      </div>
+    
+      <div class="info-row">
+        <span><strong>Código</strong></span>
+        <span>{{ registro.codigo }}</span>
+      </div>
     </div>
     
-    <div *ngIf="registro.type === 'venda'">
-      <p><strong>Ponto de Venda:</strong>{{ registro.localizacao.descricao_amigavel }}</p>
-      <p><strong>Quantidade:</strong> {{ registro.quantidade }}</p>
-      <p><strong>Valor:</strong> R$ {{ registro.valor }}</p>
+    <div *ngIf="registro?.type === 'venda'">
+      <div class="info-row">
+        <span><strong>Ponto de Venda</strong></span>
+        <span>{{ registro.localizacao.descricao_amigavel }}</span>
+      </div>
+    
+      <div class="info-row">
+        <span><strong>Quantidade</strong></span>
+        <span>{{ registro.quantidade }}</span>
+      </div>
+    
+      <div class="info-row">
+        <span><strong>Valor</strong></span>
+        <span>R$ {{ registro.valor }}</span>
+      </div>
     </div>
+    
   </div>
-</ion-content>
+</div>

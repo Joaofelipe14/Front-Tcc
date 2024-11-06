@@ -215,24 +215,6 @@ ion-col {
 }
 
 
-@media (min-width: 736px) {
-
-  .card-cadastro {
-    width: 500px;
-    min-width: unset;
-
-  }
-
-  .margin-titulo-header {
-    margin-top: 80px;
-  }
-
-  ion-modal {
-
-    --border-radius: 16px;
-  }
-
-}
 
 .loading-container {
   display: flex;
@@ -252,4 +234,69 @@ ion-col {
   margin-top: 10px;
   font-size: 16px;
   color: #555;
+}
+
+
+// ion-modal {
+//   display: flex;
+//   justify-content: center;
+//   align-items: center;
+// }
+
+.custom-modal-class {
+  --width: 80vw;      
+  --height: auto;     
+  --border-radius: 10px;  
+  --box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.1);
+  --backdrop-opacity: 0.5;
+}
+
+.content-card {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+
+  
+  .modal-content h2 {
+    color: var(--fonte-titulo);
+    margin: 10px 0;
+  }
+
+
+.info-row {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  margin: 4px 0;
+}
+
+.info-row {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  margin: 4px 0;
+  align-items: center;
+}
+
+
+@media (min-width: 736px) {
+
+  .card-cadastro {
+    width: 500px;
+    min-width: unset;
+
+  }
+
+  .margin-titulo-header {
+    margin-top: 80px;
+  }
+
+  ion-modal {
+
+    --border-radius: 16px;
+  }
+
 }

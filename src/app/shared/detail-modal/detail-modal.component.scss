@@ -1,0 +1,47 @@
+.custom-modal {
+    --height: auto;
+    --border-radius: 16px;
+    --box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+    --background-color: var(--fundo-interno);
+    // --max-width:375px
+    --max-width: 80vw
+  }
+
+  .custom-modal::part(backdrop) {
+    background: rgba(209, 213, 219);
+    opacity: 1;
+    --background-color: var(--fundo-interno);
+  }
+
+  .custom-modal ion-toolbar {
+    --background: rgb(14, 116, 144);
+    --color: white;
+  }
+
+  .modal-content {
+    padding: 20px;
+    text-align: center;
+    background-color: var(--fundo-interno);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100%;
+    gap: 10px;
+  }
+
+
+  .info-row {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    margin: 4px 0;
+    gap: 20px;
+  }
+
+  .info-row {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    margin: 4px 0;
+    align-items: center;
+  }

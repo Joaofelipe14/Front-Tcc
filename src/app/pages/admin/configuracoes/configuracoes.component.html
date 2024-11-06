@@ -32,7 +32,7 @@
             </ion-label>
             <ion-icon *ngIf="usuario?.primeiro_acesso=='S'" slot="end" style="color: wheat;"
               name="alert-circle-sharp"></ion-icon>
-            <ion-icon style="color: white;" name="chevron-forward" slot="end"></ion-icon>
+            <ion-icon name="chevron-forward" slot="end"></ion-icon>
           </ion-item>
         </ion-list>
 
@@ -57,7 +57,7 @@
                 <ion-title>{{ selectedUsuario?.name }}</ion-title>
                 <ion-buttons slot="end">
                   <ion-button (click)="closeModal()">
-                    <ion-icon name="close"></ion-icon>
+                    <ion-icon  style="color: white;" name="close"></ion-icon>
                   </ion-button>
                 </ion-buttons>
               </ion-toolbar>
@@ -109,12 +109,8 @@
                     Resetar Senha
                   </ng-template>
                 </ion-button>
-
-
               </div>
             </div>
-
-
 
           </ng-template>
         </ion-modal>
