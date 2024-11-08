@@ -25,17 +25,21 @@ export class AppComponent implements OnInit {
     const currentAppVersion = environment.appVersion;
     console.log('Versão atual: ' + currentAppVersion);
     const storedVersion = localStorage.getItem('appVersion');
-
-    if (currentAppVersion !== storedVersion) {
+  
+    if (storedVersion === null) {
+      localStorage.setItem('appVersion', currentAppVersion);
+      return;
+    }
+      if (currentAppVersion !== storedVersion) {
       console.log('Nova versão detectada!');
-
+  
       const toast = this.toastr.info('Uma nova versão está disponível. Clique para atualizar.', 'Nova versão', {
         timeOut: 0, 
         progressBar: true,
         closeButton: true,
         disableTimeOut: true
       });
-
+  
       toast.onTap.subscribe(() => {
         localStorage.setItem('appVersion', currentAppVersion);
         window.location.reload();
@@ -44,4 +48,5 @@ export class AppComponent implements OnInit {
       console.log('Versão já está atual.');
     }
   }
+  
 }
