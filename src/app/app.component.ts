@@ -21,9 +21,7 @@ export class AppComponent implements OnInit {
   }
 
   checkVersion(): void {
-    console.log('Verificando por novas atualizações...');
     const currentAppVersion = environment.appVersion;
-    console.log('Versão atual: ' + currentAppVersion);
     const storedVersion = localStorage.getItem('appVersion');
   
     if (storedVersion === null) {
@@ -31,7 +29,6 @@ export class AppComponent implements OnInit {
       return;
     }
       if (currentAppVersion !== storedVersion) {
-      console.log('Nova versão detectada!');
   
       const toast = this.toastr.info('Uma nova versão está disponível. Clique para atualizar.', 'Nova versão', {
         timeOut: 0, 

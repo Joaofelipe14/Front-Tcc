@@ -20,7 +20,7 @@ export class AuditoriaComponent implements OnInit {
     page: this.currentPage
   };
 
-  tabelas: string[] = []; // Para armazenar as tabelas distintas
+  tabelas: string[] = []; 
 
   isDateFilterOpen: boolean = false;
 
@@ -31,7 +31,6 @@ export class AuditoriaComponent implements OnInit {
     this.loadAuditoria();
   }
 
-  // Método para carregar as tabelas distintas
   loadTabelas() {
     this.auditoriaService.getTabelas().subscribe((data: any) => {
       this.tabelas = data.dados;
@@ -40,39 +39,30 @@ export class AuditoriaComponent implements OnInit {
     });
   }
 
-  // Método para carregar as auditorias com base nos filtros
   loadAuditoria() {
     this.auditoriaService.getAuditoria(this.filter).subscribe((data: any) => {
       this.auditoriaData = data.dados.data; 
       this.totalPages = data.dados.total; 
       this.last_page = data.dados.last_page;
       this.currentPage = data.dados.current_page
-      // console.log(this.currentPage, this.totalPages)
     }, error => {
       console.error(error);
     });
   }
 
-  // Método para aplicar filtros
   applyFilters() {
-    this.filter.page = 1; // Resetar para a primeira página
+    this.filter.page = 1; 
     this.loadAuditoria();
   }
 
-  // Método para ir para a próxima página
   nextPage() {
-    console.log(this.currentPage)
-    console.log(this.last_page)
     if (this.currentPage < this.last_page) {
       this.filter.page++;
       this.loadAuditoria();
     }
   }
 
-  // Método para ir para a página anterior
   prevPage() {
-    console.log(this.currentPage)
-    console.log(this.last_page)
     if (this.currentPage > 1) {
       this.filter.page--;
       this.loadAuditoria();
@@ -81,11 +71,9 @@ export class AuditoriaComponent implements OnInit {
 
   selectedItem: any;
   showModal = false;
-  // Abrir Modal (caso queira exibir mais detalhes)
   openModal(item: any) {
     this.selectedItem = item;
     this.showModal = true;
-    console.log('close')
   }
 
   closeModal() {

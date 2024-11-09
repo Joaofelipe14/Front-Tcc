@@ -11,12 +11,9 @@ import { TokenService } from './token.service';
 export class AuthService {
   private urlCadastro = `${environment.apiUrl}usuario/registrar`;
   private urlLogin = `${environment.apiUrl}usuario/login`;
-  private urlAtualizar = `${environment.apiUrl}usuario/editar`;
+  private urlAtualizar = `${environment.apiUrl}usuario/editar/`;
   private urlMe = `${environment.apiUrl}usuario/me`;
-
   private urlgetUsers = `${environment.apiUrl}busca-usuarios`;
-
-
 
   private getHeaders(): HttpHeaders {
     const token = this.tokenService.getToken();
@@ -44,16 +41,12 @@ export class AuthService {
       'Authorization': `Bearer ${token}`,
       'ngrok-skip-browser-warning': 'teste'
     };
-
     return this.http.post<any>(`${this.urlAtualizar}${user_id}`, payload, { headers });
   }
-
-
 
   me(): Observable<any> {
     return this.http.get<any>(this.urlMe, { headers: this.getHeaders() });
   }
-
 
   getUsuarios(): Observable<any[]> {
     return this.http.get<any[]>(this.urlgetUsers, { headers: this.getHeaders() });

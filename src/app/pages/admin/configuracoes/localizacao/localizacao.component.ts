@@ -8,9 +8,7 @@ import { LocalizacaoService } from 'src/app/services/localizacao.service';
   templateUrl: './localizacao.component.html',
   styleUrls: ['./localizacao.component.scss'],
 })
-export class LocalizacaoComponent  implements OnInit {
-
-
+export class LocalizacaoComponent implements OnInit {
 
   @ViewChild('modalContent') modalContent!: IonContent;
   isAtTop: boolean = true;
@@ -28,7 +26,7 @@ export class LocalizacaoComponent  implements OnInit {
     longitude: null,
   };
 
- 
+
   scrollToTop() {
     this.isAtBottom = false
     this.isAtTop = true;
@@ -52,13 +50,10 @@ export class LocalizacaoComponent  implements OnInit {
   ) { }
 
   ngOnInit() {
-
     this.loadLocalizacoes();
-
   }
 
   loadLocalizacoes() {
-
     this.localizacaoService.getLocalizacoes().subscribe(data => {
       this.localizacoes = data.dados.registros;
       this.filteredLocalizacoes = this.localizacoes;

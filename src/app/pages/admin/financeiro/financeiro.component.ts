@@ -52,7 +52,6 @@ export class FinanceiroComponent implements OnInit {
       this.registrosFinanceiros = data.registros;
       this.registrosFinanceirosFiltrados = this.registrosFinanceiros;
 
-      console.log(data)
     }, error => {
 
     });
@@ -129,7 +128,6 @@ export class FinanceiroComponent implements OnInit {
 
   filtrarRegistros() {
 
-    console.log('filtrando')
     if (this.filtroCondicao === 'todos') {
 
       this.registrosFinanceirosFiltrados = this.registrosFinanceiros;

@@ -39,15 +39,11 @@ export class LoginComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadUserData();
-
   }
 
   loadUserData() {
-
     console.log("Token exists: ", this.tokenService.getToken());
-
     if (this.tokenService.getToken()) {
-      console.log()
       this.auth.me().subscribe(
         response => {
 

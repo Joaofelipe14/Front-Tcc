@@ -69,7 +69,6 @@ export class InicioAdminComponent implements OnInit {
     this.cadastroPescaService.getRegistrosAll(params).subscribe((response) => {
       if (response.status) {
 
-        console.log(response.dados.registros)
         this.registrosPesca = response.dados.registros.data.map((registro: any) => ({
           ...registro,
           type: 'pesca'
@@ -179,7 +178,6 @@ export class InicioAdminComponent implements OnInit {
   }
 
   async openModal(registro: any) {
-    console.log(registro);
     const modal = await this.modalController.create({
       component: DetailModalComponent,
       componentProps: { registro },

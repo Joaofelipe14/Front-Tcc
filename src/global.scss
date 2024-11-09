@@ -253,7 +253,6 @@ ion-col {
 
 .content-card {
   display: flex;
-  align-items: center;
   justify-content: center;
   flex-direction: column;
 }
@@ -290,6 +289,10 @@ ion-col {
 
   }
 
+  .custom-modal-class {
+    --width: auto;      
+  }
+  
   .margin-titulo-header {
     margin-top: 80px;
   }

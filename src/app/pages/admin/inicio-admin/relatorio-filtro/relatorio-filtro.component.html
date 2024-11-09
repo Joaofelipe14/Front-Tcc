@@ -7,13 +7,10 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-loading
-[isOpen]="isLoading"
-message="Carregando..."
-></ion-loading>
+<ion-loading [isOpen]="isLoading" message="Carregando..."></ion-loading>
 
 <ion-content>
- 
+
   <ion-item>
     <ion-label>Data Inicial</ion-label>
     <ion-datetime-button (click)="currentField='data_inicial'" datetime="data_inicial"></ion-datetime-button>
@@ -46,15 +43,11 @@ message="Carregando..."
       </ion-select-option>
     </ion-select>
   </ion-item>
-  
+
   <ion-item>
     <ion-label>Usuário</ion-label>
-    <ion-searchbar 
-      [(ngModel)]="searchTerm"
-      debounce="500"
-      (ionInput)="filterUsers()"
-      placeholder="Digite o nome do usuário"
-      showClearButton="focus">
+    <ion-searchbar [(ngModel)]="searchTerm" debounce="500" (ionInput)="filterUsers()"
+      placeholder="Digite o nome do usuário" showClearButton="focus">
     </ion-searchbar>
   </ion-item>
 
@@ -72,5 +65,8 @@ message="Carregando..."
     </ion-chip>
   </ion-item>
 
-  <ion-button expand="full" (click)="applyFilters()">Aplicar Filtros</ion-button>
+  <div class="button-container"  style="margin-top: 10px;" >
+    <ion-button class="btn-primario" (click)="applyFilters()">Aplicar Filtros</ion-button>
+
+  </div>
 </ion-content>

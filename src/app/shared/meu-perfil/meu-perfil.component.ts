@@ -86,11 +86,6 @@ export class MeuPerfilComponent implements OnInit {
         novoformData.append('profile_image', this.selectedFile);
       }
 
-      novoformData.forEach((value, key) => {
-        console.log(`${key}:`, value);
-      });
-
-
       try {
         const response = await this.auth.atualizar(novoformData, this.userId).toPromise();
 
@@ -166,8 +161,7 @@ export class MeuPerfilComponent implements OnInit {
   async updateField() {
     if (this.campoEditado) {
       this.meuPerfilForm.get(this.campoEditado)?.setValue(this.campoValor);
-      console.log(`Valor atualizado para o campo ${this.campoEditado}: ${this.campoValor}`);
-
++
       this.onSubmit();
     }
     this.dismissModal();

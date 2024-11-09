@@ -51,8 +51,6 @@ export class CadastrarFinanceiroComponent implements OnInit {
     this.currentField = null;
 
     const formData = this.cadastrarFinancerioForm.value;
-    console.log(selectedDate)
-    console.log(formData)
   }
 
 
@@ -69,7 +67,6 @@ export class CadastrarFinanceiroComponent implements OnInit {
 
   async onSubmit() {
     const formData = this.cadastrarFinancerioForm.value;
-    console.log(formData)
     if (this.cadastrarFinancerioForm.valid) {
       const formData = this.cadastrarFinancerioForm.value;
       formData.energia = this.originalEnergyValue;

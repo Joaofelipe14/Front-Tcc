@@ -39,7 +39,6 @@ export class ModalCadastrarPescaComponent implements OnInit {
     this.localizacaoService.getLocalizacoes().subscribe(
       (data) => {
         this.localizacoes = data.dados.registros;
-        console.log('Localizações carregadas:', this.localizacoes);
         if (this.localizacoes && this.localizacoes.length > 0) {
           this.cadastrarPescaForm.patchValue({ local: this.localizacoes[0].id });
         }
@@ -65,9 +64,6 @@ export class ModalCadastrarPescaComponent implements OnInit {
 
   async onSubmit() {
 
-
-    const formData = this.cadastrarPescaForm.value;
-    console.log('Valores do formulário:', formData);
     if (this.cadastrarPescaForm.valid) {
       this.isLoading= true
       const formData = this.cadastrarPescaForm.value;

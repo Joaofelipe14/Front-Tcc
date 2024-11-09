@@ -39,7 +39,6 @@ export class GoogleMapsComponent implements OnInit, AfterViewInit {
         lng: parseFloat(this.defaultLocation.lng)
       }
       : { lat: -23.5505, lng: -46.6333 };
-    console.log(center)
 
     this.map = new google.maps.Map(mapElement, {
       center: center,
@@ -107,7 +106,6 @@ export class GoogleMapsComponent implements OnInit, AfterViewInit {
           const name = results[0].address_components.map((component: any) => component.long_name).join(', ');
 
           // Emite as coordenadas e o endereço para o componente pai
-          console.log('enviando ')
           this.emitCoordinates(lat, lng, name, address);
 
 

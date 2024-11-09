@@ -83,8 +83,6 @@ export class CadastrarPescaComponent implements OnInit {
       user: this.user
     }));
 
-
-    console.log(updatedRecords)
     this.registros = [...this.registros, ...updatedRecords];
     this.sortRegistros();
     this.calculateTotalPages();

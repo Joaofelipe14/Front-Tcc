@@ -60,9 +60,7 @@ export class ConfiguracoesComponent implements OnInit {
     this.filteredUsuarios = this.usuarios.filter(usuario =>
       usuario.name.toLowerCase().includes(this.searchName.toLowerCase())
     );
-
     this.updatePagination();
-
   }
 
   updatePagination() {
@@ -84,7 +82,6 @@ export class ConfiguracoesComponent implements OnInit {
     }
   }
   openUsuarioDetails(usuario: any) {
-    console.log(usuario)
     this.selectedUsuario = usuario;
     this.selectedTipoUsuario = usuario.tipo_usuario
     this.isModalOpen = true;
@@ -110,7 +107,9 @@ export class ConfiguracoesComponent implements OnInit {
       if (response.sucesso) {
         this.toast.success('Grupo do usuario atualizado.', 'Sucesso');
 
-        this.closeModal()
+        this.closeModal();
+        this.loadUsuarios();
+
       } else {
         this.toast.error('Erro ao atualizar grupo de usuario.', 'Erro');
 
@@ -177,7 +176,9 @@ export class ConfiguracoesComponent implements OnInit {
       if (response.sucesso) {
         this.isLoadingBtn = false
         this.toast.success('Senha resetada para o CPF.', 'Sucesso');
-        this.closeModal()
+        this.closeModal();
+        this.loadUsuarios();
+
       } else {
         this.isLoadingBtn = false
         this.toast.error('Erro ao resetar senha de usuario.', 'Erro');
