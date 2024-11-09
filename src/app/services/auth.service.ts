@@ -11,10 +11,10 @@ import { TokenService } from './token.service';
 export class AuthService {
   private urlCadastro = `${environment.apiUrl}usuario/registrar`;
   private urlLogin = `${environment.apiUrl}usuario/login`;
-  private urlAtualizar = `${environment.apiUrl}usuario/editar/`;
-  private urlMe = `${environment.apiUrl}usuario/me/`;
+  private urlAtualizar = `${environment.apiUrl}usuario/editar`;
+  private urlMe = `${environment.apiUrl}usuario/me`;
 
-  private urlgetUsers = `${environment.apiUrl}busca-usuarios/`;
+  private urlgetUsers = `${environment.apiUrl}busca-usuarios`;
 
 
 
