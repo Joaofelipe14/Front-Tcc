@@ -74,9 +74,11 @@ export class LoginComponent implements OnInit {
         },
         error => {
           // Manipule erros aqui
+         
+          console.log("Token exists: ", this.tokenService.getToken());
+          this.tokenService.remove()
           this.verPaginaLogin = false;
           loading.dismiss();
-
           console.error('Erro ao obter informações do usuário:', error);
 
         }
