@@ -1,6 +1,6 @@
 import { Component, HostListener, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { AlertController } from '@ionic/angular';
+import { AlertController, LoadingController } from '@ionic/angular';
 import { ToastrService } from 'ngx-toastr';
 import { AuthService } from 'src/app/services/auth.service';
 import { Utils } from 'src/app/utils/utils';
@@ -12,7 +12,7 @@ import { Utils } from 'src/app/utils/utils';
   styleUrls: ['./meu-perfil.component.scss'],
 })
 export class MeuPerfilComponent implements OnInit {
-  
+
   meuPerfilForm: FormGroup;
   selectedImage: string | ArrayBuffer | null = null;
   selectedFile: File | null = null;
@@ -25,7 +25,8 @@ export class MeuPerfilComponent implements OnInit {
     private formBuilder: FormBuilder,
     private auth: AuthService,
     private toast: ToastrService,
-    private alertController: AlertController
+    private alertController: AlertController,
+    private loadingController: LoadingController
 
   ) {
     this.meuPerfilForm = this.formBuilder.group({
@@ -76,6 +77,8 @@ export class MeuPerfilComponent implements OnInit {
   }
 
   async onSubmit() {
+
+
     if (this.meuPerfilForm.valid) {
       const novoformData = new FormData();
       novoformData.append('name', this.meuPerfilForm.get('nome')?.value);
@@ -86,17 +89,23 @@ export class MeuPerfilComponent implements OnInit {
         novoformData.append('profile_image', this.selectedFile);
       }
 
+      const loading = await this.loadingController.create({
+        message: 'Atualizando dados...',
+      });
+      await loading.present();
+
       try {
         const response = await this.auth.atualizar(novoformData, this.userId).toPromise();
 
         if (response.sucesso) {
-
-          this.toast.success("Daddos atualizados", 'Sucesso')
+          loading.dismiss();
+          this.toast.success("Dados atualizados", 'Sucesso')
         }
 
       } catch (error) {
         console.error('Erro ao atualizar a senha:', error);
         this.toast.error("Tente novamente mais tarde", 'Erro')
+        loading.dismiss();
 
       }
     }
@@ -119,8 +128,17 @@ export class MeuPerfilComponent implements OnInit {
             if (input.files && input.files[0]) {
               const file = input.files[0];
               this.selectedFile = file;
-              const reader = new FileReader();
 
+              if (file.size > 2 * 1024 * 1024) {
+                // Chama o Toast de erro com a mensagem dinâmica
+                this.toast.error('O arquivo excede 2 MB. Tente outro arquivo menor.', 'Erro', {
+                  timeOut: 0,
+                  extendedTimeOut: 0,
+                  closeButton: true,
+                });
+                return;
+              }
+              const reader = new FileReader();
               reader.onload = () => {
                 this.selectedImage = reader.result;
               };
@@ -161,8 +179,8 @@ export class MeuPerfilComponent implements OnInit {
   async updateField() {
     if (this.campoEditado) {
       this.meuPerfilForm.get(this.campoEditado)?.setValue(this.campoValor);
-+
-      this.onSubmit();
+      +
+        this.onSubmit();
     }
     this.dismissModal();
   }

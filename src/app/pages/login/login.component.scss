@@ -61,7 +61,6 @@ ion-card-title {
 
 }
 
-
 .error{
   display: flex;
   flex-direction: row;
@@ -75,7 +74,8 @@ ion-card-title {
     padding: 5px;
     font-size: small;
     font-weight: lighter;
-    text-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+    // text-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+    color: gray;
     opacity: 0.2;
     pointer-events: none;
 }

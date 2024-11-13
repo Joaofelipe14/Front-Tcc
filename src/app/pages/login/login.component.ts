@@ -2,7 +2,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { ToastController } from '@ionic/angular';
+import { LoadingController, ToastController } from '@ionic/angular';
 import { ToastrService } from 'ngx-toastr';
 import { AuthService } from 'src/app/services/auth.service';
 import { TokenService } from 'src/app/services/token.service';
@@ -20,6 +20,8 @@ export class LoginComponent implements OnInit {
   isLoading: boolean = false;
 
   versao = environment.appVersion
+  verPaginaLogin: boolean = true;
+
 
   constructor(
     private fb: FormBuilder,
@@ -28,7 +30,8 @@ export class LoginComponent implements OnInit {
     private authService: AuthService,
     private tokenService: TokenService,
     private auth: AuthService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private loadingController: LoadingController
 
   ) {
     this.loginForm = this.fb.group({
@@ -41,23 +44,39 @@ export class LoginComponent implements OnInit {
     this.loadUserData();
   }
 
-  loadUserData() {
+  async loadUserData() {
     console.log("Token exists: ", this.tokenService.getToken());
     if (this.tokenService.getToken()) {
+
+
+      const loading = await this.loadingController.create({
+        message: 'Acessando...',
+      });
+      await loading.present();
+
+      this.verPaginaLogin = false;
+
       this.auth.me().subscribe(
         response => {
-
+          loading.dismiss();
+          this.verPaginaLogin =true;
           if (response.status) {
             if (response.dados.tipo_usuario === "colaborador") {
               this.router.navigate(['/colaborador/inicio']);
+
             } else {
               this.router.navigate(['/admin/inicio']);
+
             }
           }
+     
 
         },
         error => {
           // Manipule erros aqui
+          this.verPaginaLogin = false;
+          loading.dismiss();
+
           console.error('Erro ao obter informações do usuário:', error);
 
         }
