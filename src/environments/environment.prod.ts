@@ -1,6 +1,6 @@
 export const environment = {
   production: true,
   apiUrl: 'https://pescaapp.xyz/api/',
-  appVersion: '1.1.3' 
+  appVersion: '1.1.4' 
 
 };
