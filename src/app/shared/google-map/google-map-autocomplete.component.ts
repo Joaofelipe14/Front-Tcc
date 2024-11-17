@@ -105,7 +105,6 @@ export class GoogleMapsComponent implements OnInit, AfterViewInit {
           const address = results[0].formatted_address;
           const name = results[0].address_components.map((component: any) => component.long_name).join(', ');
 
-          // Emite as coordenadas e o endereço para o componente pai
           this.emitCoordinates(lat, lng, name, address);
 
 

@@ -163,8 +163,12 @@ export class RegistrarComponent {
       const file = input.files[0];
 
       if (file.size > 2 * 1024 * 1024) {
-        alert('A imagem deve ter no máximo 2 MB.');
-        return;
+        this.toastr.error('O arquivo excede 2 MB. Tente outro arquivo menor.', 'Erro', {
+          timeOut: 0,
+          extendedTimeOut: 0,
+          closeButton: true,
+        });
+        return;        return;
       }
       this.selectedFile = file;
       const reader = new FileReader();
