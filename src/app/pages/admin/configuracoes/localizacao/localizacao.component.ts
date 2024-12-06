@@ -51,6 +51,17 @@ export class LocalizacaoComponent implements OnInit {
 
   ngOnInit() {
     this.loadLocalizacoes();
+    window.history.pushState({ modal: true }, '')
+    window.addEventListener('popstate', this.handleBack.bind(this))
+  }
+
+  handleBack() {
+    this.closeModalLocalizacao()
+  }
+
+  ngOnDestroy() {
+    console.log('componente sendo destruido')
+    window.addEventListener('popstate', this.handleBack.bind(this))
   }
 
   loadLocalizacoes() {

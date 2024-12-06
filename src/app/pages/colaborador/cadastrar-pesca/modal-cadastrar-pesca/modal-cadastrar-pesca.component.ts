@@ -25,15 +25,23 @@ export class ModalCadastrarPescaComponent implements OnInit {
     private localizacaoService: LocalizacaoService
   ) {}
 
-  onModalDismiss() {
-    console.log('Modal foi fechado');
-  }
 
   ngOnInit() {
     this.initializeForm();
     this.loadLocalizacoes();
-    this.onModalDismiss()
+    window.history.pushState({ modal: true }, '')
+    window.addEventListener('popstate', this.handleBack.bind(this))
   }
+
+  handleBack() {
+    this.dismissModal()
+  }
+
+  ngOnDestroy() {
+    console.log('componente sendo destruido')
+    window.addEventListener('popstate', this.handleBack.bind(this))
+  }
+
 
   loadLocalizacoes() {
     this.localizacaoService.getLocalizacoes().subscribe(

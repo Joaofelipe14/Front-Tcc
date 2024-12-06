@@ -41,7 +41,19 @@ export class MeuPerfilComponent implements OnInit {
 
   ngOnInit() {
     this.loadUserData();
+    window.history.pushState({ modal: true }, '')
+    window.addEventListener('popstate', this.handleBack.bind(this))
   }
+
+  handleBack() {
+    this.dismissModal()
+  }
+
+  ngOnDestroy() {
+    console.log('componente sendo destruido')
+    window.addEventListener('popstate', this.handleBack.bind(this))
+  }
+
 
   loadUserData() {
     this.auth.me().subscribe(

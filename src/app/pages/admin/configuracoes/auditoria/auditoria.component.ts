@@ -29,6 +29,17 @@ export class AuditoriaComponent implements OnInit {
   ngOnInit() {
     this.loadTabelas();
     this.loadAuditoria();
+    window.history.pushState({ modal: true }, '')
+    window.addEventListener('popstate', this.handleBack.bind(this))
+  }
+
+  handleBack() {
+    this.closeModal()
+  }
+
+  ngOnDestroy() {
+    console.log('componente sendo destruido')
+    window.addEventListener('popstate', this.handleBack.bind(this))
   }
 
   loadTabelas() {

@@ -5,6 +5,7 @@ import { AuthService } from 'src/app/services/auth.service';
 import { LocalizacaoService } from 'src/app/services/localizacao.service';
 import { ToastrService } from 'ngx-toastr';
 
+
 @Component({
   selector: 'app-relatorio-filtro',
   templateUrl: './relatorio-filtro.component.html',
@@ -37,6 +38,18 @@ export class RelatorioFiltroComponent implements OnInit {
     });
 
     this.loadLocalizacoes();
+
+    window.history.pushState({ modal: true }, '')
+    window.addEventListener('popstate', this.handleBack.bind(this))
+  }
+
+  handleBack() {
+    this.close()
+  }
+
+  ngOnDestroy() {
+    console.log('componente sendo destruido')
+    window.addEventListener('popstate', this.handleBack.bind(this))
   }
 
   loadLocalizacoes() {
@@ -129,4 +142,7 @@ export class RelatorioFiltroComponent implements OnInit {
     this.currentField = null;
 
   }
+
+
+
 }

@@ -33,8 +33,19 @@ export class ConfiguracoesComponent implements OnInit {
   ngOnInit() {
     this.loadUsuarios();
 
+    window.history.pushState({ modal: true }, '')
+    window.addEventListener('popstate', this.handleBack.bind(this))
   }
 
+  handleBack() {
+    // this.dismissModal()
+    this.closeModal()
+  }
+
+  ngOnDestroy() {
+    window.addEventListener('popstate', this.handleBack.bind(this))
+  }
+  
   async loadUsuarios() {
     const loading = await this.loadingController.create({
       message: 'Carregando usuários...',

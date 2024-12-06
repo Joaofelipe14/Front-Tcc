@@ -29,8 +29,18 @@ export class CadastrarFinanceiroComponent implements OnInit {
 
   ngOnInit() {
     this.initializeForm();
+    window.history.pushState({ modal: true }, '')
+    window.addEventListener('popstate', this.handleBack.bind(this))
   }
 
+  handleBack() {
+    this.dismissModal()
+  }
+
+  ngOnDestroy() {
+    window.addEventListener('popstate', this.handleBack.bind(this))
+  }
+  
   initializeForm() {
     this.cadastrarFinancerioForm = this.formBuilder.group({
       transporte: ['', Validators.required],
