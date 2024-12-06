@@ -11,6 +11,7 @@ import { NovaSenhaComponent } from './pages/nova-senha/nova-senha.component';
 import { CadastrarVendaComponent } from './pages/colaborador/cadastrar-venda/cadastrar-venda.component';
 import { ConfiguracoesComponent } from './pages/admin/configuracoes/configuracoes.component';
 import {  GoogleMapsComponent } from './shared/google-map/google-map-autocomplete.component';
+import { ResultadosmapComponent } from './resultados-map/resultadosmap.component';
 
 const routes: Routes = [
 
@@ -64,7 +65,7 @@ const routes: Routes = [
   },
   {
     path: 'teste',
-    component: GoogleMapsComponent
+    component: ResultadosmapComponent
   },
 
 ];

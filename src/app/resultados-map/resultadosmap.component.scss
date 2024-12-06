@@ -1,0 +1,24 @@
+.filters {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+ion-item {
+  --padding-start: 10px;
+  --padding-end: 10px;
+  margin: 10px 0;
+}
+
+ion-select {
+  width: 100%;
+  border-radius: 8px;
+}
+
+#map {
+  position: relative;
+  height: 100%;
+  width: 100%;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}

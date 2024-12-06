@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { TokenService } from './token.service'; 
+import { TokenService } from './token.service';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
@@ -12,8 +12,8 @@ export class LocalizacaoService {
 
   constructor(
     private http: HttpClient,
-    private tokenService: TokenService 
-  ) {}
+    private tokenService: TokenService
+  ) { }
 
   private getHeaders(): HttpHeaders {
     const token = this.tokenService.getToken();
@@ -40,5 +40,9 @@ export class LocalizacaoService {
 
   deleteLocalizacao(id: number): Observable<any> {
     return this.http.delete<any>(`${this.baseUrl}localizacoes/${id}`, { headers: this.getHeaders() });
+  }
+
+  getResultadosMapa(): Observable<any> {
+    return this.http.get<any>(`${this.baseUrl}busca-resultado-mapa`, { headers: this.getHeaders() });
   }
 }

@@ -1,0 +1,21 @@
+  <!-- Card com Filtros -->
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Filtros</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <div class="filters">
+        <ion-item>
+          <ion-label>Filtrar por</ion-label>
+          <ion-select [(ngModel)]="filterType" (ionChange)="filterPlaces(filterType)">
+            <ion-select-option value="todos">Todos</ion-select-option>
+            <ion-select-option value="pesca">Pesca</ion-select-option>
+            <ion-select-option value="venda">Venda</ion-select-option>
+          </ion-select>
+        </ion-item>
+      </div>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Mapa -->
+  <div id="map" style="height: 500px; width: 100%; position: relative;"></div>

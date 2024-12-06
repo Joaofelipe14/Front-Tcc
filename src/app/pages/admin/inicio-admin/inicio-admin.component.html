@@ -12,6 +12,9 @@
         <ion-segment-button value="venda">
           Venda
         </ion-segment-button>
+        <ion-segment-button value="resultado-mapa">
+          GeoLocalização
+        </ion-segment-button>
       </ion-segment>
 
 
@@ -22,9 +25,8 @@
       </ng-template>
       <!-- <ion-button expand="full" (click)="openFiltroModal()">Gerar Relatório</ion-button> -->
 
-      <ion-header >
+      <ion-header  *ngIf="segment !== 'resultado-mapa'" >
         <ion-toolbar style="padding: 0px;" >
-
           <ion-searchbar [(ngModel)]="searchTerm" (ionInput)="onSearchTermChange()"
             placeholder="Buscar por nome..."></ion-searchbar>
              <ion-buttons slot="end">
@@ -34,7 +36,7 @@
       </ion-header>
 
 
-      <ion-select [(ngModel)]="selectedLocalizacao" (ionChange)="filterRecords()" placeholder="Filtrar por localização">
+      <ion-select   *ngIf="segment !== 'resultado-mapa'" [(ngModel)]="selectedLocalizacao" (ionChange)="filterRecords()" placeholder="Filtrar por localização">
         <ion-select-option disabled>Selecione uma localização</ion-select-option>
         <ion-select-option value="">Todos</ion-select-option>
         <ion-select-option *ngFor="let localizacao of localizacoes" [value]="localizacao.id">{{
@@ -42,8 +44,6 @@
       </ion-select>
 
       <div *ngIf="segment === 'pesca'">
-
-
 
         <ion-list *ngIf="registrosPesca.length>0; else notaData">
           <ion-item *ngFor="let registro of registrosPesca" (click)="openModal(registro)">
@@ -59,17 +59,6 @@
             </ion-label>
           </ion-item>
         </ion-list>
-
-        <!-- <ion-item *ngIf="registrosPesca.length>0" >
-          <ion-label>Itens por página</ion-label>
-          <ion-select [(ngModel)]="itemsPerPage" (ionChange)="filterRecords()" [value]="itemsPerPage">
-            <ion-select-option value="5">5</ion-select-option>
-            <ion-select-option value="10">10</ion-select-option>
-            <ion-select-option value="15">15</ion-select-option>
-            <ion-select-option value="20">20</ion-select-option>
-            <ion-select-option [value]="maxItensPagePesca">Tudo</ion-select-option>
-          </ion-select>
-        </ion-item> -->
 
         <ion-toolbar *ngIf="registrosPesca.length>0">
           <ion-buttons slot="start">
@@ -118,6 +107,12 @@
         </ion-toolbar>
       </div>
 
+
+      <div *ngIf="segment === 'resultado-mapa'">
+        <div style="z-index: 5;position: absolute; width: 100%; height: 100%;">
+          <app-resultados-map></app-resultados-map>
+        </div>
+      </div>
 
     </ion-col>
   </ion-row>
