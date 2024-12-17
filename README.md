@@ -70,24 +70,6 @@ O sistema estará disponível no navegador em:
 
 http://localhost:4200
 
-
----
-
-📁 Estrutura do Projeto
-
-src/
-│-- app/
-│   ├── components/   # Componentes reutilizáveis (menus, formulários, etc.)
-│   ├── pages/        # Páginas específicas para administradores e pescadores
-│   ├── services/     # Serviços para integração com o back-end
-│   └── app.module.ts # Módulos principais do projeto
-│
-│-- assets/           # Recursos estáticos (imagens, ícones)
-│-- environments/     # Configurações de ambiente (produção, desenvolvimento)
-│-- index.html        # Arquivo principal do HTML
-│-- styles.css        # Estilos globais do projeto
-
-
 ---
 
 ✅ Funcionalidades Implementadas
