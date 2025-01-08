@@ -17,7 +17,7 @@ export class RegistrarComponent {
   selectedImage: string | ArrayBuffer | null = null;
   selectedFile: File | null = null;
   private copyAlert: HTMLIonAlertElement | null = null;
-  isLoading= false;
+  isLoading = false;
 
 
   constructor(
@@ -32,12 +32,12 @@ export class RegistrarComponent {
     this.loginForm = this.fb.group({
       nome: ['', Validators.required],
       contato: ['', Validators.required],
-      cpf: ['', [Validators.required, Validators.minLength(11), Utils.cpfValidator()]], 
+      cpf: ['', [Validators.required, Validators.minLength(11), Utils.cpfValidator()]],
       cap: ['', [Validators.required, Validators.minLength(6)]]
     });
   }
 
-  
+
   async onSubmit() {
     if (this.loginForm.valid) {
       const formData = this.loginForm.value;
@@ -109,11 +109,11 @@ export class RegistrarComponent {
 
   async showAlertWithCopy(senha: string) {
     this.copyAlert = await this.alertController.create({
-      header: 'Cadastro realizado ☑',
-      message: 'Senha ' + senha + ' gerada.',
+      header: 'Cadastro realizado!',
+      message: 'O primeira acesso será com o cpf: ' + senha + '.',
       buttons: [
         {
-          text: 'Copiar Valor',
+          text: 'Copiar',
           handler: async () => {
             const valorParaCopiar = senha;
             try {
@@ -168,7 +168,7 @@ export class RegistrarComponent {
           extendedTimeOut: 0,
           closeButton: true,
         });
-        return;        return;
+        return; return;
       }
       this.selectedFile = file;
       const reader = new FileReader();

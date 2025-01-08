@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, MinLengthValidator, Validators } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { AlertController, ToastController } from '@ionic/angular';
 import { ToastrService } from 'ngx-toastr';
 import { AuthService } from 'src/app/services/auth.service';
-import { Utils } from 'src/app/utils/utils';
+import { TokenService } from 'src/app/services/token.service';
 
 @Component({
   selector: 'app-nova-senha',
@@ -20,13 +20,15 @@ export class NovaSenhaComponent implements OnInit {
   token!: string;
   isLoading = false
 
+
   constructor(
     private fb: FormBuilder,
     private router: Router,
     private toastController: ToastController,
     private authService: AuthService,
     private alertController: AlertController,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private tokenService: TokenService
   ) {
     this.novaSenha = this.fb.group({
       password: ['', [Validators.required, Validators.minLength(8)]],
@@ -46,11 +48,7 @@ export class NovaSenhaComponent implements OnInit {
     if (navigation && navigation.extras.state) {
       this.dataUser = navigation.extras.state?.['dataUser'].usuario;
       this.token = navigation.extras.state?.['dataUser'].token;
-
-
     }
-
-
   }
 
   // Verifica se as senhas coincidem
@@ -66,6 +64,44 @@ export class NovaSenhaComponent implements OnInit {
     }
   }
 
+  async fazerLogin(payload: any) {
+    this.authService.logar(payload).subscribe(
+      async (response: any) => {
+        this.tokenService.setToken(response.dados.token)
+
+        const alert = await this.alertController.create({
+          header: 'Sucesso!',
+          message: 'Senha atualizada com sucesso. Você será redirecionado para a tela inicial.',
+          buttons: [
+            {
+              text: 'OK',
+              
+            }
+          ]
+        });
+
+        alert.onDidDismiss().then(() => {
+          if (response.dados.usuario.tipo_usuario === "colaborador") {
+            this.router.navigate(['/colaborador/cadastrar-pesca']);
+          } else {
+            this.router.navigate(['/admin/inicio']);
+          }
+        });
+
+        this.isLoading = false;
+
+        await alert.present();
+
+
+      },
+      (error: any) => {
+        this.isLoading = false;
+        console.error('Erro ao carregar respostas:', error);
+        this.toastr.error('Não foi possivel realizar o login', 'Erro')
+      }
+    );
+
+  }
 
   async onSubmit() {
     if (this.novaSenha.valid) {
@@ -79,22 +115,15 @@ export class NovaSenhaComponent implements OnInit {
         const response = await this.authService.atualizarSemTokenLocal(formData, this.dataUser.id, this.token).toPromise();
 
         if (response.sucesso) {
-          this.isLoading = false;
 
-          const alert = await this.alertController.create({
-            header: 'Sucesso!',
-            message: 'Senha atualizada com sucesso. Você será redirecionado para o login.',
-            buttons: [
-              {
-                text: 'OK',
-                handler: () => {
-                  this.router.navigate(['/login']);
-                }
-              }
-            ]
-          });
+          const payload = {
+            cpf: this.dataUser.cpf,
+            password: this.novaSenha.get('confirmPassword')?.value
+          }
 
-          await alert.present();
+          await this.fazerLogin(payload)
+
+
         }
 
       } catch (error) {
