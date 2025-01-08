@@ -4,6 +4,7 @@ import { ToastrService } from 'ngx-toastr';
 import { CadastroVendaService } from 'src/app/services/cadastro-venda.service';
 import { ModalCadastrarVendaComponent } from './modal-cadastrar-venda/modal-cadastrar-venda.component';
 import { DetailModalComponent } from 'src/app/shared/detail-modal/detail-modal.component';
+import { Utils } from 'src/app/utils/utils';
 @Component({
   selector: 'app-cadastrar-venda',
   templateUrl: './cadastrar-venda.component.html',
@@ -16,7 +17,8 @@ export class CadastrarVendaComponent implements OnInit {
   itemsPerPage: number = 5;
   totalPagesVenda: number = 1;
   loading: any = ''
-
+  user:any[]=[]
+  Utils = Utils
   constructor(
     private cadastroVendaService: CadastroVendaService,
     private modalController: ModalController,
@@ -41,6 +43,8 @@ export class CadastrarVendaComponent implements OnInit {
     this.cadastroVendaService.getRegistrosByUserId().subscribe(
       response => {
         if (response.status) {
+          this.user= response.dados.user
+
           this.updateRegistros(response.dados.registros, 'venda');
           this.loading.dismiss()
 
@@ -58,7 +62,9 @@ export class CadastrarVendaComponent implements OnInit {
     const updatedRecords = newRecords.map(record => ({
       ...record,
       type: type,
-      dateTime: type === 'pesca' ? record.data_com_hora : record.created_at
+      dateTime: type === 'pesca' ? record.data_com_hora : record.created_at,
+      user: this.user
+
     }));
 
     this.registros = [...this.registros, ...updatedRecords];

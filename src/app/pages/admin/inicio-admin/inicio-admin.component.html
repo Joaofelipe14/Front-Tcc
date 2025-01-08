@@ -55,7 +55,7 @@
             <ion-label>
               <h2>{{ registro.user.name }}</h2>
               <h3>Pescado: {{ registro.pescado }}</h3>
-              <p>Quantidade: {{ registro.quantidade }}</p>
+              <p>Quantidade(Kg): {{ registro.quantidade }}</p>
             </ion-label>
           </ion-item>
         </ion-list>
@@ -80,7 +80,7 @@
             <ion-label>
               <h2>{{ registro.user.name }}</h2>
               <h3>Quantidade: {{ registro.quantidade }}</h3>
-              <p>Valor: R$ {{ registro.valor }}</p>
+              <p>Valor: {{ Utils.converterParaBRL(registro.valor) }}</p>
             </ion-label>
           </ion-item>
         </ion-list>

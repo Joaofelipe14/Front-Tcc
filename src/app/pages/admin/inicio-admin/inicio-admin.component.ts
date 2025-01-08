@@ -5,6 +5,8 @@ import { CadastroVendaService } from 'src/app/services/cadastro-venda.service';
 import { DetailModalComponent } from 'src/app/shared/detail-modal/detail-modal.component';
 import { LocalizacaoService } from 'src/app/services/localizacao.service';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
+import { Utils } from 'src/app/utils/utils';
+
 import { Subject } from 'rxjs';
 import { RelatorioFiltroComponent } from './relatorio-filtro/relatorio-filtro.component';
 
@@ -33,6 +35,7 @@ export class InicioAdminComponent implements OnInit {
   totalPagesPesca: number = 0;
   totalPagesVenda: number = 0;
 
+  Utils = Utils
   searchTermChanged: Subject<string> = new Subject();
   isLoading = false;
 

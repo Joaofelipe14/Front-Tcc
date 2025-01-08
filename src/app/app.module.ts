@@ -34,7 +34,7 @@ import { CadastrarFinanceiroComponent } from './pages/admin/financeiro/cadastrar
 import { AuditoriaComponent } from './pages/admin/configuracoes/auditoria/auditoria.component';
 import { LocalizacaoComponent } from './pages/admin/configuracoes/localizacao/localizacao.component';
 import { RelatorioFiltroComponent } from './pages/admin/inicio-admin/relatorio-filtro/relatorio-filtro.component';
-import { ResultadosmapComponent } from './resultados-map/resultadosmap.component';
+import { ResultadosmapComponent } from './pages/admin/inicio-admin/resultados-map/resultadosmap.component';
 
 
 @NgModule({

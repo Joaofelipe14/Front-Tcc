@@ -30,7 +30,7 @@
           <h2>Local: {{ registro.localizacao.descricao_amigavel }}</h2>
           <p>Data: {{ formatDateTime(registro.dateTime) }}</p>
           <p>Quantidade(Kg): {{ registro.quantidade }}</p>
-          <p>Valor: {{ registro.valor }}</p>
+          <p>Valor: {{ Utils.converterParaBRL(registro.valor) }}</p>
         </ion-label>
       </ion-item>
     </ng-container>

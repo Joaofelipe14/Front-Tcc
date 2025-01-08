@@ -59,9 +59,9 @@ export class CadastrarPescaComponent implements OnInit {
     this.cadastroPescaService.getRegistrosByUserId().subscribe(
       response => {
         if (response.status) {
+          this.user= response.dados.user
             
           this.updateRegistros(response.dados.registros, 'pesca');
-          this.user= response.dados.user
 
 
         }
@@ -109,6 +109,7 @@ export class CadastrarPescaComponent implements OnInit {
   }
 
   async openDetailModal(registro: any) {
+    console.log(registro)
     const modal = await this.modalController.create({
       component: DetailModalComponent,
       componentProps: { registro: registro },

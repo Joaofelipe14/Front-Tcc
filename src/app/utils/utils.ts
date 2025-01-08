@@ -5,15 +5,13 @@ import { AbstractControl, ValidatorFn } from '@angular/forms';
 
 export class Utils {
 
-  // Método estático para validar CPF
   static validateCpf(cpf: string): { [key: string]: boolean } | null {
-    cpf = cpf.replace(/\D/g, ''); // Remove caracteres não numéricos
+    cpf = cpf.replace(/\D/g, ''); 
 
-    if (!cpf) return null; // Sem CPF, não faz validação
+    if (!cpf) return null; 
     const cpfPattern = /^\d{11}$/; // Apenas 11 dígitos
     if (!cpfPattern.test(cpf)) return { invalidCpf: true };
 
-    // Lógica para validação real do CPF
     const sum = cpf.split('').slice(0, 9).reduce((acc: number, num: string, index: number) => {
       return acc + (Number(num) * (10 - index));
     }, 0) * 10 % 11;
@@ -32,7 +30,6 @@ export class Utils {
     return null;
   }
 
-  // Método para retornar o validador de CPF
   static cpfValidator(): ValidatorFn {
     return (control: AbstractControl): { [key: string]: any } | null => {
       return Utils.validateCpf(control.value); // Chama a validação de CPF
@@ -148,4 +145,20 @@ export class Utils {
     return value
    
   }
+
+  static converterParaBRL(valor: any): string {
+      const numero = parseFloat(valor?.toString().replace(/\s/g, ''));
+  
+      if (isNaN(numero)) {
+        return 'Valor inválido';
+      }
+  
+      const formatter = new Intl.NumberFormat('pt-BR', {
+        style: 'currency',
+        currency: 'BRL',
+      });
+  
+      return formatter.format(numero);
+    }
+  
 }

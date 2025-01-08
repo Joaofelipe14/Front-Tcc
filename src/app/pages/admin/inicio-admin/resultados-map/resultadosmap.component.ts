@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { LocalizacaoService } from '../services/localizacao.service';
+import { LocalizacaoService } from '../../../../services/localizacao.service';
+import { Utils } from 'src/app/utils/utils';
 
 declare var google: any;
 
@@ -20,6 +21,7 @@ export class ResultadosmapComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadResultadosMapa();
+
   }
 
   loadResultadosMapa(): void {
@@ -28,6 +30,7 @@ export class ResultadosmapComponent implements OnInit {
       (response) => {
         if (response.status) {
           this.places = this.aggregatePlaces(response.dados);
+          console.log(response.dados)
           this.filteredPlaces = this.places;
         }
         
@@ -82,7 +85,7 @@ export class ResultadosmapComponent implements OnInit {
 
     places.forEach((place, index) => {
       const iconUrl = place.type === 'pesca'
-        ? 'assets/icon_logo.png'
+        ? 'assets/pesca.png'
         : 'https://img.icons8.com/ios/50/000000/price-tag.png';
 
       let latOffset = (Math.random() - 0.5) * 0.001;
@@ -104,6 +107,13 @@ export class ResultadosmapComponent implements OnInit {
         content: this.createInfoWindowContent(place),
       });
 
+      google.maps.event.addListener(infowindow, 'domready', function () {
+        const contentDiv = document.querySelector('.gm-style-iw');
+        if (contentDiv) {
+          (contentDiv as HTMLElement).style.minWidth = '300px';
+        }
+      });
+
       marker.addListener('click', () => {
         infowindow.open(this.map, marker);
       });
@@ -118,16 +128,36 @@ export class ResultadosmapComponent implements OnInit {
         <strong>Local: </strong> ${place.type === 'pesca' ? 'Pesca' : 'Venda'}<br>
         <strong>Localização: </strong> Lat: ${place.lat}, Lng: ${place.lng}<br>
         <strong>Informações:</strong>
-        <ul>
+        <ul style="display:flex; gap:10px; flex-direction: column;">
     `;
-
+  
     place.dados.forEach((d: any) => {
-      content += `<li>${d.pescado ? 'Pescado: ' + d.pescado : 'Sem pescado'} - Quantidade: ${d.quantidade}</li>`;
+      // Para 'pesca', incluir pescado, quantidade, e o endereço
+      if (place.type === 'pesca') {
+        content += `
+          <li>
+            <strong>Pescado:</strong> ${d.pescado ? d.pescado : 'Sem pescado'} <br>
+            <strong>Quantidade(Kg):</strong> ${d.quantidade} <br>
+            <strong>Pescador:</strong> ${d.user_name}
+          </li>
+        `;
+      }
+      // Para 'venda', incluir a quantidade, o valor e o endereço
+      else if (place.type === 'venda') {
+        content += `
+          <li>
+            <strong>Quantidade(Kg):</strong> ${d.quantidade} <br>
+            <strong>Valor:</strong> ${d.valor ? d.valor : 'Não disponível'} <br>
+            <strong>Pescado:</strong> ${d.user_name}
+          </li>
+        `;
+      }
     });
-
+  
     content += '</ul></div>';
     return content;
   }
+  
 
   filterPlaces(type: string) {
     this.filterType = type;
