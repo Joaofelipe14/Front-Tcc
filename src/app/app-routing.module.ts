@@ -18,7 +18,10 @@ const routes: Routes = [
     path: '',
     component: LoginComponent
   },
-
+  {
+    path: '**',
+    redirectTo: 'login'
+  },
   {
     path: 'login',
     component: LoginComponent
@@ -66,7 +69,6 @@ const routes: Routes = [
     path: 'teste',
     component: ResultadosmapComponent
   },
-
 ];
 
 @NgModule({
