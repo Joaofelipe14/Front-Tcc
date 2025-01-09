@@ -1,3 +1,8 @@
 <ion-app>
+  <app-install-modal *ngIf="isVisible"
+                   (installConfirmed)="onInstallConfirmed()"
+                   (installCancelled)="onInstallCancelled()">
+</app-install-modal>
+
   <ion-router-outlet [animated]="false"></ion-router-outlet>
 </ion-app>

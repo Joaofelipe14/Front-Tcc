@@ -7,7 +7,7 @@ import { Component, EventEmitter, Output } from '@angular/core';
 })
 export class InstallModalComponent {
   @Output() installConfirmed = new EventEmitter<void>();
-  @Output() installCanceled = new EventEmitter<void>();
+  @Output() installCancelled = new EventEmitter<void>();
 
   constructor() {}
 
@@ -15,7 +15,8 @@ export class InstallModalComponent {
     this.installConfirmed.emit();
   }
 
-  onCancelClick() {
-    this.installCanceled.emit();
+  cancelar() {
+    console.log('canceladno')
+    this.installCancelled.emit();
   }
 }

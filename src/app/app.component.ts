@@ -1,6 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { ModalController } from '@ionic/angular';
-import { InstallModalComponent } from './install-modal/install-modal.component'; // Caminho do componente de modal
 
 @Component({
   selector: 'app-root',
@@ -9,57 +7,72 @@ import { InstallModalComponent } from './install-modal/install-modal.component';
 })
 export class AppComponent implements OnInit {
   deferredPrompt: any;
-  showInstallPrompt: boolean = false;
-
-  constructor(private modalController: ModalController) {}
+  isVisible: boolean = false;
+  cancelDate: string | null = null;
 
   ngOnInit() {
-    // Verifica se o app está sendo executado no modo standalone
-    if (window.matchMedia('(display-mode: standalone)').matches) {
-      console.log('App já está instalado!');
-      return; // Se já estiver instalado, não mostra o botão
+    /*
+      Verifica se há uma data de cancelamento salva no localStorage.
+      Se o pop-up foi cancelado no mesmo dia, não será exibido novamente.
+    */
+    this.cancelDate = localStorage.getItem('installCancelDate');
+
+    if (this.cancelDate) {
+      const cancelDate = this.cancelDate;
+      const today = new Date().toISOString().split('T')[0];
+
+      if (cancelDate === today) {
+        console.log('Pop-up de instalação não será mostrado hoje');
+        return;
+      }
     }
 
-    // Captura o evento beforeinstallprompt
+    /*
+      Verifica se o aplicativo está no modo standalone (instalado).
+      Se estiver, o pop-up não será exibido.
+    */
+    if (window.matchMedia('(display-mode: standalone)').matches) {
+      console.log('App já está instalado!');
+      return;
+    }
+
+    /*
+      Captura o evento beforeinstallprompt, que é disparado quando o navegador
+      sugere a instalação do PWA. O pop-up será exibido quando esse evento ocorrer.
+    */
     window.addEventListener('beforeinstallprompt', (e: Event) => {
-      e.preventDefault();  // Impede que o prompt seja mostrado automaticamente
-      this.deferredPrompt = e;  // Armazena o evento para ser usado mais tarde
-      this.showInstallPrompt = true;  // Exibe o botão para adicionar à tela inicial
-
-      // Exibe o modal
-      this.showInstallModal();
+      e.preventDefault();
+      this.deferredPrompt = e;
+      this.isVisible = true;
     });
   }
 
-  async showInstallModal() {
-    const modal = await this.modalController.create({
-      component: InstallModalComponent
-    });
-
-    // Quando o usuário clicar em "Sim, Adicionar!"
-    modal.onDidDismiss().then((result) => {
-      if (result.data === 'installConfirmed') {
-        this.addToHomeScreen();
-      } else {
-        console.log('Instalação cancelada');
-      }
-    });
-
-    await modal.present();
+  onInstallConfirmed() {
+    console.log('Instalação confirmada!');
+    this.addToHomeScreen();
   }
 
-  // Função para exibir o prompt de instalação
+  onInstallCancelled() {
+    console.log('Instalação cancelada');
+    this.isVisible = false;
+
+    const today = new Date().toISOString().split('T')[0];
+    localStorage.setItem('installCancelDate', today);
+
+    
+  }
+
   addToHomeScreen() {
     if (this.deferredPrompt) {
-      this.deferredPrompt.prompt();  // Exibe o prompt para o usuário
+      this.deferredPrompt.prompt();
       this.deferredPrompt.userChoice.then((choiceResult: any) => {
         if (choiceResult.outcome === 'accepted') {
           console.log('Usuário aceitou adicionar à tela inicial');
         } else {
           console.log('Usuário recusou adicionar à tela inicial');
         }
-        this.deferredPrompt = null;  // Limpa o evento após a escolha
-        this.showInstallPrompt = false;  // Oculta o botão
+        this.deferredPrompt = null;
+        this.isVisible = false;
       });
     }
   }

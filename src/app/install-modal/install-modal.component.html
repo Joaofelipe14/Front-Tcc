@@ -1,15 +1,10 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>Adicionar à Tela Inicial</ion-title>
-  </ion-toolbar>
-</ion-header>
-
-<ion-content>
-  <!-- Modal Content -->
-  <div class="modal-content">
-    <ion-button class="close" (click)="onCancelClick()">×</ion-button> <!-- Fechar -->
-    <p><strong>Deseja adicionar este app à sua tela inicial?</strong></p>
-    <ion-button (click)="onInstallClick()">Sim, Adicionar!</ion-button>
-    <ion-button class="cancel" (click)="onCancelClick()">Cancelar</ion-button>
+<!-- Pop-up simples que aparece na parte inferior -->
+<div class="popup" >
+  <div class="popup-content">
+    <p style="color: black;" >Deseja instalar o aplicativo?</p>
+    <div class="popup-buttons">
+      <ion-button (click)="onInstallClick()">Sim, instalar</ion-button>
+      <ion-button color="medium" (click)="cancelar()">Cancelar</ion-button>
+    </div>
   </div>
-</ion-content>
+</div>

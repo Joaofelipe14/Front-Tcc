@@ -1,63 +1,53 @@
-/* Definindo a animação suave do modal */
-@keyframes slideUp {
-    0% {
-      transform: translateY(100%);  /* Começa fora da tela, embaixo */
-    }
-    100% {
-      transform: translateY(0);  /* Fica na posição original */
-    }
+.popup {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #ffffff;
+  box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.2);
+  padding: 15px;
+  border-radius: 10px;
+  z-index: 9999;
+  animation: zoomIn 0.4s ease-out;
+}
+
+.popup-content {
+  text-align: center;
+}
+
+.popup-buttons {
+  display: flex;
+  justify-content: space-around;
+  width: 100%;
+}
+
+.popup-buttons ion-button {
+  width: 45%;
+  --border-radius: 8px;
+  --background: #3880ff;
+  --color: white;
+  --padding: 10px;
+}
+
+.popup-buttons ion-button.cancel {
+  --background: #f7f7f7;
+  --color: #333;
+}
+
+@keyframes zoomIn {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.1);
   }
-  
-  /* Estilos gerais do modal */
-  .modal-content {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background-color: #fff;
-    border-top-left-radius: 15px;
-    border-top-right-radius: 15px;
-    padding: 20px;
-    box-shadow: 0px -4px 15px rgba(0, 0, 0, 0.1);
-    text-align: center;
-    animation: slideUp 0.5s ease-in-out;  /* Aplica a animação */
-    max-width: 100%;
-    width: 100%;
+  100% {
+    opacity: 0.1;
+    transform: translate(-50%, -50%) scale(1);
   }
-  
-  /* Estilo do título do modal */
-  .modal-content ion-title {
-    font-size: 1.6rem;
-    font-weight: 600;
-    color: #333;
-    margin-bottom: 10px;
+}
+
+@media (max-width: 600px) {
+  .popup {
+    width: 90%;
+    padding: 12px;
   }
-  
-  /* Estilos para os botões */
-  ion-button {
-    width: 100%;
-    margin: 10px 0;
-    --border-radius: 8px;
-    --background: linear-gradient(45deg, #4e92d3, #0078d4);
-    --color: white;
-    font-size: 1rem;
-    font-weight: 500;
-    padding: 15px;
-  }
-  
-  ion-button.cancel {
-    --background: #f1f1f1;
-    --color: #333;
-    font-weight: 400;
-  }
-  
-  /* Close Button */
-  ion-button.close {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    background: transparent;
-    color: #888;
-    font-size: 20px;
-  }
-  
+}
