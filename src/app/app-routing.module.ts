@@ -18,10 +18,7 @@ const routes: Routes = [
     path: '',
     component: LoginComponent
   },
-  {
-    path: '**',
-    redirectTo: 'login'
-  },
+  
   {
     path: 'login',
     component: LoginComponent
@@ -69,6 +66,11 @@ const routes: Routes = [
     path: 'teste',
     component: ResultadosmapComponent
   },
+  // Rota que captura todas as páginas não encontradas e redireciona para o login
+  {
+    path: '**',
+    redirectTo: 'login'
+  }
 ];
 
 @NgModule({
