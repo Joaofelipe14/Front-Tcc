@@ -4,22 +4,6 @@
     <!-- O conteúdo da aplicação será renderizado aqui -->
     <ion-router-outlet [animated]="false"></ion-router-outlet>
 
-    <!-- Modal de instalação -->
-  <ion-modal [(isOpen)]="showInstallModal" [dismissOnBackButton]="false">
-    <ion-header>
-      <ion-toolbar>
-        <ion-title>Adicionar à Tela Inicial</ion-title>
-        <ion-buttons slot="end">
-          <ion-button (click)="dismissModal()">Fechar</ion-button>
-        </ion-buttons>
-      </ion-toolbar>
-    </ion-header>
-    <ion-content>
-      <div class="install-modal-content">
-        <p>Gostaria de adicionar o aplicativo à sua tela inicial para uma melhor experiência?</p>
-        <ion-button expand="full" (click)="addToHomeScreen()">Adicionar à tela inicial</ion-button>
-      </div>
-    </ion-content>
-  </ion-modal>
+    
   </ion-app>
   

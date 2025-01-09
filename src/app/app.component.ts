@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ModalController } from '@ionic/angular';  // Importando ModalController
 
 @Component({
   selector: 'app-root',
@@ -7,7 +8,9 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AppComponent implements OnInit {
   deferredPrompt: any;
-  showInstallModal: boolean = false;
+  modal: any;
+
+  constructor(private modalController: ModalController) {}
 
   ngOnInit() {
     // Verifica se o app está sendo executado no modo standalone
@@ -20,9 +23,45 @@ export class AppComponent implements OnInit {
     window.addEventListener('beforeinstallprompt', (e: Event) => {
       e.preventDefault();  // Impede que o prompt seja mostrado automaticamente
       this.deferredPrompt = e;  // Armazena o evento para ser usado mais tarde
-      this.showInstallModal = true;  // Exibe o modal para adicionar à tela inicial
-      console.log('Prompt de instalação armazenado, showInstallModal agora é: true');
+      this.presentInstallModal(); // Exibe o modal quando o evento ocorrer
     });
+  }
+
+  // Função para exibir o modal
+  async presentInstallModal() {
+    const modal = await this.modalController.create({
+      component: null,  // Aqui não usaremos um componente separado
+      cssClass: 'install-modal',  // Classe CSS para estilizar o modal
+      backdropDismiss: false,  // Impede o fechamento do modal clicando fora
+      componentProps: {
+        deferredPrompt: this.deferredPrompt,
+        onInstall: this.addToHomeScreen.bind(this)
+      }
+    });
+
+    modal.componentProps = {
+      ...modal.componentProps,
+      header: 'Adicionar à Tela Inicial',
+      message: 'Gostaria de adicionar o aplicativo à sua tela inicial para uma melhor experiência?',
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel',
+          handler: () => {
+            this.dismissModal();  // Fecha o modal se o usuário clicar em "Cancelar"
+          }
+        },
+        {
+          text: 'Adicionar',
+          handler: () => {
+            this.addToHomeScreen();  // Adiciona o app à tela inicial
+            this.dismissModal();  // Fecha o modal
+          }
+        }
+      ]
+    };
+
+    await modal.present();  // Exibe o modal
   }
 
   // Função para exibir o prompt de instalação
@@ -39,13 +78,14 @@ export class AppComponent implements OnInit {
           console.log('Usuário recusou adicionar à tela inicial');
         }
         this.deferredPrompt = null;  // Limpa o evento após a escolha
-        this.showInstallModal = false;  // Fecha o modal
       });
     }
   }
 
-  // Fechar o modal sem fazer nada
+  // Função para fechar o modal
   dismissModal() {
-    this.showInstallModal = false;
+    if (this.modal) {
+      this.modal.dismiss();
+    }
   }
 }
