@@ -96,7 +96,6 @@ export class LoginComponent implements OnInit {
         this.versao = response.version;
 
         console.log('Versão da aplicação:', this.versao);
-
         this.checkVersion();
       },
       (error) => {
@@ -181,6 +180,10 @@ export class LoginComponent implements OnInit {
       localStorage.setItem('appVersion', currentAppVersion);
       return;
     }
+    
+    console.log(typeof storedVersion, storedVersion)
+    console.log(typeof currentAppVersion, currentAppVersion)
+
       if (currentAppVersion !== storedVersion) {
   
       const toast = this.toastr.info('Uma nova versão está disponível. Clique para atualizar.', 'Nova versão', {
