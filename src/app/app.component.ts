@@ -39,7 +39,7 @@ export class AppComponent implements OnInit {
   
       toast.onTap.subscribe(() => {
         localStorage.setItem('appVersion', currentAppVersion);
-        window.location.reload();
+        window.location.href = window.location.href + '?v=' + new Date().getTime();  // Adiciona um parâmetro de query único
       });
     } else {
       console.log('Versão já está atual.');
