@@ -13,37 +13,37 @@ export class AppComponent implements OnInit {
   constructor(private swUpdate: SwUpdate, private toastr: ToastrService) { }
 
   ngOnInit(): void {
-    if (this.swUpdate.isEnabled && environment.production) {
-      this.checkVersion();
-    } else {
-      console.log('Service Worker não está habilitado!');
-    }
+    // if (this.swUpdate.isEnabled && environment.production) {
+    //   this.checkVersion();
+    // } else {
+    //   console.log('Service Worker não está habilitado!');
+    // }
   }
 
-  checkVersion(): void {
-    const currentAppVersion = environment.appVersion;
-    const storedVersion = localStorage.getItem('appVersion');
+  // checkVersion(): void {
+  //   const currentAppVersion = environment.appVersion;
+  //   const storedVersion = localStorage.getItem('appVersion');
   
-    if (storedVersion === null) {
-      localStorage.setItem('appVersion', currentAppVersion);
-      return;
-    }
-      if (currentAppVersion !== storedVersion) {
+  //   if (storedVersion === null) {
+  //     localStorage.setItem('appVersion', currentAppVersion);
+  //     return;
+  //   }
+  //     if (currentAppVersion !== storedVersion) {
   
-      const toast = this.toastr.info('Uma nova versão está disponível. Clique para atualizar.', 'Nova versão', {
-        timeOut: 0, 
-        progressBar: true,
-        closeButton: true,
-        disableTimeOut: true
-      });
+  //     const toast = this.toastr.info('Uma nova versão está disponível. Clique para atualizar.', 'Nova versão', {
+  //       timeOut: 0, 
+  //       progressBar: true,
+  //       closeButton: true,
+  //       disableTimeOut: true
+  //     });
   
-      toast.onTap.subscribe(() => {
-        localStorage.setItem('appVersion', currentAppVersion);
-        window.location.href = window.location.href + '?v=' + new Date().getTime();  // Adiciona um parâmetro de query único
-      });
-    } else {
-      console.log('Versão já está atual.');
-    }
-  }
+  //     toast.onTap.subscribe(() => {
+  //       localStorage.setItem('appVersion', currentAppVersion);
+  //       window.location.reload();
+  //     });
+  //   } else {
+  //     console.log('Versão já está atual.');
+  //   }
+  // }
   
 }
