@@ -6,7 +6,6 @@ import { LoadingController, ToastController } from '@ionic/angular';
 import { ToastrService } from 'ngx-toastr';
 import { AuthService } from 'src/app/services/auth.service';
 import { TokenService } from 'src/app/services/token.service';
-import { VersaoService } from 'src/app/services/version.service';
 import { Utils } from 'src/app/utils/utils';
 import { environment } from 'src/environments/environment';
 
@@ -20,9 +19,9 @@ export class LoginComponent implements OnInit {
   formattedCpf: string = '';
   isLoading: boolean = false;
 
+  versao = environment.appVersion
   verPaginaLogin: boolean = true;
 
-  versao: string =''
 
   constructor(
     private fb: FormBuilder,
@@ -32,8 +31,7 @@ export class LoginComponent implements OnInit {
     private tokenService: TokenService,
     private auth: AuthService,
     private toastr: ToastrService,
-    private loadingController: LoadingController,
-   private serviceVersao : VersaoService
+    private loadingController: LoadingController
 
   ) {
     this.loginForm = this.fb.group({
@@ -43,7 +41,6 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.getVersion();
     this.loadUserData();
   }
 
@@ -88,20 +85,6 @@ export class LoginComponent implements OnInit {
       );
     }
 
-  }
-
-  getVersion(){
-    this.serviceVersao.getVersao().subscribe(
-      (response) => {
-        this.versao = response.version;
-
-        console.log('Versão da aplicação:', this.versao);
-        this.checkVersion();
-      },
-      (error) => {
-        console.error('Erro ao buscar versão:', error);
-      }
-    );
   }
   onSubmit() {
     if (this.loginForm.valid) {
@@ -169,33 +152,6 @@ export class LoginComponent implements OnInit {
       if (errorMessage) {
         await Utils.showErro(errorMessage, this.toastController);
       }
-    }
-  }
-
-  checkVersion(): void {
-    const currentAppVersion = this.versao;
-    const storedVersion = localStorage.getItem('appVersion');
-  
-    if (storedVersion === null) {
-      localStorage.setItem('appVersion', currentAppVersion);
-      return;
-    }
-    
-      if (currentAppVersion !== storedVersion) {
-  
-      const toast = this.toastr.info('Uma nova versão está disponível. Clique para atualizar.', 'Nova versão', {
-        timeOut: 0, 
-        progressBar: true,
-        closeButton: true,
-        disableTimeOut: true
-      });
-  
-      toast.onTap.subscribe(() => {
-        localStorage.setItem('appVersion', currentAppVersion);
-        window.location.reload();
-      });
-    } else {
-      console.log('Versão já está atual.');
     }
   }
 }

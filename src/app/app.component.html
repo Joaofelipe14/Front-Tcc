@@ -1,3 +1,10 @@
 <ion-app>
+    <!-- Aqui vai o botão de instalação (se necessário) -->
+    <div *ngIf="showInstallPrompt" id="install-banner" class="install-banner">
+      <ion-button expand="full" (click)="addToHomeScreen()">Adicionar à tela inicial</ion-button>
+    </div>
+  
+    <!-- O conteúdo da aplicação será renderizado aqui -->
     <ion-router-outlet [animated]="false"></ion-router-outlet>
-</ion-app>
+  </ion-app>
+  

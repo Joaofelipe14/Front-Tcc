@@ -1,49 +1,42 @@
 import { Component, OnInit } from '@angular/core';
-import { SwUpdate } from '@angular/service-worker';
-import { environment } from '../environments/environment';
-import { ToastrService } from 'ngx-toastr'; // Importando o Toastr
 
 @Component({
   selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+  templateUrl: 'app.component.html',
+  styleUrls: ['app.component.scss']
 })
 export class AppComponent implements OnInit {
+  deferredPrompt: any;
+  showInstallPrompt: boolean = false;
 
-  constructor(private swUpdate: SwUpdate, private toastr: ToastrService) { }
+  ngOnInit() {
+    // Verifica se o app está sendo executado no modo standalone
+    if (window.matchMedia('(display-mode: standalone)').matches) {
+      console.log('App já está instalado!');
+      return; // Se já estiver instalado, não mostra o botão
+    }
 
-  ngOnInit(): void {
-    // if (this.swUpdate.isEnabled && environment.production) {
-    //   this.checkVersion();
-    // } else {
-    //   console.log('Service Worker não está habilitado!');
-    // }
+    // Captura o evento beforeinstallprompt se o PWA não estiver instalado
+    window.addEventListener('beforeinstallprompt', (e: Event) => {
+      e.preventDefault();  // Impede que o prompt seja mostrado automaticamente
+      this.deferredPrompt = e;  // Armazena o evento para ser usado mais tarde
+      this.showInstallPrompt = true;  // Exibe o botão para adicionar à tela inicial
+    });
   }
 
-  // checkVersion(): void {
-  //   const currentAppVersion = environment.appVersion;
-  //   const storedVersion = localStorage.getItem('appVersion');
-  
-  //   if (storedVersion === null) {
-  //     localStorage.setItem('appVersion', currentAppVersion);
-  //     return;
-  //   }
-  //     if (currentAppVersion !== storedVersion) {
-  
-  //     const toast = this.toastr.info('Uma nova versão está disponível. Clique para atualizar.', 'Nova versão', {
-  //       timeOut: 0, 
-  //       progressBar: true,
-  //       closeButton: true,
-  //       disableTimeOut: true
-  //     });
-  
-  //     toast.onTap.subscribe(() => {
-  //       localStorage.setItem('appVersion', currentAppVersion);
-  //       window.location.reload();
-  //     });
-  //   } else {
-  //     console.log('Versão já está atual.');
-  //   }
-  // }
-  
+  // Função para exibir o prompt de instalação
+  addToHomeScreen() {
+    if (this.deferredPrompt) {
+      this.deferredPrompt.prompt();  // Exibe o prompt para o usuário
+      this.deferredPrompt.userChoice.then((choiceResult: any) => {
+        if (choiceResult.outcome === 'accepted') {
+          console.log('Usuário aceitou adicionar à tela inicial');
+        } else {
+          console.log('Usuário recusou adicionar à tela inicial');
+        }
+        this.deferredPrompt = null;  // Limpa o evento após a escolha
+        this.showInstallPrompt = false;  // Oculta o botão
+      });
+    }
+  }
 }
