@@ -181,9 +181,6 @@ export class LoginComponent implements OnInit {
       return;
     }
     
-    console.log(typeof storedVersion, storedVersion)
-    console.log(typeof currentAppVersion, currentAppVersion)
-
       if (currentAppVersion !== storedVersion) {
   
       const toast = this.toastr.info('Uma nova versão está disponível. Clique para atualizar.', 'Nova versão', {
