@@ -96,6 +96,8 @@ export class LoginComponent implements OnInit {
         this.versao = response.version;
 
         console.log('Versão da aplicação:', this.versao);
+
+        this.checkVersion();
       },
       (error) => {
         console.error('Erro ao buscar versão:', error);
