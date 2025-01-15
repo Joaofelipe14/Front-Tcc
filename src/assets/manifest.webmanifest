@@ -1,6 +1,6 @@
 {
-  "name": "Pesca app",
-  "short_name": "Pesca",
+  "name": "coopdelta",
+  "short_name": "coopdelta",
   "start_url": "/login",
   "display": "standalone",
   "background_color": "#F6FAFF",
@@ -13,7 +13,7 @@
       "type": "image/png"
     },
     {
-      "src": "icons/logoPrincipal.png",
+      "src": "icons/logo_modified_corrected.png",
       "sizes": "512x512",
       "type": "image/png"
   
@@ -33,19 +33,6 @@
       "sizes": "96x96",
       "type": "image/png"
     }
-  ],
-  "screenshots": [
-    {
-      "src": "screenshots/screenshot1.png",
-      "sizes": "1920x1080",
-      "type": "image/png",
-      "label": "Captura de tela 1"
-    },
-    {
-      "src": "screenshots/screenshot1.png",
-      "sizes": "1920x1080",
-      "type": "image/png",
-      "label": "Captura de tela 1"
-    }
   ]
+
 }

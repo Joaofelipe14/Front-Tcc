@@ -1,11 +1,11 @@
 .login-container {
   display: flex;
   flex-direction: column;
-  justify-content: center; 
+  justify-content: center;
   align-items: center;
-  height: 100vh; 
+  height: 100vh;
   padding: 20px;
-  background: var(--background-principal); 
+  background: var(--background-principal);
 }
 
 ion-card {
@@ -21,14 +21,14 @@ ion-card {
 }
 
 ion-card-title {
-  color: var(--fonte-titulo); 
+  color: var(--fonte-titulo);
 }
 
 .forgot-password {
   text-align: center;
-  position: absolute; 
-  bottom: 20px; 
-  width: 100%; 
+  position: absolute;
+  bottom: 20px;
+  width: 100%;
 }
 
 .forgot-password a {
@@ -37,16 +37,23 @@ ion-card-title {
 }
 
 .forgot-password a:hover {
-  text-decoration: underline; 
+  text-decoration: underline;
 }
 
-.logo{
+.logo {
   width: 150px;
   height: 150px;
-  border-radius: 50%;
+  // border-radius: 50%;
 }
 
-.header-card{
+.div-logo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.header-card {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -55,27 +62,27 @@ ion-card-title {
 }
 
 @media (max-height: 700px) {
-  .header-card{
+  .header-card {
     gap: 0px;
   }
 
 }
 
-.error{
+.error {
   display: flex;
   flex-direction: row;
   justify-content: center;
 }
 
-.version{
+.version {
   position: absolute;
-    top: 0;
-    right: 0;
-    padding: 5px;
-    font-size: small;
-    font-weight: lighter;
-    // text-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
-    color: gray;
-    opacity: 0.9;
-    pointer-events: none;
+  top: 0;
+  right: 0;
+  padding: 5px;
+  font-size: small;
+  font-weight: lighter;
+  // text-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+  color: gray;
+  opacity: 0.9;
+  pointer-events: none;
 }
