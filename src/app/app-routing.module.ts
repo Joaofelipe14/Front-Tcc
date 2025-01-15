@@ -11,6 +11,7 @@ import { NovaSenhaComponent } from './pages/nova-senha/nova-senha.component';
 import { CadastrarVendaComponent } from './pages/colaborador/cadastrar-venda/cadastrar-venda.component';
 import { ConfiguracoesComponent } from './pages/admin/configuracoes/configuracoes.component';
 import { ResultadosmapComponent } from './pages/admin/inicio-admin/resultados-map/resultadosmap.component';
+import { SobreNosComponent } from './pages/sobre-nos/sobre-nos.component';
 
 const routes: Routes = [
 
@@ -65,6 +66,10 @@ const routes: Routes = [
   {
     path: 'teste',
     component: ResultadosmapComponent
+  },
+  {
+    path: 'sobre-nos',
+    component: SobreNosComponent
   },
   // Rota que captura todas as páginas não encontradas e redireciona para o login
   {

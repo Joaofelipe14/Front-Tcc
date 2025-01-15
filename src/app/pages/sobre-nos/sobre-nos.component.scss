@@ -1,0 +1,88 @@
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 16px;
+    background-color: var(--fundo-interno);
+    border-radius: 8px;
+    // box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .nome-logo{
+    max-width: 250px;
+  }
+  .div-logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap; /* Permite que os itens quebrem linha em telas menores */
+    margin-bottom: 16px;
+  }
+  
+  .logo {
+    max-width: 100%;
+    height: auto; /* Garante que a imagem mantenha a proporção */
+    max-height: 150px; /* Limita a altura máxima */
+  }
+  
+  .title {
+    text-align: center;
+    font-size: 2rem;
+    font-weight: bold;
+    color: var(--fonte-titulo);
+    margin-bottom: 24px;
+  }
+  
+  .subtitle {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: var(--fonte-titulo);
+    margin-bottom: 16px;
+  }
+  
+  .content p {
+    font-size: 1rem;
+    line-height: 1.6;
+    color: var(--btn-secundario);
+    margin-bottom: 16px;
+    text-align: justify; /* Texto justificado */
+    word-wrap: break-word; /* Evita quebra inesperada de palavras */
+  }
+  
+  /* Responsividade */
+  @media (max-width: 768px) {
+    .title {
+      font-size: 1.75rem;
+    }
+  
+    .subtitle {
+      font-size: 1.25rem;
+    }
+  
+    .content p {
+      font-size: 0.95rem;
+    }
+  
+    .div-logo img {
+      max-height: 120px; /* Reduz o tamanho das imagens em telas menores */
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .title {
+      font-size: 1.5rem;
+    }
+  
+    .subtitle {
+      font-size: 1.1rem;
+    }
+  
+    .content p {
+      font-size: 0.9rem;
+    }
+  
+    .div-logo img {
+      max-height: 100px;
+    }
+  }
+  

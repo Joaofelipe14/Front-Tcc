@@ -35,7 +35,8 @@ import { AuditoriaComponent } from './pages/admin/configuracoes/auditoria/audito
 import { LocalizacaoComponent } from './pages/admin/configuracoes/localizacao/localizacao.component';
 import { RelatorioFiltroComponent } from './pages/admin/inicio-admin/relatorio-filtro/relatorio-filtro.component';
 import { ResultadosmapComponent } from './pages/admin/inicio-admin/resultados-map/resultadosmap.component';
-import { InstallModalComponent } from './install-modal/install-modal.component';
+import { InstallModalComponent } from './shared/install-modal/install-modal.component';
+import { SobreNosComponent } from './pages/sobre-nos/sobre-nos.component';
 
 
 @NgModule({
@@ -62,7 +63,8 @@ import { InstallModalComponent } from './install-modal/install-modal.component';
     LocalizacaoComponent,
     RelatorioFiltroComponent,
     ResultadosmapComponent,
-    InstallModalComponent
+    InstallModalComponent,
+    SobreNosComponent
 
   ],
   imports: [
